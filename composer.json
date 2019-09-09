@@ -12,7 +12,9 @@
     ],
     "require": {
         "php": "^7.2",
-        "symfony/polyfill-mbstring": "~1.7"
+        "symfony/polyfill-mbstring": "~1.7",
+
+        "decodelabs/glitch": "<2"
     },
     "autoload": {
         "psr-4": {
