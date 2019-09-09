@@ -13,6 +13,7 @@
     "require": {
         "php": "^7.2",
         "symfony/polyfill-mbstring": "~1.7",
+        "php-ds/php-ds": "^1.2",
 
         "decodelabs/glitch": "<2"
     },
