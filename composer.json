@@ -1,0 +1,34 @@
+{
+    "name": "decodelabs/tagged",
+    "description": "PHP markup generation without the fuss",
+    "type": "library",
+    "keywords": ["markup", "html", "generator"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tom Wright",
+            "email": "tom@inflatablecookie.com"
+        }
+    ],
+    "require": {
+        "php": "^7.2",
+        "symfony/polyfill-mbstring": "^1.7",
+
+        "decodelabs/glitch": "<2",
+        "decodelabs/collections": "~0.5",
+        "decodelabs/gadgets": "~0.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "DecodeLabs\\Tagged\\": "src/Tagged"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-develop": "1.0.x-dev"
+        }
+    }
+}

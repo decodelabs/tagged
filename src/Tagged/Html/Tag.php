@@ -1,0 +1,206 @@
+<?php
+/**
+ * This file is part of the Tagged package
+ * @license http://opensource.org/licenses/MIT
+ */
+declare(strict_types=1);
+namespace DecodeLabs\Tagged\Html;
+
+use DecodeLabs\Tagged\Tag as TagInterface;
+use DecodeLabs\Tagged\TagTrait;
+use DecodeLabs\Tagged\Markup;
+use DecodeLabs\Tagged\ClassListContainer;
+use DecodeLabs\Tagged\ClassListContainerTrait;
+use DecodeLabs\Tagged\StyleListContainer;
+use DecodeLabs\Tagged\StyleListContainerTrait;
+
+use DecodeLabs\Collections\AttributeContainer;
+
+use DecodeLabs\Glitch\Inspectable;
+use DecodeLabs\Glitch\Dumper\Entity;
+use DecodeLabs\Glitch\Dumper\Inspector;
+
+class Tag implements TagInterface, ClassListContainer, StyleListContainer, Inspectable
+{
+    use TagTrait;
+    use ClassListContainerTrait;
+    use StyleListContainerTrait;
+
+    const CLOSED_TAGS = [
+        'area', 'base', 'br', 'col', 'command', 'embed',
+        'hr', 'img', 'input', 'keygen', 'link', 'meta',
+        'param', 'source', 'wbr'
+    ];
+
+    const INLINE_TAGS = [
+        'a', 'br', 'bdo', 'abbr', 'blink', 'nextid', 'acronym', 'basefont',
+        'b', 'em', 'big', 'cite', 'input', 'spacer', 'listing',
+        'i', 'rp', 'del', 'code', 'label', 'strike', 'marquee',
+        'q', 'rt', 'ins', 'font', 'small', 'strong',
+        's', 'tt', 'sub', 'mark',
+        'u', 'xm', 'sup', 'nobr',
+                   'var', 'ruby',
+                   'wbr', 'span',
+                          'time',
+    ];
+
+    const BOOLEAN_ATTRIBUTES = [
+        'spellcheck'
+    ];
+
+    /**
+     * Can tag be closed with full </tag>
+     */
+    public static function isClosableTagName($name): bool
+    {
+        return in_array(strtolower($name), self::CLOSED_TAGS);
+    }
+
+    /**
+     * Should tag be single inline entity
+     */
+    public static function isInlineTagName($name): bool
+    {
+        return in_array(strtolower($name), self::INLINE_TAGS);
+    }
+
+
+
+
+    /**
+     * Set attribute value
+     */
+    public function setAttribute(string $key, $value): AttributeContainer
+    {
+        $key = strtolower($key);
+
+        if ($key == 'class') {
+            return $this->setClasses($value);
+        } elseif ($key == 'style') {
+            return $this->setStyles($value);
+        }
+
+        if ($value === null) {
+            return $this->removeAttribute($key);
+        }
+
+        if (!is_bool($value)) {
+            $value = (string)$value;
+        }
+
+        $this->attributes[$key] = $value;
+        return $this;
+    }
+
+    /**
+     * Get attribute value
+     */
+    public function getAttribute(string $key)
+    {
+        $key = strtolower($key);
+
+        if ($key == 'class') {
+            return $this->getClasses();
+        } elseif ($key == 'style') {
+            return $this->getStyles();
+        }
+
+        return $this->attributes[$key] ?? null;
+    }
+
+
+    /**
+     * Toggle hidden attribute on/off
+     */
+    public function setHidden(bool $hidden): TagInterface
+    {
+        $this->setAttribute('hidden', $hidden);
+        return $this;
+    }
+
+    /**
+     * Does this tag have hidden attr?
+     */
+    public function isHidden(): bool
+    {
+        return $this->hasAttribute('hidden');
+    }
+
+    /**
+     * Set hidden attribute
+     */
+    public function hide(): TagInterface
+    {
+        return $this->setAttribute('hidden', true);
+    }
+
+    /**
+     * Remove hidden attribute
+     */
+    public function show(): TagInterface
+    {
+        return $this->removeAttribute('hidden');
+    }
+
+
+    /**
+     * Set title attribute
+     */
+    public function setTitle(?string $title): TagInterface
+    {
+        return $this->setAttribute('title', $title);
+    }
+
+    /**
+     * Get title attribute
+     */
+    public function getTitle(): ?string
+    {
+        return $this->getAttribute('title');
+    }
+
+
+    /**
+     * Shortcut to set attribute
+     */
+    public function offsetSet($key, $value)
+    {
+        $this->setAttribute($key, $value);
+    }
+
+    /**
+     * Shortcut to get attribute
+     */
+    public function offsetGet($key)
+    {
+        return $this->getAttribute($key);
+    }
+
+    /**
+     * Shortcut to test for attribute
+     */
+    public function offsetExists($key)
+    {
+        return $this->hasAttribute($key);
+    }
+
+    /**
+     * Shortcut to remove attribute
+     */
+    public function offsetUnset($key)
+    {
+        $this->removeAttribute($key);
+    }
+
+    /**
+     * Escape HTML
+     */
+    protected function esc(?string $value): ?string
+    {
+        if ($value === null) {
+            return null;
+        }
+
+        return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
+    }
+}
