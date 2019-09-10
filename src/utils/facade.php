@@ -12,7 +12,7 @@ namespace
     use DecodeLabs\Tagged\Builder\Html\Element;
     use DecodeLabs\Tagged\Builder\Html\ContentCollection;
 
-    function html($name=null, $content=null, array $attributes=null): Markup
+    function Html($name=null, $content=null, array $attributes=null): Markup
     {
         if (is_string($name)) {
             return Element::create($name, $content, $attributes);
@@ -22,14 +22,6 @@ namespace
             return ContentCollection::normalize($name(Factory::getDefault()));
         } else {
             return ContentCollection::normalize($name);
-        }
-    }
-
-    class html
-    {
-        public static function __callStatic(string $name, array $args)
-        {
-            return Factory::getDefault()::$name(...$args);
         }
     }
 }
