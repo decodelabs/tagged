@@ -21,10 +21,7 @@
     "autoload": {
         "psr-4": {
             "DecodeLabs\\Tagged\\": "src/"
-        },
-        "files": [
-            "src/utils/facade.php"
-        ]
+        }
     },
     "extra": {
         "branch-alias": {

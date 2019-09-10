@@ -41,7 +41,7 @@ class Factory implements Markup
      */
     public static function __callStatic(string $name, array $args): Markup
     {
-        \Glitch::incomplete($name, $args);
+        return Element::create($name, ...$args);
     }
 
     /**
