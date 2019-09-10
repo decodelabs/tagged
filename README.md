@@ -35,7 +35,18 @@ echo $tag->close();
 Wrap HTML strings to be used where an instance of <code>Markup</code> is needed:
 
 ```php
-$buffer = html\wrap('<span class="test">My span</span>');
+$buffer = html\raw('<span class="test">My span</span>');
+```
+
+Prepare arbitrary input for Markup output:
+
+```php
+$markup = html\wrap(
+    function() {
+        yield html('h1', 'My title');
+    },
+    [html('p', ['This is ', html('strong', 'mixed'), ' content'])]
+);
 ```
 
 

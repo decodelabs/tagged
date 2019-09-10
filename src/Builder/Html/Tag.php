@@ -4,15 +4,16 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace DecodeLabs\Tagged\Html;
+namespace DecodeLabs\Tagged\Builder\Html;
 
-use DecodeLabs\Tagged\Tag as TagInterface;
-use DecodeLabs\Tagged\TagTrait;
 use DecodeLabs\Tagged\Markup;
-use DecodeLabs\Tagged\ClassListContainer;
-use DecodeLabs\Tagged\ClassListContainerTrait;
-use DecodeLabs\Tagged\StyleListContainer;
-use DecodeLabs\Tagged\StyleListContainerTrait;
+use DecodeLabs\Tagged\Builder\Tag as TagInterface;
+use DecodeLabs\Tagged\Builder\TagTrait;
+use DecodeLabs\Tagged\Builder\ChildRendererTrait;
+use DecodeLabs\Tagged\Builder\ClassListContainer;
+use DecodeLabs\Tagged\Builder\ClassListContainerTrait;
+use DecodeLabs\Tagged\Builder\StyleListContainer;
+use DecodeLabs\Tagged\Builder\StyleListContainerTrait;
 
 use DecodeLabs\Collections\AttributeContainer;
 
@@ -25,6 +26,7 @@ class Tag implements TagInterface, ClassListContainer, StyleListContainer, Inspe
     use TagTrait;
     use ClassListContainerTrait;
     use StyleListContainerTrait;
+    use ChildRendererTrait;
 
     const CLOSED_TAGS = [
         'area', 'base', 'br', 'col', 'command', 'embed',
@@ -190,17 +192,5 @@ class Tag implements TagInterface, ClassListContainer, StyleListContainer, Inspe
     public function offsetUnset($key)
     {
         $this->removeAttribute($key);
-    }
-
-    /**
-     * Escape HTML
-     */
-    protected function esc(?string $value): ?string
-    {
-        if ($value === null) {
-            return null;
-        }
-
-        return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
     }
 }

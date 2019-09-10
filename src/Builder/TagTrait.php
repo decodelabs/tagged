@@ -4,12 +4,14 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace DecodeLabs\Tagged;
+namespace DecodeLabs\Tagged\Builder;
 
 use DecodeLabs\Glitch\Inspectable;
 use DecodeLabs\Glitch\Dumper\Entity;
 use DecodeLabs\Glitch\Dumper\Inspector;
 
+use DecodeLabs\Tagged\Markup;
+use DecodeLabs\Tagged\Buffer;
 use DecodeLabs\Collections\AttributeContainerTrait;
 
 trait TagTrait
@@ -145,7 +147,7 @@ trait TagTrait
     /**
      * Render tag with inner content
      */
-    public function renderWith($content=null): ?Markup
+    public function renderWith($content=null, bool $pretty=false): ?Markup
     {
         if ($this->closable && $content !== null) {
             $content = $this->renderChild($content);
@@ -155,9 +157,21 @@ trait TagTrait
             $content = null;
         }
 
-        return new Buffer($this->open().$content.$this->close());
-    }
+        if ($pretty && $content !== null &&
+            ($isBlock = $this->isBlock()) &&
+            (false !== strpos($content, '<'))
+        ) {
+            $content = "\n  ".str_replace("\n", "\n  ", rtrim($content, "\n"))."\n";
+        }
 
+        $output = $this->open().$content.$this->close();
+
+        if ($pretty && $isBlock) {
+            $output = $output."\n";
+        }
+
+        return new Buffer($output);
+    }
 
 
 
@@ -258,7 +272,7 @@ trait TagTrait
         }
 
         $entity
-            ->setText($output)
+            ->setDefinition($output)
             ->setProperties([
                 '*name' => $inspector($this->name),
                 '*renderEmpty' => $inspector($this->renderEmpty),

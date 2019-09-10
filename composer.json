@@ -20,11 +20,8 @@
     },
     "autoload": {
         "psr-4": {
-            "DecodeLabs\\Tagged\\": "src/Tagged"
-        },
-        "files": [
-            "src/helpers.php"
-        ]
+            "DecodeLabs\\Tagged\\": "src/"
+        }
     },
     "extra": {
         "branch-alias": {

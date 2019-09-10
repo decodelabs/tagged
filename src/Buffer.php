@@ -71,6 +71,6 @@ class Buffer implements Markup, Inspectable
      */
     public function glitchInspect(Entity $entity, Inspector $inspector): void
     {
-        $entity->setText($this->content);
+        $entity->setDefinition($this->content);
     }
 }

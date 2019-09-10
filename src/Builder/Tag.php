@@ -4,8 +4,9 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace DecodeLabs\Tagged;
+namespace DecodeLabs\Tagged\Builder;
 
+use DecodeLabs\Tagged\Markup;
 use DecodeLabs\Collections\AttributeContainer;
 
 interface Tag extends Markup, AttributeContainer, \ArrayAccess
@@ -22,7 +23,7 @@ interface Tag extends Markup, AttributeContainer, \ArrayAccess
     public function open(): string;
     public function close(): string;
 
-    public function renderWith($content=null): ?Markup;
+    public function renderWith($content=null, bool $pretty=false): ?Markup;
 
     public function setRenderEmpty(bool $render): Tag;
     public function willRenderEmpty(): bool;
