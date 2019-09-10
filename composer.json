@@ -13,11 +13,10 @@
     "require": {
         "php": "^7.2",
         "symfony/polyfill-mbstring": "^1.7",
-        "php-ds/php-ds": "^1.2",
 
-        "decodelabs/glitch": "^1.0",
-        "decodelabs/collections": "^1.0",
-        "decodelabs/gadgets": "^1.0"
+        "decodelabs/glitch": "<2",
+        "decodelabs/collections": "^0.5",
+        "decodelabs/gadgets": "^0.5"
     },
     "autoload": {
         "psr-4": {
