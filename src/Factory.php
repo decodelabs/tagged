@@ -15,7 +15,6 @@ use DecodeLabs\Tagged\Builder\Html\Element;
 class Factory implements Markup
 {
     private static $default;
-    private static $facade = false;
 
     /**
      * Get default factory
@@ -27,17 +26,6 @@ class Factory implements Markup
         }
 
         return self::$default;
-    }
-
-    /**
-     * Enable global facade
-     */
-    public static function enableGlobalFacade(): void
-    {
-        if (!self::$facade) {
-            self::$facade = true;
-            require __DIR__.'/utils/facade.php';
-        }
     }
 
     /**
