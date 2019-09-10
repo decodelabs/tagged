@@ -53,7 +53,10 @@ echo html('div', [
 
 
 // Return anything and everything via a generator
-echo html('div', function() {
+echo html('div', function($el) {
+    // $el is the root element
+    $el->addClass('container');
+
     yield html('header > h1', 'This is a header');
     yield html('p', 'This is a paragraph');
 });
