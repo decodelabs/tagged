@@ -16,8 +16,8 @@
         "php-ds/php-ds": "^1.2",
 
         "decodelabs/glitch": "<2",
-        "decodelabs/collections": "dev",
-        "decodelabs/gadgets": "dev"
+        "decodelabs/collections": "^1.0",
+        "decodelabs/gadgets": "^1.0"
     },
     "autoload": {
         "psr-4": {
