@@ -10,7 +10,38 @@ declare(strict_types=1);
  */
 namespace
 {
-    function html()
+    use DecodeLabs\Tagged\Markup;
+    use DecodeLabs\Tagged\Html\Element;
+
+    function html(string $name, $content, array $attributes=null): Markup
     {
+        return new Element($name, $content, $attributes);
+    }
+}
+
+
+/**
+ * global helpers
+ */
+namespace html
+{
+    use DecodeLabs\Tagged\Markup;
+    use DecodeLabs\Tagged\Buffer;
+    use DecodeLabs\Tagged\Html\Tag;
+    use DecodeLabs\Tagged\Html\Element;
+
+    function tag(string $name, array $attributes=null): Markup
+    {
+        return new Tag($name, $attributes);
+    }
+
+    function el(string $name, $content, array $attributes=null): Markup
+    {
+        return new Element($name, $content, $attributes);
+    }
+
+    function wrap(string $html): Markup
+    {
+        return new Buffer($html);
     }
 }
