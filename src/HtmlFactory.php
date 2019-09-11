@@ -14,7 +14,7 @@ use DecodeLabs\Tagged\Builder\Html\Element;
 
 use DecodeLabs\Veneer\FacadeTargetTrait;
 
-class Factory implements Markup
+class HtmlFactory implements Markup
 {
     const FACADE = 'Html';
 
@@ -135,6 +135,144 @@ class Factory implements Markup
                         return $item;
                     }
                 }, $attributes);
+            }
+        });
+    }
+
+    /**
+     * Create a standard ul > li structure
+     */
+    public function uList(?iterable $list, callable $renderer=null, array $attributes=[]): Markup
+    {
+        return $this->list($list, 'ul', 'li', $renderer ?? function ($value) {
+            return $value;
+        }, $attributes);
+    }
+
+    /**
+     * Create a standard ol > li structure
+     */
+    public function oList(?iterable $list, callable $renderer=null, array $attributes=[]): Markup
+    {
+        return $this->list($list, 'ol', 'li', $renderer ?? function ($value) {
+            return $value;
+        }, $attributes);
+    }
+
+    /**
+     * Create a standard dl > dt + dd structure
+     */
+    public function dList(?iterable $list, callable $renderer=null, array $attributes=[]): Markup
+    {
+        $renderer = $renderer ?? function ($value) {
+            return $value;
+        };
+
+        return Element::create('dl', function () use ($list, $renderer) {
+            if (!$list) {
+                return;
+            }
+
+            foreach ($list as $key => $item) {
+                $dt = Element::create('dt', null);
+
+                // Render dd tag before dt so that renderer can add contents to dt first
+                $dd = (string)Element::create('dd', function ($dd) use ($key, $item, $renderer, &$i, $dt) {
+                    return $renderer($item, $dt, $dd, $key, ++$i);
+                });
+
+                if ($dt->isEmpty()) {
+                    $dt->push($key);
+                }
+
+                yield $dt;
+                yield new Buffer($dd);
+            }
+        }, $attributes)->setRenderEmpty(false);
+    }
+
+    /**
+     * Create an inline comma separated list with optional item limit
+     */
+    public function iList(?iterable $list, callable $renderer=null, string $delimiter=null, string $finalDelimiter=null, int $limit=null): Markup
+    {
+        if ($delimiter === null) {
+            $delimiter = ', ';
+        }
+
+        return Element::create('span.list', function ($el) use ($list, $renderer, $delimiter, $finalDelimiter, $limit) {
+            $el->setRenderEmpty(false);
+
+            if (!$list) {
+                return;
+            }
+
+            $first = true;
+            $i = $more = 0;
+
+            try {
+                $total = count($list);
+            } catch (\Throwable $e) {
+                $total = null;
+            }
+
+            if ($finalDelimiter === null) {
+                $finalDelimiter = $delimiter;
+            }
+
+            $items = [];
+
+            foreach ($list as $key => $item) {
+                if ($item === null) {
+                    continue;
+                }
+
+                $i++;
+
+                $cellTag = Element::create('?span', function ($el) use ($key, $item, $renderer, &$i) {
+                    if ($renderer) {
+                        return $renderer($item, $el, $key, $i);
+                    } else {
+                        return $item;
+                    }
+                });
+
+                if (empty($tagString = (string)$cellTag)) {
+                    $i--;
+                    continue;
+                }
+
+                if ($limit !== null && $i > $limit) {
+                    $more++;
+                    continue;
+                }
+
+
+                $items[] = new Buffer($tagString);
+            }
+
+            $total = count($items);
+
+            foreach ($items as $i => $item) {
+                if (!$first) {
+                    if ($i + 1 == $total) {
+                        yield $finalDelimiter;
+                    } else {
+                        yield $delimiter;
+                    }
+                }
+
+                yield $item;
+
+                $first = false;
+            }
+
+            if ($more) {
+                if (!$first) {
+                    yield $delimiter;
+                }
+
+                yield Element::create('em.more', '…+ '.$more);
             }
         });
     }

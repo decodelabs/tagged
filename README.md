@@ -7,12 +7,23 @@ PHP markup generation without the fuss.
 composer install decodelabs/tagged
 ```
 
+## Setup
+
+First, register the [Veneer](https://github.com/decodelabs/veneer) Facade:
+
+```php
+use DecodeLabs\Tagged\HtmlFactory;
+
+HtmlFactory::registerFacade($myPsr11Container ?? null);
+```
+
+This allows access to the Html class under all contexts.
+
 ## Usage
+
 Generate markup using a simple, flexible interface.
 
 ```php
-use DecodeLabs\Tagged\Facade as Html;
-
 echo Html::{'div.my-class#my-id'}('This is element content', [
     'title' => 'This is a title'
 ]);

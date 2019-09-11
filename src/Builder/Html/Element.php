@@ -26,7 +26,7 @@ class Element extends Tag implements \IteratorAggregate, ElementInterface
     /**
      * Apply nested by string name
      */
-    public static function create(string $name, $content, array $attributes=null): Element
+    public static function create(string $name, $content=null, array $attributes=null): Element
     {
         if (false !== strpos($name, '>')) {
             $parts = explode('>', $name);
