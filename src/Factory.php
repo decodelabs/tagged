@@ -12,8 +12,14 @@ use DecodeLabs\Tagged\Builder\Html\ContentCollection;
 use DecodeLabs\Tagged\Builder\Html\Tag;
 use DecodeLabs\Tagged\Builder\Html\Element;
 
+use DecodeLabs\Veneer\FacadeTargetTrait;
+
 class Factory implements Markup
 {
+    const FACADE = 'Html';
+
+    use FacadeTargetTrait;
+
     /**
      * Instance shortcut to el
      */
