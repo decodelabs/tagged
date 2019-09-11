@@ -35,7 +35,15 @@ trait TagTrait
         $this->setName($name);
 
         if ($attributes !== null) {
-            $this->setAttributes($attributes);
+            foreach ($attributes as $key => $value) {
+                if ($key === 'class') {
+                    $this->addClasses($value);
+                } elseif ($key === 'style') {
+                    $this->addStyles($value);
+                } else {
+                    $this->setAttribute($key, $value);
+                }
+            }
         }
     }
 
