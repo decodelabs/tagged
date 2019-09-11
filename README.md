@@ -8,10 +8,12 @@ composer install decodelabs/tagged
 ```
 
 ## Usage
-Generate markup using a simple, predictable interface.
+Generate markup using a simple, flexible interface.
 
 ```php
-echo html('div.my-class#my-id', 'This is element content', [
+use DecodeLabs\Tagged\Facade as Html;
+
+echo Html::{'div.my-class#my-id'}('This is element content', [
     'title' => 'This is a title'
 ]);
 
@@ -25,7 +27,7 @@ Creates -
 Create individual tags without content:
 
 ```php
-$tag = html\tag('div.my-class');
+$tag = Html::tag('div.my-class');
 
 echo $tag->open();
 echo 'Content';
@@ -35,17 +37,17 @@ echo $tag->close();
 Wrap HTML strings to be used where an instance of <code>Markup</code> is needed:
 
 ```php
-$buffer = html\raw('<span class="test">My span</span>');
+$buffer = Html::raw('<span class="test">My span</span>');
 ```
 
 Prepare arbitrary input for Markup output:
 
 ```php
-$markup = html\wrap(
+$markup = Html::wrap(
     function() {
-        yield html('h1', 'My title');
+        yield Html::h1('My title');
     },
-    [html('p', ['This is ', html('strong', 'mixed'), ' content'])]
+    [Html::p(['This is ', Html::strong('mixed'), ' content'])]
 );
 ```
 
@@ -56,20 +58,24 @@ You can nest elements in multiple ways:
 
 ```php
 // Pass in nested elements via array
-echo html('div', [
-    html('span.inner1', 'Inner 1'),
+echo Html::div([
+    Html::{'span.inner1'}('Inner 1'),
     ' ',
-    html('span.inner2', 'Inner 2')
+    Html::{'span.inner2'}('Inner 2')
 ]);
 
 
 // Return anything and everything via a generator
-echo html('div', function($el) {
+echo Html::div(function($el) {
     // $el is the root element
     $el->addClass('container');
 
-    yield html('header > h1', 'This is a header');
-    yield html('p', 'This is a paragraph');
+    // Nest elements with a single call
+    yield Html::{'header > h1'}('This is a header');
+    yield Html::p('This is a paragraph');
+
+    // Set attributes inline
+    yield Html::{'p[data-target=open]'}('Target paragraph');
 });
 ```
 

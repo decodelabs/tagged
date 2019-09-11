@@ -14,20 +14,6 @@ use DecodeLabs\Tagged\Builder\Html\Element;
 
 class Factory implements Markup
 {
-    private static $default;
-
-    /**
-     * Get default factory
-     */
-    public static function getDefault(): Factory
-    {
-        if (!isset(self::$default)) {
-            self::$default = new self();
-        }
-
-        return self::$default;
-    }
-
     /**
      * Instance shortcut to el
      */
@@ -37,19 +23,11 @@ class Factory implements Markup
     }
 
     /**
-     * Call named widget
-     */
-    public static function __callStatic(string $name, array $args): Markup
-    {
-        return Element::create($name, ...$args);
-    }
-
-    /**
      * Call named widget from instance
      */
     public function __call(string $name, array $args): Markup
     {
-        return self::__callStatic($name, $args);
+        return Element::create($name, ...$args);
     }
 
     /**
@@ -66,7 +44,7 @@ class Factory implements Markup
     /**
      * Create a standalone tag
      */
-    public static function tag(string $name, array $attributes=null): Markup
+    public function tag(string $name, array $attributes=null): Markup
     {
         return new Tag($name, $attributes);
     }
@@ -74,7 +52,7 @@ class Factory implements Markup
     /**
      * Create a standalone element
      */
-    public static function el(string $name, $content, array $attributes=null): Markup
+    public function el(string $name, $content, array $attributes=null): Markup
     {
         return Element::create($name, $content, $attributes);
     }
@@ -82,7 +60,7 @@ class Factory implements Markup
     /**
      * Wrap raw html string
      */
-    public static function raw(string $html): Markup
+    public function raw(string $html): Markup
     {
         return new Buffer($html);
     }
@@ -90,7 +68,7 @@ class Factory implements Markup
     /**
      * Normalize arbitrary content
      */
-    public static function wrap(...$content): Markup
+    public function wrap(...$content): Markup
     {
         return ContentCollection::normalize($content);
     }
@@ -98,7 +76,7 @@ class Factory implements Markup
     /**
      * Wrap arbitrary content as collection
      */
-    public static function content(...$content): Markup
+    public function content(...$content): Markup
     {
         return new ContentCollection($content);
     }
@@ -109,7 +87,7 @@ class Factory implements Markup
     /**
      * Generate nested list
      */
-    public static function group(?iterable $list, string $container, string $name, callable $callback=null, array $attributes=[]): Markup
+    public function list(?iterable $list, string $container, string $name, callable $callback=null, array $attributes=[]): Markup
     {
         return Element::create($container, function () use ($list, $name, $callback) {
             if (!$list) {
@@ -134,7 +112,7 @@ class Factory implements Markup
     /**
      * Generate naked list
      */
-    public static function rows(?iterable $list, string $name, callable $callback=null, array $attributes=[]): Markup
+    public function elements(?iterable $list, string $name, callable $callback=null, array $attributes=[]): Markup
     {
         return ContentCollection::normalize(function () use ($list, $name, $callback, $attributes) {
             if (!$list) {
@@ -160,7 +138,7 @@ class Factory implements Markup
     /**
      * Convert arbitrary html to text
      */
-    public static function toText($html): ?string
+    public function toText($html): ?string
     {
         if (is_string($html)) {
             $html = new Buffer($html);
@@ -180,7 +158,7 @@ class Factory implements Markup
     /**
      * Convert HTML to text and shorten if needed
      */
-    public static function previewText($html, int $maxLength=null): ?string
+    public function previewText($html, int $maxLength=null): ?string
     {
         if (null === ($output = self::toText($html))) {
             return null;
@@ -200,7 +178,7 @@ class Factory implements Markup
     /**
      * Convert HTML to text and shorten if neededm wrapping in Markup
      */
-    public static function preview($html, int $maxLength=null): Markup
+    public function preview($html, int $maxLength=null): Markup
     {
         if (null === ($output = self::toText($html))) {
             return null;
@@ -228,7 +206,7 @@ class Factory implements Markup
     /**
      * Convert plain text string to renderable HTML
      */
-    public static function plainText(?string $text): Markup
+    public function plainText(?string $text): Markup
     {
         if (empty($text) && $text !== '0') {
             return null;
@@ -243,7 +221,7 @@ class Factory implements Markup
     /**
      * Parse and render markdown
      */
-    public static function markdown(?string $text): Markup
+    public function markdown(?string $text): Markup
     {
         \Glitch::incomplete($text);
     }
@@ -251,7 +229,7 @@ class Factory implements Markup
     /**
      * Parse and render simpleTags
      */
-    public static function simpleTags(?string $text): Markup
+    public function simpleTags(?string $text): Markup
     {
         \Glitch::incomplete($text);
     }
@@ -259,7 +237,7 @@ class Factory implements Markup
     /**
      * Parse and render tweet
      */
-    public static function tweet(?string $text): Markup
+    public function tweet(?string $text): Markup
     {
         \Glitch::incomplete($text);
     }
@@ -267,7 +245,7 @@ class Factory implements Markup
     /**
      * Escape HTML
      */
-    public static function esc(?string $value): ?string
+    public function esc(?string $value): ?string
     {
         if ($value === null) {
             return null;
