@@ -12,13 +12,18 @@ use DecodeLabs\Tagged\Builder\Html\ContentCollection;
 use DecodeLabs\Tagged\Builder\Html\Tag;
 use DecodeLabs\Tagged\Builder\Html\Element;
 
+use DecodeLabs\Veneer\FacadeTarget;
 use DecodeLabs\Veneer\FacadeTargetTrait;
+use DecodeLabs\Veneer\FacadePlugin;
 
-class HtmlFactory implements Markup
+class HtmlFactory implements Markup, FacadeTarget
 {
+    use FacadeTargetTrait;
+
     const FACADE = 'Html';
 
-    use FacadeTargetTrait;
+    const PLUGINS = [];
+
 
     /**
      * Instance shortcut to el
@@ -42,6 +47,24 @@ class HtmlFactory implements Markup
     public function __toString(): string
     {
         return '';
+    }
+
+
+
+    /**
+     * Stub to get empty plugin list to avoid broken targets
+     */
+    public function getFacadePluginNames(): array
+    {
+        return static::PLUGINS;
+    }
+
+    /**
+     * Stub to avoid broken targets
+     */
+    public function loadFacadePlugin(string $name): FacadePlugin
+    {
+        \Glitch::incomplete($name);
     }
 
 
