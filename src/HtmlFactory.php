@@ -64,7 +64,7 @@ class HtmlFactory implements Markup, FacadeTarget
      */
     public function loadFacadePlugin(string $name): FacadePlugin
     {
-        \Glitch::incomplete($name);
+        Glitch::incomplete($name);
     }
 
 
@@ -390,7 +390,7 @@ class HtmlFactory implements Markup, FacadeTarget
      */
     public function markdown(?string $text): Markup
     {
-        \Glitch::incomplete($text);
+        Glitch::incomplete($text);
     }
 
     /**
@@ -398,7 +398,7 @@ class HtmlFactory implements Markup, FacadeTarget
      */
     public function simpleTags(?string $text): Markup
     {
-        \Glitch::incomplete($text);
+        Glitch::incomplete($text);
     }
 
     /**
@@ -406,7 +406,7 @@ class HtmlFactory implements Markup, FacadeTarget
      */
     public function tweet(?string $text): Markup
     {
-        \Glitch::incomplete($text);
+        Glitch::incomplete($text);
     }
 
     /**
