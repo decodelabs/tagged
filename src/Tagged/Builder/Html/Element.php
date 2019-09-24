@@ -50,7 +50,7 @@ class Element extends Tag implements \IteratorAggregate, ElementInterface
         parent::__construct($name, $attributes);
 
         if (!is_iterable($content) || $content instanceof Markup) {
-            $content = [$content];
+            $content = $content === null ? [] : [$content];
         }
 
         $this->merge($content);
