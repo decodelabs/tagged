@@ -14,7 +14,7 @@ First, register the [Veneer](https://github.com/decodelabs/veneer) Facade:
 ```php
 use DecodeLabs\Tagged\HtmlFactory;
 
-HtmlFactory::registerFacade($myPsr11Container ?? null);
+HtmlFactory::registerFacade();
 ```
 
 This allows access to the Html class under all contexts.
