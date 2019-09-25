@@ -34,6 +34,7 @@
     },
     "suggest": {
         "erusev/parsedown": "Add support for Markdown parsing",
-        "michelf/php-markdown": "Alternative Markdown parsing provider"
+        "michelf/php-markdown": "Alternative Markdown parsing provider",
+        "decodelabs/chirp": "Enable parsing of Tweets"
     }
 }

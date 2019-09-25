@@ -11,9 +11,8 @@ use DecodeLabs\Veneer\FacadePlugin;
 use DecodeLabs\Tagged\Markup;
 use DecodeLabs\Tagged\HtmlFactory;
 use DecodeLabs\Tagged\Buffer;
-use DecodeLabs\Tagged\Builder\Html\ContentCollection;
-use DecodeLabs\Tagged\Builder\Html\Tag;
-use DecodeLabs\Tagged\Builder\Html\Element;
+
+use DecodeLabs\Chirp\Parser as Chirp;
 
 class Parse implements FacadePlugin
 {
@@ -132,7 +131,15 @@ class Parse implements FacadePlugin
     }
 
     /**
-     * Parse and render simpleTags
+     * Parse and render unsafe simpleTags
+     */
+    public function userSimpleTags(?string $text): Markup
+    {
+        Glitch::incomplete($text);
+    }
+
+    /**
+     * Parse and render inline simpleTags
      */
     public function inlineSimpleTags(?string $text): Markup
     {
@@ -140,10 +147,32 @@ class Parse implements FacadePlugin
     }
 
     /**
+     * Parse and render unsafe inline simpleTags
+     */
+    public function inlineUserSimpleTags(?string $text): Markup
+    {
+        Glitch::incomplete($text);
+    }
+
+
+
+
+    /**
      * Parse and render tweet
      */
     public function tweet(?string $text): Markup
     {
-        Glitch::incomplete($text);
+        if (empty($text)) {
+            return new Buffer('');
+        }
+
+        if (!class_exists(Chirp::class)) {
+            throw Glitch::EComponentUnavailable(
+                'No supported Tweet processors could be found - try installing decodelabs/chirp'
+            );
+        }
+
+        $parser = new Chirp();
+        return new Buffer($parser->parse($text));
     }
 }
