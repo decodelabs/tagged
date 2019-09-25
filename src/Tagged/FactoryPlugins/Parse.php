@@ -31,7 +31,7 @@ class Parse implements FacadePlugin
      */
     public function plainText(?string $text): Markup
     {
-        if (empty($text) && $text !== '0') {
+        if (!strlen($text ?? '')) {
             return null;
         }
 
@@ -46,7 +46,7 @@ class Parse implements FacadePlugin
     /**
      * Parse and render markdown
      */
-    public function markdown(?string $text, ?callable $prep=null): Markup
+    public function markdown(?string $text, ?callable $prep=null): ?Markup
     {
         return $this->parseMarkdown($text, false, false, $prep);
     }
@@ -54,7 +54,7 @@ class Parse implements FacadePlugin
     /**
      * Parse and render unsafe markdown
      */
-    public function userMarkdown(?string $text, ?callable $prep=null): Markup
+    public function userMarkdown(?string $text, ?callable $prep=null): ?Markup
     {
         return $this->parseMarkdown($text, false, true, $prep);
     }
@@ -62,7 +62,7 @@ class Parse implements FacadePlugin
     /**
      * Parse and render inline markdown
      */
-    public function inlineMarkdown(?string $text, ?callable $prep=null): Markup
+    public function inlineMarkdown(?string $text, ?callable $prep=null): ?Markup
     {
         return $this->parseMarkdown($text, true, false, $prep);
     }
@@ -70,7 +70,7 @@ class Parse implements FacadePlugin
     /**
      * Parse and render unsafe inline markdown
      */
-    public function userInlineMarkdown(?string $text, ?callable $prep=null): Markup
+    public function userInlineMarkdown(?string $text, ?callable $prep=null): ?Markup
     {
         return $this->parseMarkdown($text, true, true, $prep);
     }
@@ -78,10 +78,10 @@ class Parse implements FacadePlugin
     /**
      * Load markdown processor and parse the content
      */
-    protected function parseMarkdown(?string $text, bool $inline=false, bool $unsafe=true): Markup
+    protected function parseMarkdown(?string $text, bool $inline=false, bool $unsafe=true): ?Markup
     {
-        if (empty($text)) {
-            return new Buffer('');
+        if (!strlen($text ?? '')) {
+            return null;
         }
 
         if (class_exists('\Parsedown')) {
@@ -160,10 +160,10 @@ class Parse implements FacadePlugin
     /**
      * Parse and render tweet
      */
-    public function tweet(?string $text): Markup
+    public function tweet(?string $text): ?Markup
     {
-        if (empty($text)) {
-            return new Buffer('');
+        if (!strlen($text ?? '')) {
+            return null;
         }
 
         if (!class_exists(Chirp::class)) {
