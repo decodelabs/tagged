@@ -14,15 +14,20 @@ use DecodeLabs\Tagged\Builder\Html\Element;
 
 use DecodeLabs\Veneer\FacadeTarget;
 use DecodeLabs\Veneer\FacadeTargetTrait;
+use DecodeLabs\Veneer\FacadePluginAccessTarget;
+use DecodeLabs\Veneer\FacadePluginAccessTargetTrait;
 use DecodeLabs\Veneer\FacadePlugin;
 
-class HtmlFactory implements Markup, FacadeTarget
+class HtmlFactory implements Markup, FacadeTarget, FacadePluginAccessTarget
 {
     use FacadeTargetTrait;
+    use FacadePluginAccessTargetTrait;
 
     const FACADE = 'Html';
 
-    const PLUGINS = [];
+    const PLUGINS = [
+        'parse'
+    ];
 
 
     /**
@@ -64,8 +69,15 @@ class HtmlFactory implements Markup, FacadeTarget
      */
     public function loadFacadePlugin(string $name): FacadePlugin
     {
-        Glitch::incomplete($name);
+        if (!in_array($name, self::PLUGINS)) {
+            throw Glitch::EInvalidArgument($name.' is not a recognised facade plugin');
+        }
+
+        $class = '\\DecodeLabs\\Tagged\\FactoryPlugins\\'.ucfirst($name);
+        return new $class($this);
     }
+
+
 
 
 
@@ -365,48 +377,6 @@ class HtmlFactory implements Markup, FacadeTarget
         }
 
         return ContentCollection::normalize($output);
-    }
-
-
-
-
-    /**
-     * Convert plain text string to renderable HTML
-     */
-    public function plainText(?string $text): Markup
-    {
-        if (empty($text) && $text !== '0') {
-            return null;
-        }
-
-        $text = self::esc($text);
-        $text = str_replace("\n", "\n".'<br />', $text);
-
-        return new Buffer($text);
-    }
-
-    /**
-     * Parse and render markdown
-     */
-    public function markdown(?string $text): Markup
-    {
-        Glitch::incomplete($text);
-    }
-
-    /**
-     * Parse and render simpleTags
-     */
-    public function simpleTags(?string $text): Markup
-    {
-        Glitch::incomplete($text);
-    }
-
-    /**
-     * Parse and render tweet
-     */
-    public function tweet(?string $text): Markup
-    {
-        Glitch::incomplete($text);
     }
 
     /**

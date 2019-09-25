@@ -31,5 +31,9 @@
         "branch-alias": {
             "dev-develop": "0.x-dev"
         }
+    },
+    "suggest": {
+        "erusev/parsedown": "Add support for Markdown parsing",
+        "michelf/php-markdown": "Alternative Markdown parsing provider"
     }
 }
