@@ -12,6 +12,8 @@ use DecodeLabs\Tagged\Markup;
 use DecodeLabs\Tagged\HtmlFactory;
 use DecodeLabs\Tagged\Buffer;
 
+use Parsedown;
+use Michelf\Markdown;
 use DecodeLabs\Chirp\Parser as Chirp;
 
 class Parse implements FacadePlugin
@@ -29,7 +31,7 @@ class Parse implements FacadePlugin
     /**
      * Convert plain text string to renderable HTML
      */
-    public function plainText(?string $text): Markup
+    public function plainText(?string $text): ?Markup
     {
         if (!strlen($text ?? '')) {
             return null;
@@ -78,15 +80,15 @@ class Parse implements FacadePlugin
     /**
      * Load markdown processor and parse the content
      */
-    protected function parseMarkdown(?string $text, bool $inline=false, bool $unsafe=true): ?Markup
+    protected function parseMarkdown(?string $text, bool $inline=false, bool $unsafe=true, ?callable $prep=null): ?Markup
     {
         if (!strlen($text ?? '')) {
             return null;
         }
 
-        if (class_exists('\Parsedown')) {
+        if (class_exists(Parsedown::class)) {
             // Parsedown
-            $parser = new \Parsedown();
+            $parser = new Parsedown();
             $parser->setSafeMode($unsafe);
 
             if ($prep) {
@@ -98,9 +100,9 @@ class Parse implements FacadePlugin
             } else {
                 return new Buffer($parser->text($text));
             }
-        } elseif (!$inline && class_exists('\\Michelf\\Markdown')) {
+        } elseif (!$inline && class_exists(Markdown::class)) {
             // PHP Markdown
-            $parser = new \Michelf\Markdown();
+            $parser = new Markdown();
 
             if ($unsafe) {
                 $parser->no_markup = true;
@@ -125,32 +127,44 @@ class Parse implements FacadePlugin
     /**
      * Parse and render simpleTags
      */
-    public function simpleTags(?string $text): Markup
+    public function simpleTags(?string $text, ?callable $prep=null): ?Markup
     {
-        Glitch::incomplete($text);
+        return $this->parseMarkdown($text, false, false, $prep);
     }
 
     /**
      * Parse and render unsafe simpleTags
      */
-    public function userSimpleTags(?string $text): Markup
+    public function userSimpleTags(?string $text, ?callable $prep=null): ?Markup
     {
-        Glitch::incomplete($text);
+        return $this->parseMarkdown($text, false, true, $prep);
     }
 
     /**
      * Parse and render inline simpleTags
      */
-    public function inlineSimpleTags(?string $text): Markup
+    public function inlineSimpleTags(?string $text, ?callable $prep=null): ?Markup
     {
-        Glitch::incomplete($text);
+        return $this->parseMarkdown($text, true, false, $prep);
     }
 
     /**
      * Parse and render unsafe inline simpleTags
      */
-    public function inlineUserSimpleTags(?string $text): Markup
+    public function inlineUserSimpleTags(?string $text, ?callable $prep=null): ?Markup
     {
+        return $this->parseMarkdown($text, true, true, $prep);
+    }
+
+    /**
+     * Load markdown processor and parse the content
+     */
+    protected function parseSimpleTags(?string $text, bool $inline=false, bool $unsafe=true, ?callable $prep=null): ?Markup
+    {
+        if (!strlen($text ?? '')) {
+            return null;
+        }
+
         Glitch::incomplete($text);
     }
 
