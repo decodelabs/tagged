@@ -33,6 +33,7 @@
         }
     },
     "suggest": {
+        "soundasleep/html2text": "Better HTML to text conversion",
         "erusev/parsedown": "Add support for Markdown parsing",
         "michelf/php-markdown": "Alternative Markdown parsing provider",
         "decodelabs/chirp": "Enable parsing of Tweets"

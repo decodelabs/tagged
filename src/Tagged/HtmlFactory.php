@@ -26,7 +26,8 @@ class HtmlFactory implements Markup, FacadeTarget, FacadePluginAccessTarget
     const FACADE = 'Html';
 
     const PLUGINS = [
-        'parse'
+        'parse',
+        'toText'
     ];
 
 
@@ -312,72 +313,6 @@ class HtmlFactory implements Markup, FacadeTarget, FacadePluginAccessTarget
         });
     }
 
-
-
-    /**
-     * Convert arbitrary html to text
-     */
-    public function toText($html): ?string
-    {
-        if (is_string($html)) {
-            $html = new Buffer($html);
-        }
-
-        $html = (string)ContentCollection::normalize($html);
-
-        if (empty($html)) {
-            return null;
-        }
-
-        $output = html_entity_decode(strip_tags($html), ENT_QUOTES | ENT_HTML5);
-        $output = str_replace("\r\n", "\n", $output);
-        return $output;
-    }
-
-    /**
-     * Convert HTML to text and shorten if needed
-     */
-    public function previewText($html, int $maxLength=null): ?string
-    {
-        if (null === ($output = self::toText($html))) {
-            return null;
-        }
-
-        if ($maxLength !== null) {
-            $length = mb_strlen($output);
-
-            if ($length > $maxLength) {
-                $output = mb_substr($output, 0, $maxLength).'…';
-            }
-        }
-
-        return $output;
-    }
-
-    /**
-     * Convert HTML to text and shorten if neededm wrapping in Markup
-     */
-    public function preview($html, int $maxLength=null): Markup
-    {
-        if (null === ($output = self::toText($html))) {
-            return null;
-        }
-
-        if ($maxLength !== null) {
-            $length = mb_strlen($output);
-
-            if ($length > $maxLength) {
-                $output = [
-                    Element::create('abbr', mb_substr($output, 0, $maxLength), [
-                        'title' => $output
-                    ]),
-                    Element::create('span.suffix', '…')
-                ];
-            }
-        }
-
-        return ContentCollection::normalize($output);
-    }
 
     /**
      * Escape HTML
