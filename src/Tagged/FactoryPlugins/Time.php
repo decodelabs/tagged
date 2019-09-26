@@ -262,10 +262,52 @@ class Time implements FacadePlugin
                 'join' => true,
                 'parts' => $parts,
                 'options' => CarbonInterface::JUST_NOW | CarbonInterface::ONE_DAY_WORDS,
+                'syntax' => CarbonInterface::DIFF_ABSOLUTE
+            ]),
+            $formatter->format($date)
+        );
+
+        return $output;
+    }
+
+
+    /**
+     * Format interval until date
+     */
+    public function fromNow($date, ?int $parts=2, bool $short=false): ?Markup
+    {
+        $this->checkCarbon();
+
+        if (!$date = $this->normalizeDate($date)) {
+            return null;
+        }
+
+        $now = $this->normalizeDate('now');
+        $interval = CarbonInterval::make($date->diff($now));
+
+        $formatter = new IntlDateFormatter(
+            Systemic::$locale->get(),
+            IntlDateFormatter::LONG,
+            IntlDateFormatter::LONG
+        );
+
+        $output = $this->wrap(
+            $date->format(DateTime::W3C),
+            $interval->forHumans([
+                'short' => $short,
+                'join' => true,
+                'parts' => $parts,
+                'options' => CarbonInterface::JUST_NOW | CarbonInterface::ONE_DAY_WORDS,
                 'syntax' => CarbonInterface::DIFF_RELATIVE_TO_NOW
             ]),
             $formatter->format($date)
         );
+
+        if ($interval->invert) {
+            $output->addClass('future');
+        } else {
+            $output->addClass('passed');
+        }
 
         return $output;
     }
