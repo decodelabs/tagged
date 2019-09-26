@@ -27,7 +27,9 @@ class HtmlFactory implements Markup, FacadeTarget, FacadePluginAccessTarget
 
     const PLUGINS = [
         'parse',
-        'toText'
+        'toText',
+        'icon',
+        'number'
     ];
 
 
@@ -94,7 +96,7 @@ class HtmlFactory implements Markup, FacadeTarget, FacadePluginAccessTarget
     /**
      * Create a standalone element
      */
-    public function el(string $name, $content, array $attributes=null): Markup
+    public function el(string $name, $content=null, array $attributes=null): Markup
     {
         return Element::create($name, $content, $attributes);
     }
@@ -312,6 +314,7 @@ class HtmlFactory implements Markup, FacadeTarget, FacadePluginAccessTarget
             }
         });
     }
+
 
 
     /**
