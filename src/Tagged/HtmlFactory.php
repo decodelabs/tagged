@@ -30,7 +30,8 @@ class HtmlFactory implements Markup, FacadeTarget, FacadePluginAccessTarget
         'toText',
         'icon',
         'number',
-        'time'
+        'time',
+        'embed'
     ];
 
 
