@@ -13,6 +13,7 @@ interface Tag extends Markup, AttributeContainer, \ArrayAccess
 {
     public function setName(string $name): Tag;
     public function getName(): string;
+    public static function isClosableTagName(string $name): bool;
 
     public function setId(?string $id): Tag;
     public function getId(): ?string;
@@ -22,6 +23,9 @@ interface Tag extends Markup, AttributeContainer, \ArrayAccess
 
     public function open(): string;
     public function close(): string;
+
+    public function setClosable(bool $closable): Tag;
+    public function isClosable(): bool;
 
     public function renderWith($content=null, bool $pretty=false): ?Markup;
 

@@ -41,7 +41,7 @@ trait TagTrait
                 } elseif ($key === 'style') {
                     $this->addStyles($value);
                 } else {
-                    $this->setAttribute($key, $value);
+                    $this->setAttribute((string)$key, $value);
                 }
             }
         }
@@ -87,6 +87,13 @@ trait TagTrait
             $this->renderEmpty = false;
         }
 
+        if (substr($this->name, 0, 1) === '/') {
+            $this->closable = false;
+            $this->name = substr($this->name, 1);
+        } else {
+            $this->closable = $this->isClosableTagName($this->name);
+        }
+
         if (!empty($parts)) {
             if ($this instanceof ClassListContainer) {
                 $this->addClasses(...$parts);
@@ -104,6 +111,14 @@ trait TagTrait
     public function getName(): string
     {
         return $this->name;
+    }
+
+    /**
+     * Is tag name a closable <tag /> type?
+     */
+    public function isClosableTagName(string $name): bool
+    {
+        return false;
     }
 
 
@@ -157,18 +172,19 @@ trait TagTrait
      */
     public function renderWith($content=null, bool $pretty=false): ?Markup
     {
-        if ($this->closable && $content !== null) {
+        if ($this->closable) {
+            if (!$this->renderEmpty && $content === null) {
+                return null;
+            }
+
             $content = $this->renderChild($content);
-        } elseif (!$this->closable && $this->renderEmpty) {
-            return null;
         } else {
             $content = null;
         }
 
-        if ($pretty && $content !== null &&
-            ($isBlock = $this->isBlock()) &&
-            (false !== strpos($content, '<'))
-        ) {
+        $isBlock = $this->isBlock();
+
+        if ($pretty && $content !== null && $isBlock && false !== strpos($content, '<')) {
             $content = "\n  ".str_replace("\n", "\n  ", rtrim($content, "\n"))."\n";
         }
 
@@ -256,6 +272,24 @@ trait TagTrait
         return '</'.$this->name.'>';
     }
 
+    /**
+     * Manually override whether tag has closing tag, or is single inline tag
+     */
+    public function setClosable(bool $closable): Tag
+    {
+        $this->closable = $closable;
+        return $this;
+    }
+
+    /**
+     * Is this tag closable?
+     */
+    public function isClosable(): bool
+    {
+        return $this->closable;
+    }
+
+
 
     /**
      * Render to string
@@ -280,9 +314,10 @@ trait TagTrait
         }
 
         $entity
+            ->setClass($this->name)
             ->setDefinition($output)
             ->setProperties([
-                '*name' => $inspector($this->name),
+                //'*name' => $inspector($this->name),
                 '*renderEmpty' => $inspector($this->renderEmpty),
                 '*attributes' => $inspector($this->attributes),
             ])

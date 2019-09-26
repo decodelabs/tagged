@@ -55,7 +55,7 @@ class Tag implements TagInterface, ClassListContainer, StyleListContainer, Inspe
      */
     public static function isClosableTagName($name): bool
     {
-        return in_array(strtolower($name), self::CLOSED_TAGS);
+        return !in_array(strtolower($name), self::CLOSED_TAGS);
     }
 
     /**
