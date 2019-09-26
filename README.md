@@ -7,11 +7,24 @@ PHP markup generation without the fuss.
 composer install decodelabs/tagged
 ```
 
-## Usage
-Generate markup using a simple, predictable interface.
+## Setup
+
+First, register the [Veneer](https://github.com/decodelabs/veneer) Facade:
 
 ```php
-echo html('div.my-class#my-id', 'This is element content', [
+use DecodeLabs\Tagged\HtmlFactory;
+
+HtmlFactory::registerFacade();
+```
+
+This allows access to the Html class under all contexts.
+
+## Usage
+
+Generate markup using a simple, flexible interface.
+
+```php
+echo Html::{'div.my-class#my-id'}('This is element content', [
     'title' => 'This is a title'
 ]);
 
@@ -25,7 +38,7 @@ Creates -
 Create individual tags without content:
 
 ```php
-$tag = html\tag('div.my-class');
+$tag = Html::tag('div.my-class');
 
 echo $tag->open();
 echo 'Content';
@@ -35,7 +48,18 @@ echo $tag->close();
 Wrap HTML strings to be used where an instance of <code>Markup</code> is needed:
 
 ```php
-$buffer = html\wrap('<span class="test">My span</span>');
+$buffer = Html::raw('<span class="test">My span</span>');
+```
+
+Prepare arbitrary input for Markup output:
+
+```php
+$markup = Html::wrap(
+    function() {
+        yield Html::h1('My title');
+    },
+    [Html::p(['This is ', Html::strong('mixed'), ' content'])]
+);
 ```
 
 
@@ -45,17 +69,24 @@ You can nest elements in multiple ways:
 
 ```php
 // Pass in nested elements via array
-echo html('div', [
-    html('span.inner1', 'Inner 1'),
+echo Html::div([
+    Html::{'span.inner1'}('Inner 1'),
     ' ',
-    html('span.inner2', 'Inner 2')
+    Html::{'span.inner2'}('Inner 2')
 ]);
 
 
 // Return anything and everything via a generator
-echo html('div', function() {
-    yield html('header > h1', 'This is a header');
-    yield html('p', 'This is a paragraph');
+echo Html::div(function($el) {
+    // $el is the root element
+    $el->addClass('container');
+
+    // Nest elements with a single call
+    yield Html::{'header > h1'}('This is a header');
+    yield Html::p('This is a paragraph');
+
+    // Set attributes inline
+    yield Html::{'p[data-target=open]'}('Target paragraph');
 });
 ```
 

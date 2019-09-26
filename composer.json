@@ -12,23 +12,33 @@
     ],
     "require": {
         "php": "^7.2",
+        "ext-intl" : "*",
         "symfony/polyfill-mbstring": "^1.7",
 
         "decodelabs/glitch": "<2",
         "decodelabs/collections": "~0.5",
-        "decodelabs/gadgets": "~0.5"
+        "decodelabs/gadgets": "~0.5",
+        "decodelabs/veneer": "~0.3",
+        "decodelabs/systemic": "~0.5"
     },
     "autoload": {
         "psr-4": {
             "DecodeLabs\\Tagged\\": "src/Tagged"
         },
         "files": [
-            "src/helpers.php"
+            "src/global.php"
         ]
     },
     "extra": {
         "branch-alias": {
-            "dev-develop": "1.0.x-dev"
+            "dev-develop": "0.x-dev"
         }
+    },
+    "suggest": {
+        "nesbot/carbon": "Support for time interval formatting",
+        "soundasleep/html2text": "Better HTML to text conversion",
+        "erusev/parsedown": "Add support for Markdown parsing",
+        "michelf/php-markdown": "Alternative Markdown parsing provider",
+        "decodelabs/chirp": "Enable parsing of Tweets"
     }
 }

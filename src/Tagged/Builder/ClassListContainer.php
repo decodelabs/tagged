@@ -4,7 +4,7 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace DecodeLabs\Tagged;
+namespace DecodeLabs\Tagged\Builder;
 
 use DecodeLabs\Collections\AttributeContainer;
 

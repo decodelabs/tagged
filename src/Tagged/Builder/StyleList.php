@@ -4,7 +4,7 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace DecodeLabs\Tagged;
+namespace DecodeLabs\Tagged\Builder;
 
 use DecodeLabs\Collections\HashMap;
 use DecodeLabs\Collections\ArrayProvider;
@@ -39,7 +39,7 @@ class StyleList implements \IteratorAggregate, HashMap
             } elseif ($data === null) {
                 continue;
             } elseif (!is_array($data)) {
-                throw \Glitch::EInvalidArgument('Invalid style data', null, $data);
+                throw Glitch::EInvalidArgument('Invalid style data', null, $data);
             }
 
             $this->merge($data);
