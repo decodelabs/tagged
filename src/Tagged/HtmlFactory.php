@@ -319,6 +319,30 @@ class HtmlFactory implements Markup, FacadeTarget, FacadePluginAccessTarget
 
 
 
+
+    /**
+     * Create image tag
+     */
+    public function image($url, string $alt=null, $width=null, $height=null): Markup
+    {
+        $output = $this->el('img', null, [
+            'src' => $url,
+            'alt' => $alt
+        ]);
+
+        if ($width !== null) {
+            $output->setAttribute('width', $width);
+        }
+
+        if ($height !== null) {
+            $output->setAttribute('height', $height);
+        }
+
+        return $output;
+    }
+
+
+
     /**
      * Escape HTML
      */
