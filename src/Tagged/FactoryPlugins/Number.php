@@ -37,7 +37,7 @@ class Number implements FacadePlugin
             return null;
         }
 
-        $formatter = new \NumberFormatter(setlocale(LC_NUMERIC, 0),  \NumberFormatter::CURRENCY);
+        $formatter = new \NumberFormatter(Systemic::$locale->get(),  \NumberFormatter::CURRENCY);
         $output = $formatter->formatCurrency($value, $code);
 
         if (!preg_match('/^(([^0-9.,\s][^0-9]*)([\s]*))?([0-9.,]+)(([\s]*)([^0-9.,\s][^0-9]*))?$/u', $output, $matches)) {
@@ -83,7 +83,7 @@ class Number implements FacadePlugin
             if (is_int($value)
             || is_float($value)
             || is_string($value) && (string)((float)$value) === $value) {
-                $formatter = new \NumberFormatter(setlocale(LC_NUMERIC, 0), \NumberFormatter::DECIMAL);
+                $formatter = new \NumberFormatter(Systemic::$locale->get(), \NumberFormatter::DECIMAL);
                 $value = $formatter->format($value);
             }
 
