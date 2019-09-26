@@ -29,7 +29,8 @@ class HtmlFactory implements Markup, FacadeTarget, FacadePluginAccessTarget
         'parse',
         'toText',
         'icon',
-        'number'
+        'number',
+        'time'
     ];
 
 
@@ -68,7 +69,7 @@ class HtmlFactory implements Markup, FacadeTarget, FacadePluginAccessTarget
     }
 
     /**
-     * Stub to avoid broken targets
+     * Load factory plugins
      */
     public function loadFacadePlugin(string $name): FacadePlugin
     {
