@@ -314,7 +314,7 @@ trait TagTrait
         }
 
         $entity
-            ->setClass($this->name)
+            ->setClassName($this->name)
             ->setDefinition($output)
             ->setProperties([
                 //'*name' => $inspector($this->name),

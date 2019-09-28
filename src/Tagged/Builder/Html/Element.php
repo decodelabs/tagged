@@ -106,7 +106,7 @@ class Element extends Tag implements \IteratorAggregate, ElementInterface
     public function glitchInspect(Entity $entity, Inspector $inspector): void
     {
         $entity
-            ->setClass($this->name)
+            ->setClassName($this->name)
             ->setDefinition($this->render(true))
             ->setProperties([
                 //'*name' => $inspector($this->name),
