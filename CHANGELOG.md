@@ -1,3 +1,8 @@
+## v0.6.1 (2019-10-02)
+* Added StyleBlock class
+* Added fromNow() date formatter
+* Updated veneer version
+
 ## v0.6.0 (2019-09-26)
 * Updated facade support to Veneer 0.3
 * Updated Glitch support
