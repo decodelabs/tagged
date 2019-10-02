@@ -7,18 +7,6 @@ PHP markup generation without the fuss.
 composer install decodelabs/tagged
 ```
 
-## Setup
-
-First, register the [Veneer](https://github.com/decodelabs/veneer) Facade:
-
-```php
-use DecodeLabs\Tagged\HtmlFactory;
-
-HtmlFactory::registerFacade();
-```
-
-This allows access to the Html class under all contexts.
-
 ## Usage
 
 Generate markup using a simple, flexible interface.
@@ -88,6 +76,83 @@ echo Html::div(function($el) {
     // Set attributes inline
     yield Html::{'p[data-target=open]'}('Target paragraph');
 });
+```
+
+
+### Convert to HTML
+Parse various formats and convert to HTML:
+
+```php
+// Plain text
+echo Html::$parse->plainText($plainText); // Replace \n with <br />
+
+// Markdown
+echo Html::$parse->markdown($myMarkdown); // Trusted markdown
+echo Html::$parse->userMarkdown($myMarkdown); // Untrusted markdown
+echo Html::$parse->inlineMarkdown($myMarkdown); // Trusted inline markdown
+echo Html::$parse->userInlineMarkdown($myMarkdown); // Untrusted inline markdown
+
+// Tweet
+echo Html::$parse->tweet($plainTweet); // Convert tweet source to HTML
+```
+
+
+### Time and date
+Format and wrap dates and intervals
+
+```php
+// Custom format
+Html::$time->format('now', 'd/m/Y', 'Europe/London');
+
+// Locale format
+// When timezone is true it is fetched from Systemic::$timezone
+Html::$time->locale('now', 'long', 'long', true);
+
+// Locale shortcuts
+Html::$time->mediumDateTime('tomorrow');
+Html::$time->longTime('yesterday');
+Html::$time->shortDate('yesterday');
+// ...etc
+
+
+// Intervals
+Html::$time->since('yesterday'); // 1 day
+Html::$time->until('yesterday'); // -1 day
+Html::$time->fromNow('yesterday'); // 1 day ago
+Html::$time->fromNow('tomorrow'); // 1 day from now
+Html::$time->between('yesterday', 'tomorrow'); // 1 day
+```
+
+
+### Icons
+Create the markup needed for font or SVG icons:
+
+```php
+Html::$icon->setFormat('font');
+echo Html::$icon->aubergine; // <i class="icon icon-aubergine"></i>
+
+Html::$icon->setFormat('svg');
+echo Html::$icon->aubergine; // <svg><use xlink:href="#aubergine" /></svg>
+
+Html::$icon->setSvgReference('path/to/my/file.svg');
+echo Html::$icon->aubergine; // <svg><use xlink:href="path/to/my/file.svg#aubergine" /></svg>
+```
+
+
+### Media embeds
+Normalize embed codes shared from media sites:
+
+```php
+echo Html::$embed->video('https://www.youtube.com/watch?v=RG9TMn1FJzc');
+```
+
+
+### To text
+Convert and normalize html to plain text:
+
+```php
+Html::$toText->convert('<h1>My html</h1>'); // My html
+Html::$toText->preview('<h1>My html</h1>', 5); // My ht...
 ```
 
 
