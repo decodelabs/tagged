@@ -313,6 +313,6 @@ trait MediaTrait
      */
     public function __toString(): string
     {
-        return $this->render()->toString();
+        return (string)$this->render();
     }
 }
