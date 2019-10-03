@@ -61,7 +61,7 @@ class Vimeo extends Video
      */
     public function render(): Markup
     {
-        $url = '//player.vimeo.com/video/'.$this->vimeoId;
+        $url = 'https://player.vimeo.com/video/'.$this->vimeoId;
         $queryVars = $this->options;
 
         if ($this->autoPlay) {

@@ -78,7 +78,7 @@ class Youtube extends Video
      */
     public function render(): Markup
     {
-        $url = '//www.youtube.com/embed/'.$this->youtubeId;
+        $url = 'https//www.youtube.com/embed/'.$this->youtubeId;
         $queryVars = $this->options;
 
         if ($this->startTime !== null) {
@@ -118,7 +118,7 @@ class Youtube extends Video
      */
     public function lookupThumbnail(): ?string
     {
-        return 'http://img.youtube.com/vi/'.$this->youtubeId.'/hqdefault.jpg';
+        return 'https//img.youtube.com/vi/'.$this->youtubeId.'/hqdefault.jpg';
     }
 
     /**
@@ -126,7 +126,7 @@ class Youtube extends Video
      */
     public function lookupMeta(): ?array
     {
-        $url = 'http://www.youtube.com/oembed?url='.urlencode('http://www.youtube.com/watch?v='.$this->youtubeId).'&format=json';
+        $url = 'https://www.youtube.com/oembed?url='.urlencode('https://www.youtube.com/watch?v='.$this->youtubeId).'&format=json';
         $infoUrl = 'https://www.youtube.com/get_video_info?video_id='.$this->youtubeId;
 
         try {
