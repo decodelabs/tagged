@@ -63,9 +63,17 @@ class Audioboom extends Audio
     /**
      * Get Audioboom id
      */
-    public function getYoutubeId(): string
+    public function getAudioboomId(): string
     {
-        return $this->youtubeId;
+        return $this->audioboomId;
+    }
+
+    /**
+     * Get audiobom type
+     */
+    public function getAudioboomType(): string
+    {
+        return $this->type;
     }
 
     /**
