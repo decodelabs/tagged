@@ -1,3 +1,6 @@
+## v0.6.7 (2019-10-03)
+* Fixed video embed URL handling
+
 ## v0.6.6 (2019-10-03)
 * Fixed audioboom embed attribute methods
 
