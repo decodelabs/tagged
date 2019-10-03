@@ -1,3 +1,6 @@
+## v0.6.3 (2019-10-03)
+* Fixed TagTrait for PHP 7.2
+
 ## v0.6.2 (2019-10-03)
 * Fixed media embed \__toString() method
 
