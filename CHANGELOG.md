@@ -1,3 +1,6 @@
+## v0.6.2 (2019-10-03)
+* Fixed media embed \__toString() method
+
 ## v0.6.1 (2019-10-02)
 * Added StyleBlock class
 * Added fromNow() date formatter
