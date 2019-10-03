@@ -28,10 +28,123 @@ trait MediaTrait
 
     protected $source;
 
+
+    /**
+     * Parse embed string
+     */
+    public static function parse(string $embed): Media
+    {
+        $embed = trim($embed);
+        $stripEmbed = strip_tags($embed, '<iframe><object><embed><script>');
+        $parts = explode('<', $stripEmbed, 2);
+
+        if (count($parts) == 2) {
+            $embed = '<'.array_pop($parts);
+
+            if (!preg_match('/^\<([a-zA-Z0-9\-]+) /i', $embed, $matches)) {
+                throw Glitch::EUnexpectedValue(
+                    'Don\'t know how to parse this embed'
+                );
+            }
+
+            $tag = strtolower($matches[1]);
+
+            switch ($tag) {
+                case 'iframe':
+                case 'object':
+                    if (!preg_match('/src\=(\"|\')([^\'"]+)(\"|\')/i', $embed, $matches)) {
+                        throw Glitch::EUnexpectedValue(
+                            'Could not extract source from flash embed'
+                        );
+                    }
+
+                    $url = trim($matches[2]);
+                    $class = self::getClassForUrl($url);
+                    $output = new $class($url, null, null, $embed);
+
+                    if (preg_match('/width\=\"([^\"]+)\"/i', $embed, $matches)) {
+                        $width = $matches[1];
+
+                        if (preg_match('/height\=\"([^\"]+)\"/i', $embed, $matches)) {
+                            $height = $matches[1];
+                        } else {
+                            $height = round(($width / $output->width) * $output->height);
+                        }
+
+                        if (false !== strpos($width, '%')) {
+                            $width = 720 / 100 * (int)$width;
+                        }
+
+                        if (false !== strpos($height, '%')) {
+                            $height = 450 / 100 * (int)$height;
+                        }
+
+                        $output->setWidth((int)$width);
+                        $output->setHeight((int)$height);
+                    }
+
+                    break;
+
+                case 'script':
+                    $output = new self(null, null, null, $embed);
+                    break;
+
+                default:
+                    throw Glitch::EUnexpectedValue(
+                        'Don\'t know how to parse this video embed'
+                    );
+            }
+        } else {
+            $url = $embed;
+
+            if (preg_match('/^[0-9a-zA-Z]+$/', $url)) {
+                $url = self::defaultUrlFromId($url);
+            }
+
+            $class = self::getClassForUrl($url);
+            $output = new $class($url);
+        }
+
+        return $output;
+    }
+
+
+    /**
+     * Extract provider name from URL
+     */
+    public static function extractProviderName(string $url): ?string
+    {
+        foreach (self::URL_MAP as $search => $key) {
+            if (false !== stripos($url, $search)) {
+                return $key;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Get instance class for entry URL
+     */
+    public static function getClassForUrl(string $url): string
+    {
+        $class = Video::class;
+
+        if ($provider = self::extractProviderName($url)) {
+            $customClass = '\\DecodeLabs\\Tagged\\Embed\\'.ucfirst($provider);
+
+            if (class_exists($customClass)) {
+                $class = $customClass;
+            }
+        }
+
+        return $class;
+    }
+
     /**
      * Init with main iframe details
      */
-    public function __construct(string $url, int $width=null, int $height=null, string $MediaSource=null)
+    public function __construct(string $url, int $width=null, int $height=null, string $mediaSource=null)
     {
         $this->setUrl($url);
 
@@ -43,14 +156,14 @@ trait MediaTrait
             $this->setHeight($height);
         }
 
-        $this->source = $MediaSource;
+        $this->source = $mediaSource;
         $this->id = uniqid('media-');
     }
 
     /**
      * Set media source URL
      */
-    public function setUrl(string $url): Media
+    protected function setUrl(string $url): Media
     {
         if (empty($url)) {
             $this->url = null;
@@ -65,14 +178,7 @@ trait MediaTrait
         }
 
         $this->url = $url;
-        $this->provider = null;
-
-        foreach (self::URL_MAP as $search => $key) {
-            if (false !== stripos($this->url, $search)) {
-                $this->provider = $key;
-                break;
-            }
-        }
+        $this->provider = self::extractProviderName($this->url);
 
         return $this;
     }
@@ -305,6 +411,23 @@ trait MediaTrait
     public function getDuration(): ?int
     {
         return $this->duration;
+    }
+
+
+    /**
+     * Lookup thumbnail URL
+     */
+    public function lookupThumbnail(): ?string
+    {
+        return null;
+    }
+
+    /**
+     * Lookup media meta information
+     */
+    public function lookupMeta(): ?array
+    {
+        return null;
     }
 
 

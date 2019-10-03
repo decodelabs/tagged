@@ -11,11 +11,13 @@ use DecodeLabs\Tagged\Markup;
 interface Media extends Markup
 {
     public static function parse(string $mbed): Media;
+    public static function extractProviderName(string $url): ?string;
+    public static function getClassForUrl(string $url): string;
+    public static function defaultUrlFromId(string $id): string;
 
-    public function setUrl(string $url): Media;
     public function getUrl(): ?string;
     public function getPreparedUrl(): ?string;
-    public function getProvider(): string;
+    public function getProvider(): ?string;
 
     public function setId(?string $id): Media;
     public function getId(): ?string;
@@ -41,6 +43,9 @@ interface Media extends Markup
     public function getEndTime(): ?int;
     public function setDuration(?int $seconds): Media;
     public function getDuration(): ?int;
+
+    public function lookupThumbnail(): ?string;
+    public function lookupMeta(): ?array;
 
     public function render(): ?Markup;
     public function __toString(): string;
