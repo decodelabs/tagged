@@ -299,8 +299,6 @@ trait TagTrait
         return $this->open();
     }
 
-    abstract protected function esc(?string $value): ?string;
-
 
     /**
      * Inspect for Glitch
