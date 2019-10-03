@@ -26,7 +26,6 @@ class Tag implements TagInterface, ClassListContainer, StyleListContainer, Inspe
     use TagTrait;
     use ClassListContainerTrait;
     use StyleListContainerTrait;
-    use ChildRendererTrait;
 
     const CLOSED_TAGS = [
         'area', 'base', 'br', 'col', 'command', 'embed',
