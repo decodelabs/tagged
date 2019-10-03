@@ -93,7 +93,7 @@ class StyleBlock implements \IteratorAggregate, HashMap, Inspectable
     /**
      * Render to string
      */
-    public function __toString(): string
+    public function render(): ?string
     {
         if (empty($this->items)) {
             return '';
@@ -109,12 +109,24 @@ class StyleBlock implements \IteratorAggregate, HashMap, Inspectable
     }
 
     /**
+     * Convert to string
+     */
+    public function __toString(): string
+    {
+        try {
+            return (string)$this->render();
+        } catch (\Throwable $e) {
+            return '';
+        }
+    }
+
+    /**
      * Inspect for Glitch
      */
     public function glitchInspect(Entity $entity, Inspector $inspector): void
     {
         $entity
-            ->setText($this->__toString())
+            ->setText($this->render())
             ->setSectionVisible('text', false)
             ->setValues($inspector->inspectList($this->items));
     }
