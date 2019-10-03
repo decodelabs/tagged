@@ -78,7 +78,7 @@ class Youtube extends Video
      */
     public function render(): Markup
     {
-        $url = 'https//www.youtube.com/embed/'.$this->youtubeId;
+        $url = 'https://www.youtube.com/embed/'.$this->youtubeId;
         $queryVars = $this->options;
 
         if ($this->startTime !== null) {
@@ -118,7 +118,7 @@ class Youtube extends Video
      */
     public function lookupThumbnail(): ?string
     {
-        return 'https//img.youtube.com/vi/'.$this->youtubeId.'/hqdefault.jpg';
+        return 'https://img.youtube.com/vi/'.$this->youtubeId.'/hqdefault.jpg';
     }
 
     /**
