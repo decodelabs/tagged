@@ -1,3 +1,6 @@
+## v0.6.6 (2019-10-03)
+* Fixed audioboom embed attribute methods
+
 ## v0.6.5 (2019-10-03)
 * Fixed embed provider return value
 * Split embed handlers to separate classes
