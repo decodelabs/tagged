@@ -73,7 +73,7 @@ class Video implements Media
     {
         $tag = Element::create('iframe.embed.video', null, [
             'id' => $this->id,
-            'src' => $this->url,
+            'src' => $url,
             'width' => $this->width,
             'height' => $this->height,
             'frameborder' => 0,
