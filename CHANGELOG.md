@@ -1,3 +1,8 @@
+## v0.6.5 (2019-10-03)
+* Fixed embed provider return value
+* Split embed handlers to separate classes
+* Add meta lookup to embed handlers
+
 ## v0.6.4 (2019-10-03)
 * Fixed ChildRendererTrait
 
