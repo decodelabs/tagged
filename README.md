@@ -169,7 +169,9 @@ namespace MyFramework\Plugins;
 
 /**
  * Declare the Html facade as in the Tagged library, not local namespace
- * Without this use statement, the Facade would be aliased as MyFramework\Plugins\Html
+ *
+ * Under normal circumstances this wouldn't be necessary, however without
+ * this use statement, the Facade would be aliased as MyFramework\Plugins\Html
  * and could conflict with other plugin classes
  */
 use DecodeLabs\Tagged\Html;
