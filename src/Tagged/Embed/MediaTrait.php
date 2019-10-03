@@ -97,7 +97,7 @@ trait MediaTrait
     /**
      * Get media provider
      */
-    public function getProvider(): string
+    public function getProvider(): ?string
     {
         return $this->provider;
     }
