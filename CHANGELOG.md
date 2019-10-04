@@ -1,3 +1,8 @@
+## v0.6.7 (2019-10-04)
+* Added meta lookup for audioboom playlists
+* Forced all video embeds to use https
+* Fixed youtube embed URLs
+
 ## v0.6.7 (2019-10-03)
 * Fixed video embed URL handling
 
