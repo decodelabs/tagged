@@ -128,12 +128,19 @@ class Audioboom extends Audio
     {
         switch ($this->type) {
             case 'embed':
-                $url = 'https://audioboom.com/publishing/oembed.json?url=https://audioboom.com/posts/'.$this->audioboomId;
-                break;
+                return $this->lookupEmbedMeta();
 
             case 'playlist':
-                return null;
+                return $this->lookupPlaylistMeta();
         }
+    }
+
+    /**
+     * Lookup meta for embed
+     */
+    protected function lookupEmbedMeta(): ?array
+    {
+        $url = 'https://audioboom.com/publishing/oembed.json?url=https://audioboom.com/posts/'.$this->audioboomId;
 
         try {
             $json = file_get_contents($url);
@@ -157,6 +164,55 @@ class Audioboom extends Audio
             'thumbnailUrl' => $json['thumbnail_url'],
             'thumbnailWidth' => $json['thumbnail_width'],
             'thumbnailHeight' => $json['thumbnail_height']
+        ];
+    }
+
+    /**
+     * Lookup meta for embed
+     */
+    protected function lookupPlaylistMeta(): ?array
+    {
+        $url = 'https://api.audioboom.com/playlists/'.$this->audioboomId;
+
+        try {
+            $json = file_get_contents($url);
+            $json = json_decode($json, true);
+            $json = new Tree($json);
+        } catch (\ErrorException $e) {
+            return null;
+        }
+
+        $playlist = $json->body->playlist;
+        $duration = 0;
+        $uploadTs = $uploadDate = $user = $profileUrl = null;
+
+        foreach ($playlist->memberships as $item) {
+            $duration += $item->audio_clip['duration'];
+            $currentDate = new \DateTime($item->audio_clip['uploaded_at']);
+            $ts = $currentDate->getTimestamp();
+
+            if ($ts > $uploadTs) {
+                $uploadDate = $currentDate;
+            }
+
+            $user = $item->audio_clip->user['username'];
+            $profileUrl = $item->audio_clip->user->urls['profile'];
+        }
+
+        return [
+            'title' => $playlist['title'],
+            'url' => $this->url,
+            'embed' => $this->source ?? (string)$this->render(),
+            'width' => null,
+            'height' => null,
+            'duration' => $duration,
+            'uploadDate' => $uploadDate,
+            'description' => empty($playlist['description']) ? null : $playlist['description'],
+            'authorName' => $user,
+            'authorUrl' => $profileUrl,
+            'thumbnailUrl' => $playlist->mosaic_image['original'],
+            'thumbnailWidth' => null,
+            'thumbnailHeight' => null
         ];
     }
 }

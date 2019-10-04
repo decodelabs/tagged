@@ -156,5 +156,33 @@ Html::$toText->preview('<h1>My html</h1>', 5); // My ht...
 ```
 
 
+## Namespaces
+
+Because Tagged uses [Veneer](https://github.com/decodelabs/veneer) to generate the <code>Html</code> facade, sometimes it is possible for class name collisions if you use Tagged in the same namespace as dynamically loaded classes (in frameworks for example).
+
+In this case, it is best to declare the namespace for the <code>Html</code> facade (rather than depending on auto-loading) to avoid clashes with any classes (or potential future classes!) in your current namespace called <code>Html</code>.
+
+For simplicity, the facade should be declared as being in <code>DecodeLabs\Tagged\Html</code>.
+
+```php
+namespace MyFramework\Plugins;
+
+/**
+ * Declare the Html facade as in the Tagged library, not local namespace
+ *
+ * Under normal circumstances this wouldn't be necessary, however without
+ * this use statement, the Facade would be aliased as MyFramework\Plugins\Html
+ * and could conflict with other plugin classes
+ */
+use DecodeLabs\Tagged\Html;
+
+class MyPlugin {
+    public function doSomething() {
+        return Html::div('hello world');
+    }
+}
+```
+
+
 ## Licensing
 Glitch is licensed under the MIT License. See [LICENSE](./LICENSE) for the full license text.
