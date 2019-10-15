@@ -1,4 +1,8 @@
-## v0.6.7 (2019-10-04)
+## v0.6.9 (2019-10-16)
+* Added PHPStan support
+* Bugfixes and updates from max level PHPStan scan
+
+## v0.6.8 (2019-10-04)
 * Added meta lookup for audioboom playlists
 * Forced all video embeds to use https
 * Fixed youtube embed URLs
