@@ -10,6 +10,7 @@ use DecodeLabs\Collections\HashMap;
 use DecodeLabs\Collections\ArrayProvider;
 use DecodeLabs\Collections\Native\HashMapTrait;
 
+use DecodeLabs\Glitch;
 use DecodeLabs\Glitch\Inspectable;
 use DecodeLabs\Glitch\Dumper\Entity;
 use DecodeLabs\Glitch\Dumper\Inspector;

@@ -6,13 +6,14 @@
 declare(strict_types=1);
 namespace DecodeLabs\Tagged\Builder;
 
-use DecodeLabs\Glitch\Inspectable;
-use DecodeLabs\Glitch\Dumper\Entity;
-use DecodeLabs\Glitch\Dumper\Inspector;
-
 use DecodeLabs\Tagged\Markup;
 use DecodeLabs\Tagged\Buffer;
 use DecodeLabs\Collections\AttributeContainerTrait;
+
+use DecodeLabs\Glitch;
+use DecodeLabs\Glitch\Inspectable;
+use DecodeLabs\Glitch\Dumper\Entity;
+use DecodeLabs\Glitch\Dumper\Inspector;
 
 trait TagTrait
 {
@@ -90,7 +91,7 @@ trait TagTrait
         if (null === ($name = array_shift($parts))) {
             throw Glitch::EUnexpectedValue('Unable to parse tag class definition', null, $origName);
         }
-        
+
         $this->name = $name;
 
         if (false !== ($pos = strpos($this->name, '?'))) {

@@ -15,6 +15,8 @@ use DecodeLabs\Tagged\Buffer;
 use DecodeLabs\Tagged\Builder\Html\ContentCollection;
 use DecodeLabs\Tagged\Builder\Html\Element;
 
+use DecodeLabs\Glitch;
+
 use DateTime;
 use DateInterval;
 use DateTimeZone;

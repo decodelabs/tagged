@@ -19,6 +19,8 @@ use DecodeLabs\Veneer\FacadePluginAccessTarget;
 use DecodeLabs\Veneer\FacadePluginAccessTargetTrait;
 use DecodeLabs\Veneer\FacadePlugin;
 
+use DecodeLabs\Glitch;
+
 class HtmlFactory implements Markup, FacadeTarget, FacadePluginAccessTarget
 {
     use FacadeTargetTrait;

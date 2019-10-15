@@ -12,6 +12,8 @@ use DecodeLabs\Tagged\Markup;
 use DecodeLabs\Tagged\HtmlFactory;
 use DecodeLabs\Tagged\Buffer;
 
+use DecodeLabs\Glitch;
+
 use Parsedown;
 use Michelf\Markdown;
 use DecodeLabs\Chirp\Parser as Chirp;

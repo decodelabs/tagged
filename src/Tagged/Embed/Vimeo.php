@@ -16,6 +16,8 @@ use DecodeLabs\Tagged\Markup;
 
 use DecodeLabs\Collections\Tree\NativeMutable as Tree;
 
+use DecodeLabs\Glitch;
+
 class Vimeo extends Video
 {
     protected $vimeoId;

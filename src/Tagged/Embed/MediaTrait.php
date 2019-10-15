@@ -6,6 +6,8 @@
 declare(strict_types=1);
 namespace DecodeLabs\Tagged\Embed;
 
+use DecodeLabs\Glitch;
+
 trait MediaTrait
 {
     //const URL_MAP = [];
