@@ -53,11 +53,17 @@ trait TagTrait
      */
     public function setName(string $name): Tag
     {
+        $origName = $name;
+
         if (false !== strpos($name, '[')) {
             $name = preg_replace_callback('/\[([^\]]*)\]/', function ($res) {
                 $parts = explode('=', $res[1], 2);
-                $key = array_shift($parts);
-                $value = array_shift($parts);
+
+                if (null === ($key = array_shift($parts))) {
+                    throw Glitch::EUnexpectedValue('Invalid tag attribute definition', null, $res);
+                }
+
+                $value = (string)array_shift($parts);
                 $first = substr($value, 0, 1);
                 $last = substr($value, -1);
 
@@ -69,18 +75,23 @@ trait TagTrait
 
                 $this->setAttribute($key, $value);
                 return '';
-            }, $name);
+            }, $name) ?? $name;
         }
 
         if (false !== strpos($name, '#')) {
             $name = preg_replace_callback('/\#([^ .\[\]]+)/', function ($res) {
                 $this->setId($res[1]);
                 return '';
-            }, $name);
+            }, $name) ?? $name;
         }
 
         $parts = explode('.', $name);
-        $this->name = array_shift($parts);
+
+        if (null === ($name = array_shift($parts))) {
+            throw Glitch::EUnexpectedValue('Unable to parse tag class definition', null, $origName);
+        }
+        
+        $this->name = $name;
 
         if (false !== ($pos = strpos($this->name, '?'))) {
             $this->name = str_replace('?', '', $this->name);

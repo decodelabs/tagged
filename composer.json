@@ -21,6 +21,24 @@
         "decodelabs/veneer": "~0.4",
         "decodelabs/systemic": "~0.5"
     },
+    "require-dev": {
+        "phpstan/phpstan": "^0.11.16",
+        "phpstan/extension-installer": "^1.0",
+        "decodelabs/phpstan-decodelabs": "^0.1",
+
+        "nesbot/carbon": "^2.25",
+        "soundasleep/html2text": "^1.1",
+        "erusev/parsedown": "^1.7",
+        "michelf/php-markdown": "^1.8",
+        "decodelabs/chirp": "^0.5"
+    },
+    "suggest": {
+        "nesbot/carbon": "Support for time interval formatting",
+        "soundasleep/html2text": "Better HTML to text conversion",
+        "erusev/parsedown": "Add support for Markdown parsing",
+        "michelf/php-markdown": "Alternative Markdown parsing provider",
+        "decodelabs/chirp": "Enable parsing of Tweets"
+    },
     "autoload": {
         "psr-4": {
             "DecodeLabs\\Tagged\\": "src/Tagged"
@@ -33,12 +51,5 @@
         "branch-alias": {
             "dev-develop": "0.x-dev"
         }
-    },
-    "suggest": {
-        "nesbot/carbon": "Support for time interval formatting",
-        "soundasleep/html2text": "Better HTML to text conversion",
-        "erusev/parsedown": "Add support for Markdown parsing",
-        "michelf/php-markdown": "Alternative Markdown parsing provider",
-        "decodelabs/chirp": "Enable parsing of Tweets"
     }
 }

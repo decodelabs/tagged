@@ -8,6 +8,7 @@ namespace DecodeLabs\Tagged;
 
 use DecodeLabs\Tagged\Markup;
 use DecodeLabs\Tagged\Buffer;
+use DecodeLabs\Tagged\Builder\Tag as TagInterface;
 use DecodeLabs\Tagged\Builder\Html\ContentCollection;
 use DecodeLabs\Tagged\Builder\Html\Tag;
 use DecodeLabs\Tagged\Builder\Html\Element;
@@ -38,7 +39,7 @@ class HtmlFactory implements Markup, FacadeTarget, FacadePluginAccessTarget
     /**
      * Instance shortcut to el
      */
-    public function __invoke(string $name, $content, array $attributes=null): Markup
+    public function __invoke(string $name, $content, array $attributes=null): Element
     {
         return $this->el($name, $content, $attributes);
     }
@@ -46,7 +47,7 @@ class HtmlFactory implements Markup, FacadeTarget, FacadePluginAccessTarget
     /**
      * Call named widget from instance
      */
-    public function __call(string $name, array $args): Markup
+    public function __call(string $name, array $args): Element
     {
         return Element::create($name, ...$args);
     }
@@ -90,7 +91,7 @@ class HtmlFactory implements Markup, FacadeTarget, FacadePluginAccessTarget
     /**
      * Create a standalone tag
      */
-    public function tag(string $name, array $attributes=null): Markup
+    public function tag(string $name, array $attributes=null): TagInterface
     {
         return new Tag($name, $attributes);
     }
@@ -98,7 +99,7 @@ class HtmlFactory implements Markup, FacadeTarget, FacadePluginAccessTarget
     /**
      * Create a standalone element
      */
-    public function el(string $name, $content=null, array $attributes=null): Markup
+    public function el(string $name, $content=null, array $attributes=null): Element
     {
         return Element::create($name, $content, $attributes);
     }
@@ -106,7 +107,7 @@ class HtmlFactory implements Markup, FacadeTarget, FacadePluginAccessTarget
     /**
      * Wrap raw html string
      */
-    public function raw(string $html): Markup
+    public function raw(string $html): Buffer
     {
         return new Buffer($html);
     }
@@ -168,7 +169,7 @@ class HtmlFactory implements Markup, FacadeTarget, FacadePluginAccessTarget
             $i = 0;
 
             foreach ($list as $key => $item) {
-                yield el($name, function ($el) use ($key, $item, $callback, &$i) {
+                yield $this->el($name, function ($el) use ($key, $item, $callback, &$i) {
                     if ($callback) {
                         return $callback($item, $el, $key, ++$i);
                     } else {
@@ -222,7 +223,7 @@ class HtmlFactory implements Markup, FacadeTarget, FacadePluginAccessTarget
                 });
 
                 if ($dt->isEmpty()) {
-                    $dt->push($key);
+                    $dt->append($key);
                 }
 
                 yield $dt;
@@ -249,12 +250,6 @@ class HtmlFactory implements Markup, FacadeTarget, FacadePluginAccessTarget
 
             $first = true;
             $i = $more = 0;
-
-            try {
-                $total = count($list);
-            } catch (\Throwable $e) {
-                $total = null;
-            }
 
             if ($finalDelimiter === null) {
                 $finalDelimiter = $delimiter;

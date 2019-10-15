@@ -25,7 +25,7 @@ class Audioboom extends Audio
     /**
      * Extract parts from URL
      */
-    protected function setUrl(string $url): Media
+    protected function setUrl(?string $url): Media
     {
         parent::setUrl($url);
 
@@ -34,14 +34,19 @@ class Audioboom extends Audio
         }
 
         $urlParts = parse_url($this->url);
-        parse_str($urlParts['query'] ?? '', $urlParts['query']);
+
+        if ($urlParts === false || empty($urlParts)) {
+            throw Glitch::EUnexpectedValue('Unable to parse URL', null, $this->url);
+        }
+
+        parse_str($urlParts['query'] ?? '', $query);
 
         $parts = explode('/', ltrim($urlParts['path'] ?? '', '/'));
         $booId = $parts[1] ?? null;
 
         if ($booId === 'playlist' || $booId === 'playlist') {
             $this->type = 'playlist';
-            $this->audioboomId = $urlParts['query']['data_for_content_type'];
+            $this->audioboomId = $query['data_for_content_type'];
         } else {
             $this->type = 'embed';
             $this->audioboomId = $booId;
@@ -50,7 +55,7 @@ class Audioboom extends Audio
                 'eid', 'player_type'
             ];
 
-            foreach ((array)$urlParts['query'] as $key => $value) {
+            foreach ((array)$query as $key => $value) {
                 if (in_array(strtolower($key), $vars)) {
                     $this->options[$key] = $value;
                 }
@@ -58,6 +63,26 @@ class Audioboom extends Audio
         }
 
         return $this;
+    }
+
+    /**
+     * Get finalized URL from renderer tag
+     */
+    public function getPreparedUrl(): ?string
+    {
+        if ($this->type === 'playlist') {
+            $url = 'https://embeds.audioboom.com/publishing/playlist/v4?boo_content_type=playlist&data_for_content_type='.$this->audioboomId;
+        } elseif ($this->type === 'embed') {
+            $url = '//embeds.audioboom.com/boos/'.$this->audioboomId.'/embed/v4';
+
+            if (!empty($this->options)) {
+                $url .= '?'.http_build_query($this->options);
+            }
+        } else {
+            throw Glitch::EUnexpectedValue('Unexpected Audioboom type', null, $this->type);
+        }
+
+        return $url;
     }
 
     /**
@@ -77,23 +102,11 @@ class Audioboom extends Audio
     }
 
     /**
-     * Render Audioboom specific embed
+     * Render URL embed
      */
     public function render(): Markup
     {
-        if ($this->type === 'playlist') {
-            $url = 'https://embeds.audioboom.com/publishing/playlist/v4?boo_content_type=playlist&data_for_content_type='.$this->audioboomId;
-        } elseif ($this->type === 'embed') {
-            $url = '//embeds.audioboom.com/boos/'.$this->audioboomId.'/embed/v4';
-
-            if (!empty($this->options)) {
-                $url .= '?'.http_build_query($this->options);
-            }
-        } else {
-            throw Glitch::EUnexpectedValue('Unexpected Audioboom type', null, $this->type);
-        }
-
-        return $this->prepareIframeElement($url);
+        return $this->prepareIframeElement((string)$this->getPreparedUrl());
     }
 
 
@@ -108,11 +121,15 @@ class Audioboom extends Audio
                 break;
 
             case 'playlist':
+            default:
                 return null;
         }
 
         try {
-            $json = file_get_contents($url);
+            if (false === ($json = file_get_contents($url))) {
+                return null;
+            }
+
             $json = json_decode($json, true);
         } catch (\ErrorException $e) {
             return null;
@@ -143,9 +160,11 @@ class Audioboom extends Audio
         $url = 'https://audioboom.com/publishing/oembed.json?url=https://audioboom.com/posts/'.$this->audioboomId;
 
         try {
-            $json = file_get_contents($url);
-            $json = json_decode($json, true);
-            $json = new Tree($json);
+            if (false !== ($json = file_get_contents($url))) {
+                $json = new Tree(json_decode($json, true));
+            } else {
+                $json = new Tree();
+            }
         } catch (\ErrorException $e) {
             return null;
         }
@@ -175,9 +194,11 @@ class Audioboom extends Audio
         $url = 'https://api.audioboom.com/playlists/'.$this->audioboomId;
 
         try {
-            $json = file_get_contents($url);
-            $json = json_decode($json, true);
-            $json = new Tree($json);
+            if (false !== ($json = file_get_contents($url))) {
+                $json = new Tree(json_decode($json, true));
+            } else {
+                $json = new Tree();
+            }
         } catch (\ErrorException $e) {
             return null;
         }

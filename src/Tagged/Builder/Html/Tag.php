@@ -76,13 +76,16 @@ class Tag implements TagInterface, ClassListContainer, StyleListContainer, Inspe
         $key = strtolower($key);
 
         if ($key == 'class') {
-            return $this->setClasses($value);
+            $this->setClasses($value);
+            return $this;
         } elseif ($key == 'style') {
-            return $this->setStyles($value);
+            $this->setStyles($value);
+            return $this;
         }
 
         if ($value === null) {
-            return $this->removeAttribute($key);
+            $this->removeAttribute($key);
+            return $this;
         }
 
         if (!is_bool($value)) {
@@ -132,7 +135,8 @@ class Tag implements TagInterface, ClassListContainer, StyleListContainer, Inspe
      */
     public function hide(): TagInterface
     {
-        return $this->setAttribute('hidden', true);
+        $this->setAttribute('hidden', true);
+        return $this;
     }
 
     /**
@@ -140,7 +144,8 @@ class Tag implements TagInterface, ClassListContainer, StyleListContainer, Inspe
      */
     public function show(): TagInterface
     {
-        return $this->removeAttribute('hidden');
+        $this->removeAttribute('hidden');
+        return $this;
     }
 
 
@@ -149,7 +154,8 @@ class Tag implements TagInterface, ClassListContainer, StyleListContainer, Inspe
      */
     public function setTitle(?string $title): TagInterface
     {
-        return $this->setAttribute('title', $title);
+        $this->setAttribute('title', $title);
+        return $this;
     }
 
     /**

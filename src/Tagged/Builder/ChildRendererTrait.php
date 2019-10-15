@@ -39,7 +39,7 @@ trait ChildRendererTrait
             $output = $this->esc($output);
         }
 
-        return $output;
+        return (string)$output;
     }
 
     /**

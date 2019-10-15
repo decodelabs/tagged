@@ -66,7 +66,7 @@ class StyleList implements \IteratorAggregate, HashMap
             $exp = explode(':', $part);
 
             if (count($exp) == 2) {
-                $output[trim(array_shift($exp))] = trim(array_shift($exp));
+                $output[trim((string)array_shift($exp))] = trim((string)array_shift($exp));
             }
         }
 

@@ -63,10 +63,10 @@ class StyleBlock implements \IteratorAggregate, HashMap, Inspectable
         $output = [];
 
         while (!empty($parts)) {
-            $selector = trim(array_shift($parts));
-            $body = explode('}', array_shift($parts), 2);
-            $nextSelector = trim(array_pop($body));
-            $body = trim(array_shift($body));
+            $selector = trim((string)array_shift($parts));
+            $body = explode('}', (string)array_shift($parts), 2);
+            $nextSelector = trim((string)array_pop($body));
+            $body = trim((string)array_shift($body));
 
             if (!empty($nextSelector)) {
                 array_unshift($parts, $nextSelector);
