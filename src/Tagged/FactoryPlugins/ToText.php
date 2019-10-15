@@ -90,7 +90,7 @@ class ToText implements FacadePlugin
     /**
      * Convert HTML to text and shorten if needed, wrapping in Markup
      */
-    public function preview($html, int $maxLength=null): Markup
+    public function preview($html, int $maxLength=null): ?Markup
     {
         if (null === ($output = $this->convert($html))) {
             return null;

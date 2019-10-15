@@ -13,7 +13,9 @@ trait StyleListContainerTrait
      */
     public function setStyles(...$styles): StyleListContainer
     {
-        $this->getStyles()->clear()->import(...$styles);
+        $styles = $this->getStyles();
+        $styles->clear();
+        $styles->import(...$styles);
         return $this;
     }
 

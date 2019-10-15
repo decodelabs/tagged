@@ -16,6 +16,8 @@ use DecodeLabs\Tagged\Markup;
 
 use DecodeLabs\Collections\Tree\NativeMutable as Tree;
 
+use DecodeLabs\Glitch;
+
 class Youtube extends Video
 {
     protected $youtubeId;
@@ -24,7 +26,7 @@ class Youtube extends Video
     /**
      * Extract parts from URL
      */
-    protected function setUrl(string $url): Media
+    protected function setUrl(?string $url): Media
     {
         parent::setUrl($url);
 
@@ -33,10 +35,15 @@ class Youtube extends Video
         }
 
         $urlParts = parse_url($this->url);
-        parse_str($urlParts['query'] ?? '', $urlParts['query']);
 
-        if (isset($urlParts['query']['v'])) {
-            $id = $urlParts['query']['v'];
+        if ($urlParts === false || empty($urlParts)) {
+            throw Glitch::EUnexpectedValue('Unable to parse URL', null, $this->url);
+        }
+
+        parse_str($urlParts['query'] ?? '', $query);
+
+        if (isset($query['v'])) {
+            $id = $query['v'];
         } else {
             $parts = explode('/', $urlParts['path'] ?? '');
             $id = array_pop($parts);
@@ -56,7 +63,7 @@ class Youtube extends Video
             'playlist', 'playsinline', 'rel', 'showinfo', 'start', 'theme'
         ];
 
-        foreach ((array)$urlParts['query'] as $key => $value) {
+        foreach ((array)$query as $key => $value) {
             if (in_array(strtolower($key), $vars)) {
                 $this->options[$key] = $value;
             }
@@ -66,17 +73,9 @@ class Youtube extends Video
     }
 
     /**
-     * Get Youtube id
+     * Get finalized URL from renderer tag
      */
-    public function getYoutubeId(): string
-    {
-        return $this->youtubeId;
-    }
-
-    /**
-     * Render youtube specific embed
-     */
-    public function render(): Markup
+    public function getPreparedUrl(): ?string
     {
         $url = 'https://www.youtube.com/embed/'.$this->youtubeId;
         $queryVars = $this->options;
@@ -109,7 +108,23 @@ class Youtube extends Video
             $url .= '?'.http_build_query($queryVars);
         }
 
-        return $this->prepareIframeElement($url);
+        return $url;
+    }
+
+    /**
+     * Get Youtube id
+     */
+    public function getYoutubeId(): string
+    {
+        return $this->youtubeId;
+    }
+
+    /**
+     * Render URL embed
+     */
+    public function render(): Markup
+    {
+        return $this->prepareIframeElement((string)$this->getPreparedUrl());
     }
 
 
@@ -130,12 +145,17 @@ class Youtube extends Video
         $infoUrl = 'https://www.youtube.com/get_video_info?video_id='.$this->youtubeId;
 
         try {
-            $json = file_get_contents($url);
-            $json = json_decode($json, true);
-            $json = new Tree($json);
+            if (false !== ($json = file_get_contents($url))) {
+                $json = new Tree(json_decode($json, true));
+            } else {
+                $json = new Tree();
+            }
 
-            $info = file_get_contents($infoUrl);
-            $info = Tree::fromDelimitedString($info);
+            if (false !== ($info = file_get_contents($infoUrl))) {
+                $info = Tree::fromDelimitedString($info);
+            } else {
+                $info = new Tree();
+            }
         } catch (\ErrorException $e) {
             return null;
         }

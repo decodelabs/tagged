@@ -15,6 +15,8 @@ use DecodeLabs\Tagged\Buffer;
 use DecodeLabs\Tagged\Builder\Html\ContentCollection;
 use DecodeLabs\Tagged\Builder\Html\Element;
 
+use DecodeLabs\Glitch;
+
 use DateTime;
 use DateInterval;
 use DateTimeZone;
@@ -72,6 +74,8 @@ class Time implements FacadePlugin
             $format = 'Y-m-d';
         } elseif ($hasTime) {
             $format = 'H:i:s';
+        } else {
+            $format = '';
         }
 
         if (!$date = $this->prepare($date, $timezone, $hasTime)) {
@@ -203,8 +207,13 @@ class Time implements FacadePlugin
             return null;
         }
 
-        $now = $this->normalizeDate('now');
-        $interval = CarbonInterval::make($date->diff($now));
+        if (null === ($now = $this->normalizeDate('now'))) {
+            throw Glitch::EUnexpectedValue('Unable to create now date');
+        }
+
+        if (null === ($interval = CarbonInterval::make($date->diff($now)))) {
+            throw Glitch::EUnexpectedValue('Unable to create interval');
+        }
 
         $output = $this->wrapInterval($date, $interval, $parts, $short);
 
@@ -228,8 +237,13 @@ class Time implements FacadePlugin
             return null;
         }
 
-        $now = $this->normalizeDate('now');
-        $interval = CarbonInterval::make($now->diff($date));
+        if (null === ($now = $this->normalizeDate('now'))) {
+            throw Glitch::EUnexpectedValue('Unable to create now date');
+        }
+
+        if (null === ($interval = CarbonInterval::make($now->diff($date)))) {
+            throw Glitch::EUnexpectedValue('Unable to create interval');
+        }
 
         $output = $this->wrapInterval($date, $interval, $parts, $short);
 
@@ -246,13 +260,17 @@ class Time implements FacadePlugin
     /**
      * Format interval
      */
-    protected function wrapInterval(DateTime $date, DateInterval $interval, ?int $parts, bool $short=false): Markup
+    protected function wrapInterval(DateTime $date, DateInterval $interval, ?int $parts, bool $short=false): Element
     {
         $formatter = new IntlDateFormatter(
             Systemic::$locale->get(),
             IntlDateFormatter::LONG,
             IntlDateFormatter::LONG
         );
+
+        if (null === ($interval = CarbonInterval::make($interval))) {
+            throw Glitch::EUnexpectedValue('Unable to create interval');
+        }
 
         $output = $this->wrap(
             $date->format(DateTime::W3C),
@@ -282,8 +300,13 @@ class Time implements FacadePlugin
             return null;
         }
 
-        $now = $this->normalizeDate('now');
-        $interval = CarbonInterval::make($date->diff($now));
+        if (null === ($now = $this->normalizeDate('now'))) {
+            throw Glitch::EUnexpectedValue('Unable to create now date');
+        }
+
+        if (null === ($interval = CarbonInterval::make($date->diff($now)))) {
+            throw Glitch::EUnexpectedValue('Unable to create interval');
+        }
 
         $formatter = new IntlDateFormatter(
             Systemic::$locale->get(),
@@ -329,7 +352,9 @@ class Time implements FacadePlugin
             return null;
         }
 
-        $interval = CarbonInterval::make($date1->diff($date2));
+        if (null === ($interval = CarbonInterval::make($date1->diff($date2)))) {
+            throw Glitch::EUnexpectedValue('Unable to create interval');
+        }
 
         $formatter = new IntlDateFormatter(
             Systemic::$locale->get(),
@@ -401,7 +426,12 @@ class Time implements FacadePlugin
 
         if ($date instanceof DateInterval) {
             $int = $date;
-            return $this->normalizeDate('now')->add($int);
+
+            if (null === ($now = $this->normalizeDate('now'))) {
+                throw Glitch::EUnexpectedValue('Unable to create now date');
+            }
+
+            return $now->add($int);
         }
 
         $timestamp = null;
@@ -414,7 +444,7 @@ class Time implements FacadePlugin
         $date = new DateTime($date);
 
         if ($timestamp !== null) {
-            $date->setTimestamp($timestamp);
+            $date->setTimestamp((int)$timestamp);
         }
 
         return $date;
@@ -440,7 +470,7 @@ class Time implements FacadePlugin
     /**
      * Wrap date / time in Markup
      */
-    protected function wrap(string $w3c, string $formatted, string $title=null): Markup
+    protected function wrap(string $w3c, string $formatted, string $title=null): Element
     {
         $output = $this->html->el('time', $formatted, [
             'datetime' => $w3c

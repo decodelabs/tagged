@@ -95,7 +95,8 @@ class Element extends Tag implements \IteratorAggregate, ElementInterface
      */
     public function setBody($body): ElementInterface
     {
-        $this->clear()->push($body);
+        $this->clear();
+        $this->append($body);
         return $this;
     }
 

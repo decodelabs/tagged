@@ -12,6 +12,8 @@ use DecodeLabs\Tagged\Markup;
 use DecodeLabs\Tagged\HtmlFactory;
 use DecodeLabs\Tagged\Buffer;
 
+use DecodeLabs\Glitch;
+
 use Parsedown;
 use Michelf\Markdown;
 use DecodeLabs\Chirp\Parser as Chirp;
@@ -113,7 +115,7 @@ class Parse implements FacadePlugin
                 $prep($parser, $text);
             }
 
-            return new Buffer($parser->transform($text));
+            return new Buffer($parser->transform((string)$text));
         } else {
             throw Glitch::EComponentUnavailable(
                 'No supported Markdown processors could be found for the requested format - try installing Parsedown'

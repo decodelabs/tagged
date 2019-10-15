@@ -15,6 +15,8 @@ use DecodeLabs\Tagged\Buffer;
 use DecodeLabs\Tagged\Builder\Html\ContentCollection;
 use DecodeLabs\Tagged\Builder\Html\Element;
 
+use DecodeLabs\Glitch;
+
 class Icon implements FacadePlugin
 {
     protected $html;
@@ -93,7 +95,7 @@ class Icon implements FacadePlugin
     /**
      * Create icon without args
      */
-    public function __get(string $name): Markup
+    public function __get(string $name): Element
     {
         switch ($this->format) {
             case 'svg':
@@ -109,7 +111,7 @@ class Icon implements FacadePlugin
     /**
      * Create icon with args
      */
-    public function __call(string $name, array $args): Markup
+    public function __call(string $name, array $args): Element
     {
         return $this->__get($name);
     }
@@ -118,33 +120,36 @@ class Icon implements FacadePlugin
     /**
      * Boolean icon
      */
-    public function boolean(?bool $value): Markup
+    public function boolean(?bool $value): Element
     {
-        return $this->__get($value ? 'tick' : 'cross')
-            ->addClass($value ? 'positive' : 'negative');
+        $output = $this->__get($value ? 'tick' : 'cross');
+        $output->addClass($value ? 'positive' : 'negative');
+        return $output;
     }
 
 
     /**
      * Yes / no icon
      */
-    public function yesNo(?bool $value, bool $allowNull=true): ?Markup
+    public function yesNo(?bool $value, bool $allowNull=true): ?Element
     {
         if ($value === null && $allowNull) {
             return null;
         }
 
-        return $this->__get($value ? 'yes' : 'no')
-            ->addClass($value ? 'positive' : 'negative');
+        $output = $this->__get($value ? 'yes' : 'no');
+        $output->addClass($value ? 'positive' : 'negative');
+        return $output;
     }
 
 
     /**
      * Locked / unlocked icon
      */
-    public function locked(?bool $value): Markup
+    public function locked(?bool $value): Element
     {
-        return $this->__get($value ? 'lock' : 'unlock')
-            ->addClass($value ? 'locked' : 'unlocked');
+        $output = $this->__get($value ? 'lock' : 'unlock');
+        $output->addClass($value ? 'locked' : 'unlocked');
+        return $output;
     }
 }

@@ -65,6 +65,18 @@ class ClassList implements \Countable, Inspectable
     }
 
     /**
+     * Remove all classes in list
+     */
+    public function remove(string ...$classes): ClassList
+    {
+        foreach ($classes as $class) {
+            unset($this->classes[$class]);
+        }
+
+        return $this;
+    }
+
+    /**
      * Clear class list
      */
     public function clear(): ClassList

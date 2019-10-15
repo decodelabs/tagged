@@ -16,6 +16,8 @@ use DecodeLabs\Tagged\Markup;
 
 use DecodeLabs\Collections\Tree\NativeMutable as Tree;
 
+use DecodeLabs\Glitch;
+
 class Vimeo extends Video
 {
     protected $vimeoId;
@@ -24,7 +26,7 @@ class Vimeo extends Video
     /**
      * Extract parts from URL
      */
-    protected function setUrl(string $url): Media
+    protected function setUrl(?string $url): Media
     {
         parent::setUrl($url);
 
@@ -32,9 +34,13 @@ class Vimeo extends Video
             return $this;
         }
 
-        $url = $this->url;
         $urlParts = parse_url($this->url);
-        parse_str($urlParts['query'] ?? '', $urlParts['query']);
+
+        if ($urlParts === false || empty($urlParts)) {
+            throw Glitch::EUnexpectedValue('Unable to parse URL', null, $this->url);
+        }
+
+        parse_str($urlParts['query'] ?? '', $query);
         $parts = explode('/', $urlParts['path'] ?? '');
         $id = array_pop($parts);
 
@@ -43,23 +49,15 @@ class Vimeo extends Video
         }
 
         $this->vimeoId = $id;
-        $this->options = (array)$urlParts['query'];
+        $this->options = (array)$query;
 
         return $this;
     }
 
     /**
-     * Get Vimeo id
+     * Get finalized URL from renderer tag
      */
-    public function getVimeoId(): string
-    {
-        return $this->vimeoId;
-    }
-
-    /**
-     * Render Vimeo specific embed
-     */
-    public function render(): Markup
+    public function getPreparedUrl(): ?string
     {
         $url = 'https://player.vimeo.com/video/'.$this->vimeoId;
         $queryVars = $this->options;
@@ -86,7 +84,23 @@ class Vimeo extends Video
             $url .= '?'.http_build_query($queryVars);
         }
 
-        return $this->prepareIframeElement($url);
+        return $url;
+    }
+
+    /**
+     * Get Vimeo id
+     */
+    public function getVimeoId(): string
+    {
+        return $this->vimeoId;
+    }
+
+    /**
+     * Render URL embed
+     */
+    public function render(): Markup
+    {
+        return $this->prepareIframeElement((string)$this->getPreparedUrl());
     }
 
 
@@ -98,7 +112,10 @@ class Vimeo extends Video
         $url = 'https://vimeo.com/api/oembed.json?url='.$this->url;
 
         try {
-            $json = file_get_contents($url);
+            if (false === ($json = file_get_contents($url))) {
+                return null;
+            }
+
             $json = json_decode($json, true);
         } catch (\ErrorException $e) {
             return null;
@@ -115,9 +132,11 @@ class Vimeo extends Video
         $url = 'https://vimeo.com/api/oembed.json?url='.urlencode($this->url);
 
         try {
-            $json = file_get_contents($url);
-            $json = json_decode($json, true);
-            $json = new Tree($json);
+            if (false !== ($json = file_get_contents($url))) {
+                $json = new Tree(json_decode($json, true));
+            } else {
+                $json = new Tree();
+            }
         } catch (\ErrorException $e) {
             return null;
         }

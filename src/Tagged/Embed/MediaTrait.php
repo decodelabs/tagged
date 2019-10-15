@@ -6,6 +6,8 @@
 declare(strict_types=1);
 namespace DecodeLabs\Tagged\Embed;
 
+use DecodeLabs\Glitch;
+
 trait MediaTrait
 {
     //const URL_MAP = [];
@@ -144,7 +146,7 @@ trait MediaTrait
     /**
      * Init with main iframe details
      */
-    public function __construct(string $url, int $width=null, int $height=null, string $mediaSource=null)
+    public function __construct(?string $url, int $width=null, int $height=null, string $mediaSource=null)
     {
         $this->setUrl($url);
 
@@ -163,7 +165,7 @@ trait MediaTrait
     /**
      * Set media source URL
      */
-    protected function setUrl(string $url): Media
+    protected function setUrl(?string $url): Media
     {
         if (empty($url)) {
             $this->url = null;
@@ -196,7 +198,7 @@ trait MediaTrait
      */
     public function getPreparedUrl(): ?string
     {
-        return $this->render()->getAttribute('src');
+        return $this->url;
     }
 
 
@@ -306,7 +308,7 @@ trait MediaTrait
         }
 
         if (!$width) {
-            $width = round(($height / $this->height) * $this->_width);
+            $width = round(($height / $this->height) * $this->width);
         }
 
         $this->width = $width;
@@ -339,7 +341,7 @@ trait MediaTrait
      */
     public function setAutoPlay(bool $autoplay)
     {
-        $this->autoplay = $autoplay;
+        $this->autoPlay = $autoplay;
         return $this;
     }
 
@@ -429,7 +431,6 @@ trait MediaTrait
     {
         return null;
     }
-
 
     /**
      * Render to string

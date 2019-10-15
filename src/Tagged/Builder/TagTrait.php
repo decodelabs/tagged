@@ -6,13 +6,14 @@
 declare(strict_types=1);
 namespace DecodeLabs\Tagged\Builder;
 
-use DecodeLabs\Glitch\Inspectable;
-use DecodeLabs\Glitch\Dumper\Entity;
-use DecodeLabs\Glitch\Dumper\Inspector;
-
 use DecodeLabs\Tagged\Markup;
 use DecodeLabs\Tagged\Buffer;
 use DecodeLabs\Collections\AttributeContainerTrait;
+
+use DecodeLabs\Glitch;
+use DecodeLabs\Glitch\Inspectable;
+use DecodeLabs\Glitch\Dumper\Entity;
+use DecodeLabs\Glitch\Dumper\Inspector;
 
 trait TagTrait
 {
@@ -53,11 +54,17 @@ trait TagTrait
      */
     public function setName(string $name): Tag
     {
+        $origName = $name;
+
         if (false !== strpos($name, '[')) {
             $name = preg_replace_callback('/\[([^\]]*)\]/', function ($res) {
                 $parts = explode('=', $res[1], 2);
-                $key = array_shift($parts);
-                $value = array_shift($parts);
+
+                if (null === ($key = array_shift($parts))) {
+                    throw Glitch::EUnexpectedValue('Invalid tag attribute definition', null, $res);
+                }
+
+                $value = (string)array_shift($parts);
                 $first = substr($value, 0, 1);
                 $last = substr($value, -1);
 
@@ -69,18 +76,23 @@ trait TagTrait
 
                 $this->setAttribute($key, $value);
                 return '';
-            }, $name);
+            }, $name) ?? $name;
         }
 
         if (false !== strpos($name, '#')) {
             $name = preg_replace_callback('/\#([^ .\[\]]+)/', function ($res) {
                 $this->setId($res[1]);
                 return '';
-            }, $name);
+            }, $name) ?? $name;
         }
 
         $parts = explode('.', $name);
-        $this->name = array_shift($parts);
+
+        if (null === ($name = array_shift($parts))) {
+            throw Glitch::EUnexpectedValue('Unable to parse tag class definition', null, $origName);
+        }
+
+        $this->name = $name;
 
         if (false !== ($pos = strpos($this->name, '?'))) {
             $this->name = str_replace('?', '', $this->name);

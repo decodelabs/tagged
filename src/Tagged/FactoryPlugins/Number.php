@@ -101,6 +101,8 @@ class Number implements FacadePlugin
      */
     public function diff(?float $diff, ?bool $invert=false, string $tag='span'): Markup
     {
+        $diff = (float)$diff;
+
         if ($diff > 0) {
             $arrow = '⬆';
         } elseif ($diff < 0) {
