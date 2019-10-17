@@ -1,5 +1,6 @@
 # Tagged
 
+[![PHP from Packagist](https://img.shields.io/packagist/php-v/decodelabs/tagged?style=flat-square)](https://packagist.org/packages/decodelabs/tagged)
 [![Latest Version](https://img.shields.io/packagist/v/decodelabs/tagged.svg?style=flat-square)](https://packagist.org/packages/decodelabs/tagged)
 [![Total Downloads](https://img.shields.io/packagist/dt/decodelabs/tagged.svg?style=flat-square)](https://packagist.org/packages/decodelabs/tagged)
 [![Build Status](https://img.shields.io/travis/decodelabs/tagged/develop.svg?style=flat-square)](https://travis-ci.org/decodelabs/tagged)
