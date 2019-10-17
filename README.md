@@ -4,6 +4,7 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/decodelabs/tagged.svg?style=flat-square)](https://packagist.org/packages/decodelabs/tagged)
 [![Build Status](https://img.shields.io/travis/decodelabs/tagged/develop.svg?style=flat-square)](https://travis-ci.org/decodelabs/tagged)
 [![PHPStan](https://img.shields.io/badge/PHPStan-enabled-44CC11.svg?longCache=true&style=flat-square)](https://github.com/phpstan/phpstan)
+[![License](https://img.shields.io/packagist/l/decodelabs/tagged?style=flat-square)](https://packagist.org/packages/decodelabs/tagged)
 
 PHP markup generation without the fuss.
 
