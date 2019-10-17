@@ -1,4 +1,10 @@
 # Tagged
+
+[![Latest Version](https://img.shields.io/packagist/v/decodelabs/tagged.svg?style=flat-square)](https://packagist.org/packages/decodelabs/tagged)
+[![Total Downloads](https://img.shields.io/packagist/dt/decodelabs/tagged.svg?style=flat-square)](https://packagist.org/packages/decodelabs/tagged)
+[![Build Status](https://img.shields.io/travis/decodelabs/tagged/develop.svg?style=flat-square)](https://travis-ci.org/decodelabs/tagged)
+[![PHPStan](https://img.shields.io/badge/PHPStan-enabled-44CC11.svg?longCache=true&style=flat-square)](https://github.com/phpstan/phpstan)
+
 PHP markup generation without the fuss.
 
 
@@ -15,12 +21,12 @@ Generate markup using a simple, flexible interface.
 echo Html::{'div.my-class#my-id'}('This is element content', [
     'title' => 'This is a title'
 ]);
+```
 
-/*
-Creates -
+...creates:
 
+```html
 <div class="my-class" id="my-id" title="This is a title">This is element content</div>
-*/
 ```
 
 Create individual tags without content:
