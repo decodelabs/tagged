@@ -4,17 +4,17 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace DecodeLabs\Tagged\FactoryPlugins;
+namespace DecodeLabs\Tagged\Html\Plugins;
 
 use DecodeLabs\Veneer\FacadePlugin;
 
 use DecodeLabs\Tagged\Markup;
-use DecodeLabs\Tagged\HtmlFactory;
 use DecodeLabs\Tagged\Buffer;
+use DecodeLabs\Tagged\Html\Factory as HtmlFactory;
 
-use DecodeLabs\Tagged\Embed\Media;
-use DecodeLabs\Tagged\Embed\Video;
-use DecodeLabs\Tagged\Embed\Audio;
+use DecodeLabs\Tagged\Html\Embed\Media;
+use DecodeLabs\Tagged\Html\Embed\Video;
+use DecodeLabs\Tagged\Html\Embed\Audio;
 
 class Embed implements FacadePlugin
 {

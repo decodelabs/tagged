@@ -4,7 +4,7 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace DecodeLabs\Tagged\Builder\Html;
+namespace DecodeLabs\Tagged\Html;
 
 use DecodeLabs\Tagged\Markup;
 use DecodeLabs\Tagged\Buffer;

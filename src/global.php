@@ -10,7 +10,7 @@ declare(strict_types=1);
  */
 namespace DecodeLabs\Tagged
 {
-    use DecodeLabs\Tagged\HtmlFactory;
+    use DecodeLabs\Tagged\Html\Factory as HtmlFactory;
 
     // Register the Veneer facade
     HtmlFactory::registerFacade();

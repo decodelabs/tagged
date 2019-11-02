@@ -4,7 +4,7 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace DecodeLabs\Tagged\Embed;
+namespace DecodeLabs\Tagged\Html\Embed;
 
 use DecodeLabs\Tagged\Markup;
 
