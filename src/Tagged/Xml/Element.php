@@ -460,19 +460,23 @@ class Element implements AttributeContainer, Countable, ArrayAccess
     }
 
     /**
+     * Scan all CDATA sections within node
+     */
+    public function scanAllCDataSections(): \Generator
+    {
+        foreach ($this->element->childNodes as $node) {
+            if ($node->nodeType == \XML_CDATA_SECTION_NODE) {
+                yield $node->nodeValue;
+            }
+        }
+    }
+
+    /**
      * Get all CDATA sections within node
      */
     public function getAllCDataSections(): array
     {
-        $output = [];
-
-        foreach ($this->element->childNodes as $node) {
-            if ($node->nodeType == \XML_CDATA_SECTION_NODE) {
-                $output[] = $node->nodeValue;
-            }
-        }
-
-        return $output;
+        return iterator_to_array($this->scanAllCDataSections());
     }
 
 
@@ -1118,19 +1122,23 @@ class Element implements AttributeContainer, Countable, ArrayAccess
     }
 
     /**
+     * Scan all comments in node
+     */
+    public function scanAllComments(): \Generator
+    {
+        foreach ($this->element->childNodes as $node) {
+            if ($node->nodeType == \XML_COMMENT_NODE) {
+                yield trim($node->data);
+            }
+        }
+    }
+
+    /**
      * Get all comments in node
      */
     public function getAllComments(): array
     {
-        $output = [];
-
-        foreach ($this->element->childNodes as $node) {
-            if ($node->nodeType == \XML_COMMENT_NODE) {
-                $output[] = trim($node->data);
-            }
-        }
-
-        return $output;
+        return iterator_to_array($this->scanAllComments());
     }
 
 
@@ -1140,7 +1148,17 @@ class Element implements AttributeContainer, Countable, ArrayAccess
      */
     public function getById(string $id): ?Element
     {
-        return $this->xPathFirst('//*[@id=\''.$id.'\']');
+        return $this->firstXPath('//*[@id=\''.$id.'\']');
+    }
+
+    /**
+     * Scan all nodes of type
+     */
+    public function scanByType(string $type): \Generator
+    {
+        foreach ($this->element->ownerDocument->getElementsByTagName($type) as $node) {
+            yield new static($node);
+        }
     }
 
     /**
@@ -1148,19 +1166,13 @@ class Element implements AttributeContainer, Countable, ArrayAccess
      */
     public function getByType(string $type): array
     {
-        $output = [];
-
-        foreach ($this->element->ownerDocument->getElementsByTagName($type) as $node) {
-            $output[] = new static($node);
-        }
-
-        return $output;
+        return iterator_to_array($this->scanByType($type));
     }
 
     /**
-     * Get all nodes by attribute
+     * Scan all nodes by attribute
      */
-    public function getByAttribute(string $name, $value=null): array
+    public function scanByAttribute(string $name, $value=null): \Generator
     {
         if ($value == '') {
             $path = '//*[@'.$name.']';
@@ -1168,29 +1180,42 @@ class Element implements AttributeContainer, Countable, ArrayAccess
             $path = '//*[@'.$name.'=\''.$value.'\']';
         }
 
-        return $this->xPath($path);
+        return $this->scanXPath($path);
+    }
+
+    /**
+     * Get all nodes by attribute
+     */
+    public function getByAttribute(string $name, $value=null): array
+    {
+        return iterator_to_array($this->scanByAttribute($name, $value));
     }
 
 
     /**
-     * Get nodes matching xPath
+     * Scan nodes matching xPath
      */
-    public function xPath(string $path): array
+    public function scanXPath(string $path): \Generator
     {
         $xpath = new \DOMXPath($this->element->ownerDocument);
-        $output = [];
 
         foreach ($xpath->query($path, $this->element) as $node) {
-            $output[] = new static($node);
+            yield new static($node);
         }
+    }
 
-        return $output;
+    /**
+     * Get nodes matching xPath
+     */
+    public function getXPath(string $path): array
+    {
+        return iterator_to_array($this->scanXPath($path));
     }
 
     /**
      * Get first xPath result
      */
-    public function xPathFirst(string $path): ?Element
+    public function firstXPath(string $path): ?Element
     {
         $xpath = new \DOMXPath($this->element->ownerDocument);
         $output = $xpath->query($path, $this->element)->item(0);
