@@ -652,6 +652,8 @@ class Element implements AttributeContainer, Countable, ArrayAccess
                 return new static($node);
             }
         }
+
+        return null;
     }
 
     /**
@@ -671,7 +673,11 @@ class Element implements AttributeContainer, Countable, ArrayAccess
             }
         }
 
-        return new static($lastElement);
+        if ($lastElement !== null) {
+            return new static($lastElement);
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -698,6 +704,8 @@ class Element implements AttributeContainer, Countable, ArrayAccess
                 }
             }
         }
+
+        return null;
     }
 
     /**
