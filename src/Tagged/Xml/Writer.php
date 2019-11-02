@@ -527,7 +527,7 @@ class Writer implements AttributeContainer, ArrayAccess
     public function importReader(Element $reader)
     {
         $this->completeCurrentNode();
-        $this->document->writeRaw($reader->toNodeXmlString());
+        $this->document->writeRaw($reader->__toString());
         return $this;
     }
 

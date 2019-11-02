@@ -1307,23 +1307,15 @@ class Element implements AttributeContainer, Countable, ArrayAccess
      */
     public function __toString(): string
     {
-        return $this->getComposedTextContent();
+        return $this->element->ownerDocument->saveXML($this->element);
     }
 
     /**
      * Export document as string
      */
-    public function toXmlString(): string
+    public function documentToString(): string
     {
         return $this->element->ownerDocument->saveXML();
-    }
-
-    /**
-     * Export this nodes content as xml string
-     */
-    public function toNodeXmlString(): string
-    {
-        return $this->element->ownerDocument->saveXML($this->element);
     }
 
     /**
@@ -1373,7 +1365,7 @@ class Element implements AttributeContainer, Countable, ArrayAccess
     public function __debugInfo(): array
     {
         return [
-            'xml' => $this->toNodeXmlString()
+            'xml' => $this->__toString()
         ];
     }
 }
