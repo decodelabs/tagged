@@ -532,16 +532,24 @@ class Element implements AttributeContainer, Countable, ArrayAccess
      */
     public function __get(string $name): array
     {
-        return $this->getChildList($name);
+        return iterator_to_array($this->scanChildList($name));
     }
 
+
+    /**
+     * Scan all child elements
+     */
+    public function scanChildren(): \Generator
+    {
+        return $this->scanChildList();
+    }
 
     /**
      * Get all child elements
      */
     public function getChildren(): array
     {
-        return $this->getChildList();
+        return iterator_to_array($this->scanChildList());
     }
 
     /**
@@ -569,20 +577,35 @@ class Element implements AttributeContainer, Countable, ArrayAccess
     }
 
     /**
+     * Scan list of children by formula
+     */
+    public function scanNthChildren(string $formula): \Generator
+    {
+        return $this->scanNthChildList($formula);
+    }
+
+    /**
      * Get list of children by formula
      */
     public function getNthChildren(string $formula): array
     {
-        return $this->getNthChildList($formula);
+        return iterator_to_array($this->scanNthChildList($formula));
     }
 
+    /**
+     * Scan all children of type
+     */
+    public function scanChildrenOfType(string $name): \Generator
+    {
+        return $this->scanChildList($name);
+    }
 
     /**
      * Get all children of type
      */
     public function getChildrenOfType(string $name): array
     {
-        return $this->getChildList($name);
+        return iterator_to_array($this->scanChildList($name));
     }
 
     /**
@@ -610,32 +633,36 @@ class Element implements AttributeContainer, Countable, ArrayAccess
     }
 
     /**
+     * Scan child of type by formula
+     */
+    public function scanNthChildrenOfType(string $name, string $formula): \Generator
+    {
+        return $this->scanNthChildList($formula, $name);
+    }
+
+    /**
      * Get child of type by formula
      */
     public function getNthChildrenOfType(string $name, string $formula): array
     {
-        return $this->getNthChildList($formula, $name);
+        return iterator_to_array($this->scanNthChildList($formula, $name));
     }
 
 
     /**
      * Shared child fetcher
      */
-    protected function getChildList($name=null): array
+    protected function scanChildList($name=null): \Generator
     {
-        $output = [];
-
         foreach ($this->element->childNodes as $node) {
             if ($node->nodeType == \XML_ELEMENT_NODE) {
                 if ($name !== null && $node->nodeName != $name) {
                     continue;
                 }
 
-                $output[] = new static($node);
+                yield new static($node);
             }
         }
-
-        return $output;
     }
 
     /**
@@ -711,11 +738,12 @@ class Element implements AttributeContainer, Countable, ArrayAccess
     /**
      * Get children by formula
      */
-    protected function getNthChildList(string $formula, string $name=null): array
+    protected function scanNthChildList(string $formula, string $name=null): \Generator
     {
         if (is_numeric($formula)) {
             if ($output = $this->getNthChildNode((int)$formula, $name)) {
-                return [$output];
+                yield $output;
+                return;
             }
         }
 
@@ -740,7 +768,6 @@ class Element implements AttributeContainer, Countable, ArrayAccess
             $mod *= -1;
         }
 
-        $output = [];
         $i = 0;
 
         foreach ($this->element->childNodes as $node) {
@@ -752,12 +779,10 @@ class Element implements AttributeContainer, Countable, ArrayAccess
                 $i++;
 
                 if ($i % $mod == $offset) {
-                    $output[] = new static($node);
+                    yield new static($node);
                 }
             }
         }
-
-        return $output;
     }
 
 
