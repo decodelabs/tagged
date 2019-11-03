@@ -213,19 +213,26 @@ Programatically generate XML output with a full-featured wrapper around PHP's XM
 use DecodeLabs\Tagged\Xml\Writer as XmlWriter;
 
 $writer = new XmlWriter();
-$writer->startElement('section', [
-    'attr1' => 'value'
-]);
+$writer->writeHeader();
 
-$writer->writeElement('title', 'This is a title', [
-    'id' => 'main'
-]);
+$writer->{'ns:section[ns:attr1=value].test'}(function ($writer) {
+    $writer->{'title#main'}('This is a title');
 
-$writer->writeCDataElement('body', 'This is a content element with value wrapped in CDATA tags');
-
-$writer->endElement();
+    $writer->{'@body'}('This is an element with content wrapped in CDATA tags.');
+    $writer->writeCData('This is plain CDATA');
+});
 
 echo $writer;
+```
+
+This creates:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<ns:section ns:attr1="value" class="test">
+    <title id="main">This is a title</title>
+    <body><![CDATA[This is an element with content wrapped in CDATA tags.]]></body>
+<![CDATA[This is plain CDATA]]></ns:section>
 ```
 
 See [Writer.php](./src/Tagged/Xml/Writer.php) for the full interface.

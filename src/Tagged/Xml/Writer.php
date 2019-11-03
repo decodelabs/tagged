@@ -20,8 +20,9 @@ class Writer implements Markup, AttributeContainer, ArrayAccess
 {
     const ELEMENT = 1;
     const CDATA = 2;
-    const COMMENT = 3;
-    const PI = 4;
+    const CDATA_ELEMENT = 3;
+    const COMMENT = 4;
+    const PI = 5;
 
     use AttributeContainerTrait;
 
@@ -187,11 +188,19 @@ class Writer implements Markup, AttributeContainer, ArrayAccess
     }
 
 
+    /**
+     * Shortcut to writeElement
+     */
+    public function __call(string $method, array $args): Writer
+    {
+        return $this->writeElement($method, ...$args);
+    }
+
 
     /**
      * Write full element in one go
      */
-    public function writeElement(string $name, string $content=null, array $attributes=null): Writer
+    public function writeElement(string $name, $content=null, array $attributes=null): Writer
     {
         $this->startElement($name, $attributes);
 
@@ -208,13 +217,71 @@ class Writer implements Markup, AttributeContainer, ArrayAccess
     public function startElement(string $name, array $attributes=null): Writer
     {
         $this->completeCurrentNode();
-        $this->document->startElement($name);
 
-        if ($attributes !== null) {
+        if ($attributes === null) {
+            $attributes = [];
+        }
+
+        $origName = $name;
+
+        if (false !== strpos($name, '[')) {
+            $name = preg_replace_callback('/\[([^\]]*)\]/', function ($res) use (&$attributes) {
+                $parts = explode('=', $res[1], 2);
+
+                if (null === ($key = array_shift($parts))) {
+                    throw Glitch::EUnexpectedValue('Invalid tag attribute definition', null, $res);
+                }
+
+                $value = (string)array_shift($parts);
+                $first = substr($value, 0, 1);
+                $last = substr($value, -1);
+
+                if (strlen($value) > 1
+                && (($first == '"' && $last == '"')
+                || ($first == "'" && $last == "'"))) {
+                    $value = substr($value, 1, -1);
+                }
+
+                $attributes[$key] = $value;
+                return '';
+            }, $name) ?? $name;
+        }
+
+        if (false !== strpos($name, '#')) {
+            $name = preg_replace_callback('/\#([^ .\[\]]+)/', function ($res) use (&$attributes) {
+                $attributes['id'] = $res[1];
+                return '';
+            }, $name) ?? $name;
+        }
+
+        $parts = explode('.', $name);
+
+        if (null === ($name = array_shift($parts))) {
+            throw Glitch::EUnexpectedValue('Unable to parse tag class definition', null, $origName);
+        }
+
+        if (!empty($parts)) {
+            $attributes['class'] = implode(' ', $parts);
+        }
+
+        $cdata = false;
+
+        if (substr($name, 0, 1) === '@') {
+            $cdata = true;
+            $name = substr($name, 1);
+        }
+
+        $this->document->startElement($name);
+        $this->currentNode = self::ELEMENT;
+
+        if ($cdata) {
+            $this->currentNode = self::CDATA_ELEMENT;
+        }
+
+        if (!empty($attributes)) {
             $this->setAttributes($attributes);
         }
 
-        $this->currentNode = self::ELEMENT;
         $this->rootWritten = true;
 
         return $this;
@@ -225,11 +292,23 @@ class Writer implements Markup, AttributeContainer, ArrayAccess
      */
     public function endElement(): Writer
     {
-        if ($this->currentNode !== self::ELEMENT) {
+        if ($this->currentNode === self::CDATA) {
+            $this->completeCurrentNode();
+        }
+
+        if (
+            $this->currentNode !== self::ELEMENT &&
+            $this->currentNode !== self::CDATA_ELEMENT
+        ) {
             throw Glitch::ELogic('XML writer is not currently writing an element');
         }
 
         $this->completeCurrentNode();
+
+        if ($this->currentNode === self::CDATA_ELEMENT) {
+            $this->document->endCData();
+        }
+
         $this->document->endElement();
         $this->currentNode = self::ELEMENT;
 
@@ -239,10 +318,32 @@ class Writer implements Markup, AttributeContainer, ArrayAccess
     /**
      * Store element content ready for writing
      */
-    public function setElementContent(string $content): Writer
+    public function setElementContent($content): Writer
     {
-        $this->elementContent = $content;
+        $this->elementContent = $this->renderContent($content);
         return $this;
+    }
+
+    /**
+     * Render element content to string
+     */
+    protected function renderContent($content): ?string
+    {
+        if (is_callable($content) && is_object($content)) {
+            return $this->renderContent($content($this));
+        }
+
+        if (is_iterable($content) && !$content instanceof Markup) {
+            $this->completeCurrentNode();
+
+            foreach ($content as $part) {
+                $this->document->text($this->renderContent($part));
+            }
+
+            return null;
+        }
+
+        return (string)$content;
     }
 
     /**
@@ -292,7 +393,7 @@ class Writer implements Markup, AttributeContainer, ArrayAccess
     public function writeCDataContent(string $content): Writer
     {
         if ($this->currentNode !== self::CDATA) {
-            throw Glitch::ELogic('XML writer is not current writing CDATA');
+            throw Glitch::ELogic('XML writer is not currently writing CDATA');
         }
 
         $content = self::normalizeString($content);
@@ -451,6 +552,7 @@ class Writer implements Markup, AttributeContainer, ArrayAccess
     {
         switch ($this->currentNode) {
             case self::ELEMENT:
+            case self::CDATA_ELEMENT:
                 foreach ($this->attributes as $key => $value) {
                     if (is_bool($value)) {
                         $value = $value ? 'true' : 'false';
@@ -467,6 +569,10 @@ class Writer implements Markup, AttributeContainer, ArrayAccess
 
                 $this->attributes = [];
                 $this->rawAttributeNames = [];
+
+                if ($this->currentNode === self::CDATA_ELEMENT) {
+                    $this->document->startCData();
+                }
 
                 if ($this->elementContent !== null) {
                     $content = self::normalizeString($this->elementContent);
