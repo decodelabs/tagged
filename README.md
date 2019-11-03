@@ -15,7 +15,17 @@ PHP markup generation without the fuss.
 composer install decodelabs/tagged
 ```
 
-## Usage
+### Importing
+
+The Html factory of Tagged uses a [Veneer Facade](https://github.com/decodelabs/veneer) so you don't _need_ to add any <code>use</code> declarations to your code, the class will be aliased into whatever namespace you are working in.
+
+However, if you want to avoid filling your namespace with class aliases, you can import the Facade with:
+
+```php
+use DecodeLabs\Tagged\Html;
+```
+
+## HTML markup
 
 Generate markup using a simple, flexible interface.
 
@@ -164,32 +174,59 @@ Html::$toText->preview('<h1>My html</h1>', 5); // My ht...
 ```
 
 
-## Namespaces
+## XML handling
 
-Because Tagged uses [Veneer](https://github.com/decodelabs/veneer) to generate the <code>Html</code> facade, sometimes it is possible for class name collisions if you use Tagged in the same namespace as dynamically loaded classes (in frameworks for example).
+### Reading & manipulating
 
-In this case, it is best to declare the namespace for the <code>Html</code> facade (rather than depending on auto-loading) to avoid clashes with any classes (or potential future classes!) in your current namespace called <code>Html</code>.
-
-For simplicity, the facade should be declared as being in <code>DecodeLabs\Tagged\Html</code>.
+Access and manipulate XML files with a consolidated interface wrapping the DOM functionality available in PHP:
 
 ```php
-namespace MyFramework\Plugins;
+use DecodeLabs\Tagged\Xml\Element as XmlElement;
 
-/**
- * Declare the Html facade as in the Tagged library, not local namespace
- *
- * Under normal circumstances this wouldn't be necessary, however without
- * this use statement, the Facade would be aliased as MyFramework\Plugins\Html
- * and could conflict with other plugin classes
- */
-use DecodeLabs\Tagged\Html;
+$element = XmlElement::fromFile('/path/to/my/file.xml');
 
-class MyPlugin {
-    public function doSomething() {
-        return Html::div('hello world');
-    }
+if($element->hasAttribute('old')) {
+    $element->removeAttribute('old');
 }
+
+$element->setAttribute('new', 'value');
+
+foreach($element->scanChildrenOfType('section') as $sectTag) {
+    $inner = $sectTag->getFirstChildOfType('title');
+    $sectTag->removeChild($inner);
+
+    // Flatten to plain text
+    echo $sectTag->getComposedTextContent();
+}
+
+file_put_contents('newfile.xml', (string)$element);
 ```
+
+See [Element.php](./src/Tagged/Xml/Element.php) for the full interface.
+
+
+### Writing
+
+Programatically generate XML output with a full-featured wrapper around PHP's XML Writer:
+
+```php
+use DecodeLabs\Tagged\Xml\Writer as XmlWriter;
+
+$writer = new XmlWriter();
+$writer->startElement('section', [
+    'attr1' => 'value'
+]);
+
+$writer->writeElement('title', 'This is a title', [
+    'id' => 'main'
+]);
+
+$writer->writeCDataElement('body', 'This is a content element with value wrapped in CDATA tags');
+
+$writer->endElement();
+```
+
+See [Writer.php](./src/Tagged/Xml/Writer.php) for the full interface.
 
 
 ## Licensing
