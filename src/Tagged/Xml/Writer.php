@@ -6,6 +6,7 @@
 declare(strict_types=1);
 namespace DecodeLabs\Tagged\Xml;
 
+use DecodeLabs\Tagged\Markup;
 use DecodeLabs\Tagged\Xml\Element;
 
 use DecodeLabs\Collections\AttributeContainer;
@@ -15,7 +16,7 @@ use DecodeLabs\Glitch;
 use XMLWriter;
 use ArrayAccess;
 
-class Writer implements AttributeContainer, ArrayAccess
+class Writer implements Markup, AttributeContainer, ArrayAccess
 {
     const ELEMENT = 1;
     const CDATA = 2;

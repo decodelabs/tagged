@@ -6,13 +6,14 @@
 declare(strict_types=1);
 namespace DecodeLabs\Tagged\Xml;
 
+use DecodeLabs\Tagged\Markup;
 use DecodeLabs\Collections\AttributeContainer;
 use DecodeLabs\Glitch;
 
 use Countable;
 use ArrayAccess;
 
-class Element implements AttributeContainer, Countable, ArrayAccess
+class Element implements Markup, AttributeContainer, Countable, ArrayAccess
 {
     protected $element;
 
