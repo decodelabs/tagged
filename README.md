@@ -224,6 +224,8 @@ $writer->writeElement('title', 'This is a title', [
 $writer->writeCDataElement('body', 'This is a content element with value wrapped in CDATA tags');
 
 $writer->endElement();
+
+echo $writer;
 ```
 
 See [Writer.php](./src/Tagged/Xml/Writer.php) for the full interface.
