@@ -7,18 +7,24 @@ declare(strict_types=1);
 namespace DecodeLabs\Tagged\Xml;
 
 use DecodeLabs\Tagged\Markup;
+use DecodeLabs\Tagged\Xml\Provider;
 use DecodeLabs\Tagged\Xml\Element;
 
 use DecodeLabs\Collections\AttributeContainer;
 use DecodeLabs\Collections\AttributeContainerTrait;
 
 use DecodeLabs\Atlas;
+use DecodeLabs\Atlas\File;
+
 use DecodeLabs\Glitch;
+use DecodeLabs\Glitch\Inspectable;
+use DecodeLabs\Glitch\Dumper\Entity;
+use DecodeLabs\Glitch\Dumper\Inspector;
 
 use XMLWriter;
 use ArrayAccess;
 
-class Writer implements Markup, AttributeContainer, ArrayAccess
+class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Inspectable
 {
     const ELEMENT = 1;
     const CDATA = 2;
@@ -30,6 +36,7 @@ class Writer implements Markup, AttributeContainer, ArrayAccess
 
     protected $document;
     protected $path;
+
     protected $headerWritten = false;
     protected $dtdWritten = false;
     protected $rootWritten = false;
@@ -44,7 +51,13 @@ class Writer implements Markup, AttributeContainer, ArrayAccess
      */
     public static function createFile(string $path): Writer
     {
-        return new self($path);
+        $dir = dirname($path);
+        Atlas::$fs->createDir($dir);
+
+        $document = new XmlWriter();
+        $document->openURI($path);
+
+        return new self($document, $path);
     }
 
     /**
@@ -58,19 +71,22 @@ class Writer implements Markup, AttributeContainer, ArrayAccess
     /**
      * Init with optional file path
      */
-    public function __construct(string $path=null)
+    protected function __construct(XmlWriter $document=null, ?string $path=null)
     {
-        $this->document = new XMLWriter();
-
-        if ($path !== null) {
-            $dir = dirname($path);
-            Atlas::$fs->createDir($dir);
-
-            $this->path = $path;
-            $this->document->openURI($path);
-        } else {
-            $this->document->openMemory();
+        if ($document === null) {
+            $document = new XmlWriter();
+            $document->openMemory();
         }
+
+        $this->path = $path;
+
+        try {
+            $document->outputMemory(false);
+        } catch (\Throwable $e) {
+            $document->openMemory();
+        }
+
+        $this->document = $document;
 
         $this->document->setIndent(true);
         $this->document->setIndentString('    ');
@@ -636,20 +652,60 @@ class Writer implements Markup, AttributeContainer, ArrayAccess
     }
 
     /**
-     * Convert to
+     * Convert to string
      */
-    public function toElement(): Element
+    public function toXmlString(bool $embedded=false): string
     {
-        return Element::fromString($this->__toString());
+        $this->finalize();
+        $string = $this->__toString();
+
+        if (!$embedded || !$this->headerWritten) {
+            return $string;
+        }
+
+        $element = Element::fromString($string);
+        return $element->__toString();
+    }
+
+    /**
+     * Export to file
+     */
+    public function toXmlFile(string $path): File
+    {
+        $this->finalize();
+
+        if ($path === $this->path) {
+            return Atlas::$fs->file($this->path);
+        }
+
+        if ($this->path !== null) {
+            return Atlas::$fs->copyFile($this->path, $path);
+        }
+
+        return Atlas::$fs->createFile($path, $this->__toString());
+    }
+
+    /**
+     * Convert to Element instance
+     */
+    public function toXmlElement(): Element
+    {
+        $this->finalize();
+
+        if ($this->path !== null) {
+            return Element::fromXmlFile($this->path);
+        } else {
+            return Element::fromXmlString($this->__toString());
+        }
     }
 
     /**
      * Import XML string from reader node
      */
-    public function importElement(Element $reader)
+    public function importXmlElement(Element $element)
     {
         $this->completeCurrentNode();
-        $this->document->writeRaw($reader->__toString());
+        $this->document->writeRaw($element->__toString());
         return $this;
     }
 
@@ -666,7 +722,9 @@ class Writer implements Markup, AttributeContainer, ArrayAccess
      */
     public function __toString(): string
     {
-        if ($this->path) {
+        if ($this->path !== null) {
+            $this->document->flush();
+
             if (false === ($output = file_get_contents($this->path))) {
                 throw Glitch::EUnexpectedValue('Unable to read contents of file', null, $this->path);
             }
@@ -718,5 +776,17 @@ class Writer implements Markup, AttributeContainer, ArrayAccess
         return [
             'xml' => $this->__toString()
         ];
+    }
+
+    /**
+     * Inspect for Glitch
+     */
+    public function glitchInspect(Entity $entity, Inspector $inspector): void
+    {
+        $entity->setText($this->__toString());
+
+        if ($this->path !== null) {
+            $entity->setProperty('*path', $inspector($this->path));
+        }
     }
 }

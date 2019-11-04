@@ -7,13 +7,26 @@ declare(strict_types=1);
 namespace DecodeLabs\Tagged\Xml;
 
 use DecodeLabs\Tagged\Markup;
+use DecodeLabs\Tagged\Xml\Consumer;
+use DecodeLabs\Tagged\Xml\Provider;
+
 use DecodeLabs\Collections\AttributeContainer;
+
+use DecodeLabs\Atlas;
+use DecodeLabs\Atlas\File;
+
 use DecodeLabs\Glitch;
 
 use Countable;
 use ArrayAccess;
 
-class Element implements Markup, AttributeContainer, Countable, ArrayAccess
+class Element implements
+    Markup,
+    Consumer,
+    Provider,
+    AttributeContainer,
+    Countable,
+    ArrayAccess
 {
     protected $element;
 
@@ -21,6 +34,20 @@ class Element implements Markup, AttributeContainer, Countable, ArrayAccess
      * Create instance from file
      */
     public static function fromFile(string $path): Element
+    {
+        $extension = strtolower((string)pathinfo($path, \PATHINFO_EXTENSION));
+
+        if ($extension === 'html' || $extension === 'htm') {
+            return static::fromHtmlFile($path);
+        }
+
+        return static::fromXmlFile($path);
+    }
+
+    /**
+     * Create instance from XML file
+     */
+    public static function fromXmlFile(string $path): Element
     {
         try {
             $document = static::newDomDocument();
@@ -38,6 +65,18 @@ class Element implements Markup, AttributeContainer, Countable, ArrayAccess
      * Create instance from string
      */
     public static function fromString(string $xml): Element
+    {
+        if (preg_match('/^\<\!DOCTYPE html\>/', $xml)) {
+            return static::fromHtmlString($xml);
+        }
+
+        return static::fromXmlString($xml);
+    }
+
+    /**
+     * Create instance from XML string
+     */
+    public static function fromXmlString(string $xml): Element
     {
         $xml = trim($xml);
 
@@ -91,6 +130,14 @@ class Element implements Markup, AttributeContainer, Countable, ArrayAccess
         }
 
         return static::fromDOMDocument($document);
+    }
+
+    /**
+     * Passthrough
+     */
+    public static function fromXmlElement(Element $element)
+    {
+        return $element;
     }
 
     /**
@@ -1343,6 +1390,42 @@ class Element implements Markup, AttributeContainer, Countable, ArrayAccess
     {
         return $this->element->ownerDocument->saveXML();
     }
+
+
+    /**
+     * Export to string
+     */
+    public function toXmlString(bool $embedded=false): string
+    {
+        $isRoot = $this->element === $this->element->ownerDocument->documentElement;
+
+        if ($isRoot && !$embedded) {
+            return $this->documentToString();
+        } else {
+            return $this->__toString();
+        }
+    }
+
+    /**
+     * Export xml to file
+     */
+    public function toXmlFile(string $path): File
+    {
+        $dir = dirname($path);
+        Atlas::$fs->createDir($dir);
+
+        $this->element->ownerDocument->save($path);
+        return Atlas::$fs->file($path);
+    }
+
+    /**
+     * Passthrough
+     */
+    public function toXmlElement(): Element
+    {
+        return $this;
+    }
+
 
     /**
      * Normalize string for writing
