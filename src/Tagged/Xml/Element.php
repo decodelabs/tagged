@@ -170,6 +170,15 @@ class Element implements
     }
 
     /**
+     * Create instance from DOMElement
+     */
+    public static function fromDomElement(\DOMElement $element): Element
+    {
+        $element->ownerDocument->formatOutput = true;
+        return new static($element);
+    }
+
+    /**
      * Create a new DOMDocument
      */
     protected static function newDomDocument(): \DOMDocument
