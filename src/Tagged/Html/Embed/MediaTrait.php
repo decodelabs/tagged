@@ -132,10 +132,10 @@ trait MediaTrait
      */
     public static function getClassForUrl(string $url): string
     {
-        $class = Video::class;
+        $class = get_called_class();
 
         if ($provider = self::extractProviderName($url)) {
-            $customClass = '\\DecodeLabs\\Tagged\\Embed\\'.ucfirst($provider);
+            $customClass = '\\DecodeLabs\\Tagged\\Html\\Embed\\'.ucfirst($provider);
 
             if (class_exists($customClass)) {
                 $class = $customClass;
