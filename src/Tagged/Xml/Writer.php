@@ -722,7 +722,7 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Inspe
     public function importXmlElement(Element $element)
     {
         $this->completeCurrentNode();
-        $this->document->writeRaw($element->__toString());
+        $this->document->writeRaw("\n".$element->__toString()."\n");
         return $this;
     }
 
