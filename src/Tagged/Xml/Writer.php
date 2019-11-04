@@ -42,7 +42,7 @@ class Writer implements Markup, AttributeContainer, ArrayAccess
     /**
      * Create file writer
      */
-    public function createFile(string $path): Writer
+    public static function createFile(string $path): Writer
     {
         return new self($path);
     }
@@ -50,7 +50,7 @@ class Writer implements Markup, AttributeContainer, ArrayAccess
     /**
      * Create writer in memory
      */
-    public function create(): Writer
+    public static function create(): Writer
     {
         return new self();
     }
