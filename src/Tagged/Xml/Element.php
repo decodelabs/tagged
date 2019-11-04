@@ -30,6 +30,26 @@ class Element implements
 {
     protected $element;
 
+
+    /**
+     * Create from any xml type
+     */
+    public static function fromXml($xml)
+    {
+        if ($xml instanceof self) {
+            return $xml;
+        } elseif ($xml instanceof Provider) {
+            return $xml->toXmlElement();
+        } elseif ($xml instanceof File) {
+            return static::fromFile($xml->getPath());
+        } elseif (is_string($xml) || (is_object($xml) && method_exists($xml, '__toString'))) {
+            return static::fromXmlString((string)$xml);
+        } else {
+            throw Glitch::EUnexpectedValue('Unable to convert item to XML Element', null, $xml);
+        }
+    }
+
+
     /**
      * Create instance from file
      */

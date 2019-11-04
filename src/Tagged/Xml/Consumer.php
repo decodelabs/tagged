@@ -10,6 +10,7 @@ use DecodeLabs\Tagged\Xml\Element;
 
 interface Consumer
 {
+    public static function fromXml($xml);
     public static function fromXmlFile(string $path);
     public static function fromXmlString(string $xml);
     public static function fromXmlElement(Element $element);
