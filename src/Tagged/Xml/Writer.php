@@ -101,6 +101,14 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Inspe
         return $this->document;
     }
 
+    /**
+     * Get active file path
+     */
+    public function getFilePath(): ?string
+    {
+        return $this->path;
+    }
+
 
     /**
      * Write initial XML header
