@@ -50,7 +50,7 @@ class Writer implements Markup, AttributeContainer, ArrayAccess
     /**
      * Create writer in memory
      */
-    public function createMemory(): Writer
+    public function create(): Writer
     {
         return new self();
     }
