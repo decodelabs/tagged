@@ -17,6 +17,8 @@ use DecodeLabs\Atlas\File;
 
 use DecodeLabs\Glitch;
 
+use DOMDocument;
+use DOMElement;
 use Countable;
 use ArrayAccess;
 
@@ -40,6 +42,10 @@ class Element implements
             return $xml;
         } elseif ($xml instanceof Provider) {
             return $xml->toXmlElement();
+        } elseif ($xml instanceof DOMDocument) {
+            return static::fromDomDocument($xml);
+        } elseif ($xml instanceof DOMElement) {
+            return static::fromDomElement($xml);
         } elseif ($xml instanceof File) {
             return static::fromFile($xml->getPath());
         } elseif (is_string($xml) || (is_object($xml) && method_exists($xml, '__toString'))) {
@@ -141,7 +147,7 @@ class Element implements
     public static function fromHtmlString(string $xml): Element
     {
         try {
-            $document = static::newDOMDocument();
+            $document = static::newDomDocument();
             $document->loadHTML($xml);
         } catch (\Throwable $e) {
             throw Glitch::EIo('Unable to load HTML string', [
@@ -149,7 +155,7 @@ class Element implements
             ]);
         }
 
-        return static::fromDOMDocument($document);
+        return static::fromDomDocument($document);
     }
 
     /**
@@ -163,7 +169,7 @@ class Element implements
     /**
      * Create instance from DOMDocument
      */
-    public static function fromDomDocument(\DOMDocument $document): Element
+    public static function fromDomDocument(DOMDocument $document): Element
     {
         $document->formatOutput = true;
         return new static($document->documentElement);
@@ -172,7 +178,7 @@ class Element implements
     /**
      * Create instance from DOMElement
      */
-    public static function fromDomElement(\DOMElement $element): Element
+    public static function fromDomElement(DOMElement $element): Element
     {
         $element->ownerDocument->formatOutput = true;
         return new static($element);
@@ -181,9 +187,9 @@ class Element implements
     /**
      * Create a new DOMDocument
      */
-    protected static function newDomDocument(): \DOMDocument
+    protected static function newDomDocument(): DOMDocument
     {
-        $output = new \DOMDocument();
+        $output = new DOMDocument();
         $output->formatOutput = true;
         return $output;
     }
@@ -191,7 +197,7 @@ class Element implements
     /**
      * Init with DOMElement
      */
-    public function __construct(\DOMElement $element)
+    public function __construct(DOMElement $element)
     {
         $this->element = $element;
     }
@@ -979,7 +985,7 @@ class Element implements
     {
         $origChild = $origChild->getDomElement();
 
-        if (!$origChild instanceof \DOMElement) {
+        if (!$origChild instanceof DOMElement) {
             throw Glitch::EInvalidArgument(
                 'Original child is not a valid element'
             );
@@ -1109,7 +1115,7 @@ class Element implements
             }
         }
 
-        if (!$node instanceof \DOMElement) {
+        if (!$node instanceof DOMElement) {
             return null;
         }
 
@@ -1129,7 +1135,7 @@ class Element implements
             }
         }
 
-        if (!$node instanceof \DOMElement) {
+        if (!$node instanceof DOMElement) {
             return null;
         }
 
@@ -1370,7 +1376,7 @@ class Element implements
     /**
      * Get root document
      */
-    public function getDomDocument(): \DOMDocument
+    public function getDomDocument(): DOMDocument
     {
         return $this->element->ownerDocument;
     }
@@ -1378,7 +1384,7 @@ class Element implements
     /**
      * Get inner dom element
      */
-    public function getDomElement(): \DOMElement
+    public function getDomElement(): DOMElement
     {
         return $this->element;
     }
@@ -1386,7 +1392,7 @@ class Element implements
     /**
      * Ensure input is DomElement
      */
-    protected function normalizeInputChild($child, $value=null): \DOMElement
+    protected function normalizeInputChild($child, $value=null): DOMElement
     {
         $node = null;
 
@@ -1394,7 +1400,7 @@ class Element implements
             $node = $child->getDOMElement();
         }
 
-        if ($node instanceof \DOMElement) {
+        if ($node instanceof DOMElement) {
             $node = $this->element->ownerDocument->importNode($node, true);
         } else {
             $node = $this->element->ownerDocument->createElement((string)$child, $value);

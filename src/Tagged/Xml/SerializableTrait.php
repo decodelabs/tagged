@@ -24,8 +24,12 @@ trait SerializableTrait
             return $xml;
         } elseif ($xml instanceof Provider) {
             return static::fromXmlElement($xml->toXmlElement());
+        } elseif ($xml instanceof DOMDocument) {
+            return static::fromXmlElement(Element::fromDomDocument($xml));
+        } elseif ($xml instanceof DOMElement) {
+            return static::fromXmlElement(Element::fromDomElement($xml));
         } elseif ($xml instanceof File) {
-            return static::fromFile($xml->getPath());
+            return static::fromXmlFile($xml->getPath());
         } elseif (is_string($xml) || (is_object($xml) && method_exists($xml, '__toString'))) {
             return static::fromXmlString((string)$xml);
         } else {
