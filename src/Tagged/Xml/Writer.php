@@ -11,6 +11,8 @@ use DecodeLabs\Tagged\Xml\Element;
 
 use DecodeLabs\Collections\AttributeContainer;
 use DecodeLabs\Collections\AttributeContainerTrait;
+
+use DecodeLabs\Atlas;
 use DecodeLabs\Glitch;
 
 use XMLWriter;
@@ -38,6 +40,22 @@ class Writer implements Markup, AttributeContainer, ArrayAccess
     protected $currentNode = null;
 
     /**
+     * Create file writer
+     */
+    public function createFile(string $path): Writer
+    {
+        return new self($path);
+    }
+
+    /**
+     * Create writer in memory
+     */
+    public function createMemory(): Writer
+    {
+        return new self();
+    }
+
+    /**
      * Init with optional file path
      */
     public function __construct(string $path=null)
@@ -46,10 +64,7 @@ class Writer implements Markup, AttributeContainer, ArrayAccess
 
         if ($path !== null) {
             $dir = dirname($path);
-
-            if (!is_dir($dir)) {
-                throw Glitch::EIo('Xml path is not writable');
-            }
+            Atlas::$fs->createDir($dir);
 
             $this->path = $path;
             $this->document->openURI($path);
@@ -623,7 +638,7 @@ class Writer implements Markup, AttributeContainer, ArrayAccess
     /**
      * Convert to
      */
-    public function toReader(): Element
+    public function toElement(): Element
     {
         return Element::fromString($this->__toString());
     }
@@ -631,7 +646,7 @@ class Writer implements Markup, AttributeContainer, ArrayAccess
     /**
      * Import XML string from reader node
      */
-    public function importReader(Element $reader)
+    public function importElement(Element $reader)
     {
         $this->completeCurrentNode();
         $this->document->writeRaw($reader->__toString());

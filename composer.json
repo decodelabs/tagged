@@ -19,7 +19,8 @@
         "decodelabs/collections": "~0.5",
         "decodelabs/gadgets": "~0.6",
         "decodelabs/veneer": "~0.5",
-        "decodelabs/systemic": "~0.5"
+        "decodelabs/systemic": "~0.6",
+        "decodelabs/atlas": "~0.7"
     },
     "require-dev": {
         "phpunit/phpunit": "^8",
