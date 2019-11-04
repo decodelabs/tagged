@@ -50,7 +50,7 @@ trait SerializableTrait
      */
     public static function fromXmlString(string $xml)
     {
-        return static::fromXmlElement(Element::fromXmlString($string));
+        return static::fromXmlElement(Element::fromXmlString($xml));
     }
 
     /**
@@ -61,7 +61,7 @@ trait SerializableTrait
         $class = get_called_class();
         $ref = new \ReflectionClass($class);
 
-        if ($ref->isInstantable()) {
+        if (!$ref->isInstantiable()) {
             throw Glitch::ELogic('XML consumer cannot be instantiated', null, $class);
         }
 
