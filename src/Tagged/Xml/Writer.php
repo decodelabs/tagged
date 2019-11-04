@@ -54,7 +54,7 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Inspe
         $dir = dirname($path);
         Atlas::$fs->createDir($dir);
 
-        $document = new XmlWriter();
+        $document = new XMLWriter();
         $document->openURI($path);
 
         return new self($document, $path);
@@ -71,10 +71,10 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Inspe
     /**
      * Init with optional file path
      */
-    protected function __construct(XmlWriter $document=null, ?string $path=null)
+    protected function __construct(XMLWriter $document=null, ?string $path=null)
     {
         if ($document === null) {
-            $document = new XmlWriter();
+            $document = new XMLWriter();
             $document->openMemory();
         }
 
@@ -90,6 +90,15 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Inspe
 
         $this->document->setIndent(true);
         $this->document->setIndentString('    ');
+    }
+
+
+    /**
+     * Get raw XMLWriter document
+     */
+    public function getDocument(): XMLWriter
+    {
+        return $this->document;
     }
 
 
