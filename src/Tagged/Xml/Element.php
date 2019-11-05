@@ -284,9 +284,15 @@ class Element implements
     /**
      * Get single attribute value
      */
-    public function getAttribute(string $key)
+    public function getAttribute(string $key): ?string
     {
-        return $this->element->getAttribute($key);
+        $output = $this->element->getAttribute($key);
+
+        if (!strlen($output)) {
+            $output = null;
+        }
+
+        return $output;
     }
 
     /**
@@ -294,7 +300,7 @@ class Element implements
      */
     public function getBooleanAttribute(string $name): bool
     {
-        switch ($text = strtolower(trim($this->getAttribute($name)))) {
+        switch ($text = strtolower(trim((string)$this->getAttribute($name)))) {
             case 'false':
             case '0':
             case 'no':
