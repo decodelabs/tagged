@@ -407,17 +407,17 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Inspe
     /**
      * Write a full CDATA section
      */
-    public function writeCData(string $content): Writer
+    public function writeCData(?string $content): Writer
     {
         $this->startCData();
-        $this->writeCDataContent($content);
+        $this->writeCDataContent((string)$content);
         return $this->endCData();
     }
 
     /**
      * Write new element with CDATA section
      */
-    public function writeCDataElement(string $name, string $content, array $attributes=null): Writer
+    public function writeCDataElement(string $name, ?string $content, array $attributes=null): Writer
     {
         $this->startElement($name, $attributes);
         $this->writeCData($content);
@@ -438,7 +438,7 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Inspe
     /**
      * Write content for CDATA section
      */
-    public function writeCDataContent(string $content): Writer
+    public function writeCDataContent(?string $content): Writer
     {
         if ($this->currentNode !== self::CDATA) {
             throw Glitch::ELogic('XML writer is not currently writing CDATA');
@@ -467,7 +467,7 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Inspe
     /**
      * Write comment in one go
      */
-    public function writeComment(string $comment): Writer
+    public function writeComment(?string $comment): Writer
     {
         $this->startComment();
         $this->writeCommentContent($comment);
@@ -488,7 +488,7 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Inspe
     /**
      * Write comment body
      */
-    public function writeCommentContent(string $comment): Writer
+    public function writeCommentContent(?string $comment): Writer
     {
         if ($this->currentNode !== self::COMMENT) {
             throw Glitch::ELogic('XML writer is not currently writing a comment');
@@ -517,7 +517,7 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Inspe
     /**
      * Write PI in one go
      */
-    public function writePi(string $target, string $content): Writer
+    public function writePi(string $target, ?string $content): Writer
     {
         $this->startPi($target);
         $this->writePiContent($content);
@@ -538,13 +538,13 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Inspe
     /**
      * Write PI content
      */
-    public function writePiContent(string $content): Writer
+    public function writePiContent(?string $content): Writer
     {
         if ($this->currentNode !== self::PI) {
             throw Glitch::ELogic('XML writer is not currently writing a processing instruction');
         }
 
-        $this->document->text($content);
+        $this->document->text((string)$content);
         return $this;
     }
 
@@ -586,9 +586,9 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Inspe
     /**
      * Write directly to XML buffer
      */
-    public function writeRaw(string $content): Writer
+    public function writeRaw(?string $content): Writer
     {
-        $this->document->writeRaw($content);
+        $this->document->writeRaw((string)$content);
         return $this;
     }
 
@@ -729,9 +729,9 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Inspe
     /**
      * Normalize string for writing
      */
-    protected static function normalizeString(string $string): string
+    protected static function normalizeString(?string $string): string
     {
-        return (string)preg_replace('/[^\x{0009}\x{000a}\x{000d}\x{0020}-\x{D7FF}\x{E000}-\x{FFFD}]+/u', '', $string);
+        return (string)preg_replace('/[^\x{0009}\x{000a}\x{000d}\x{0020}-\x{D7FF}\x{E000}-\x{FFFD}]+/u', '', (string)$string);
     }
 
     /**
