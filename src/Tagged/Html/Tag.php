@@ -114,6 +114,127 @@ class Tag implements TagInterface, ClassListContainer, StyleListContainer, Inspe
 
 
     /**
+     * Add data attributes with map
+     */
+    public function setDataAttributes(array $attributes): AttributeContainer
+    {
+        foreach ($attributes as $key => $value) {
+            $this->setDataAttribute($key, $value);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Replace all data attributes with new map
+     */
+    public function replaceDataAttributes(array $attributes): AttributeContainer
+    {
+        $this->clearDataAttributes();
+        return $this->setDataAttributes($attributes);
+    }
+
+    /**
+     * Get map of current data attributes
+     */
+    public function getDataAttributes(): array
+    {
+        $output = [];
+
+        foreach ($this->attributes as $key => $value) {
+            if (preg_match('/^data\-/i', $key)) {
+                $output[$key] = $value;
+            }
+        }
+
+        return $output;
+    }
+
+    /**
+     * Replace single data value
+     */
+    public function setDataAttribute(string $key, $value): AttributeContainer
+    {
+        return $this->setAttribute('data-'.$key, $value);
+    }
+
+    /**
+     * Retrieve data attribute value if set
+     */
+    public function getDataAttribute(string $key)
+    {
+        return $this->getAttribute('data-'.$key);
+    }
+
+    /**
+     * Remove single data attribute
+     */
+    public function removeDataAttribute(string ...$keys): AttributeContainer
+    {
+        $keys = array_map(function ($key) {
+            return 'data-'.$key;
+        }, $keys);
+
+        return $this->removeAttribute(...$keys);
+    }
+
+    /**
+     *  Have any of these data attributes been set?
+     */
+    public function hasDataAttribute(string ...$keys): bool
+    {
+        $keys = array_map(function ($key) {
+            return 'data-'.$key;
+        }, $keys);
+
+        return $this->hasAttribute(...$keys);
+    }
+
+    /**
+     *  Have all of these data attributes been set?
+     */
+    public function hasDataAttributes(string ...$keys): bool
+    {
+        $keys = array_map(function ($key) {
+            return 'data-'.$key;
+        }, $keys);
+
+        return $this->hasAttributes(...$keys);
+    }
+
+    /**
+     * Remove all data attributes
+     */
+    public function clearDataAttributes(): AttributeContainer
+    {
+        foreach ($this->attributes as $key => $value) {
+            if (preg_match('/^data\-/i', $key)) {
+                $this->removeAttribute($key);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * How many data attributes have been set?
+     */
+    public function countDataAttributes(): int
+    {
+        $output = 0;
+
+        foreach ($this->attributes as $key => $value) {
+            if (preg_match('/^data\-/i', $key)) {
+                $output++;
+            }
+        }
+
+        return $output;
+    }
+
+
+
+    /**
      * Toggle hidden attribute on/off
      */
     public function setHidden(bool $hidden): TagInterface
