@@ -888,6 +888,18 @@ class Element implements
         return $node->getTextContent();
     }
 
+    /**
+     * Get CDATA content of first child of type
+     */
+    public function getChildCDataContent(string $name): ?string
+    {
+        if (!$node = $this->getFirstChildOfType($name)) {
+            return null;
+        }
+
+        return $node->getFirstCDataSection();
+    }
+
 
 
     /**
