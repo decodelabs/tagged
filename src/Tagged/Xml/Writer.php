@@ -611,7 +611,7 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Inspe
                         $this->document->writeRaw($value);
                         $this->document->endAttribute();
                     } else {
-                        $this->document->writeAttribute($key, $value);
+                        $this->document->writeAttribute($key, (string)$value);
                     }
                 }
 
