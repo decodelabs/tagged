@@ -4,25 +4,29 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace DecodeLabs\Tagged\Embed;
+namespace DecodeLabs\Tagged\Html\Embed;
 
-use DecodeLabs\Tagged\Buffer;
-use DecodeLabs\Tagged\Builder\Html\ContentCollection;
-use DecodeLabs\Tagged\Builder\Html\Tag;
-use DecodeLabs\Tagged\Builder\Html\Element;
-
-use DecodeLabs\Tagged\Embed\Media;
 use DecodeLabs\Tagged\Markup;
+use DecodeLabs\Tagged\Buffer;
 
-class Audio implements Media
+use DecodeLabs\Tagged\Html\ContentCollection;
+use DecodeLabs\Tagged\Html\Tag;
+use DecodeLabs\Tagged\Html\Element;
+
+use DecodeLabs\Tagged\Html\Embed\Media;
+use DecodeLabs\Tagged\Html\Embed\MediaTrait;
+
+class Video implements Media
 {
     use MediaTrait;
 
     const URL_MAP = [
-        'audioboom' => 'audioboom',
-        'audioboo' => 'audioboom'
+        'youtube' => 'youtube',
+        'youtu.be' => 'youtube',
+        'vimeo' => 'vimeo'
     ];
 
+    protected $useApi = false;
 
 
     /**
@@ -30,7 +34,24 @@ class Audio implements Media
      */
     public static function defaultUrlFromId(string $id): string
     {
-        return '//embeds.audioboom.com/boos/'.$id.'/embed/v4';
+        return '//www.youtube.com/embed/'.$id;
+    }
+
+    /**
+     * Set to use API (youtube)
+     */
+    public function setUseApi(bool $flag): Media
+    {
+        $this->useApi = $flag;
+        return $this;
+    }
+
+    /**
+     * Should use API?
+     */
+    public function shouldUseApi(): bool
+    {
+        return $this->useApi;
     }
 
 
@@ -41,7 +62,7 @@ class Audio implements Media
     public function render(): Markup
     {
         if (($this->url === null || !$this->provider) && $this->source !== null) {
-            return Element::create('div.embed.audio', new Buffer($this->source));
+            return Element::create('div.embed.video', new Buffer($this->source));
         }
 
         return $this->prepareIframeElement($this->url);
@@ -52,7 +73,7 @@ class Audio implements Media
      */
     protected function prepareIframeElement(string $url): Element
     {
-        $tag = Element::create('iframe.embed.audio', null, [
+        $tag = Element::create('iframe.embed.video', null, [
             'id' => $this->id,
             'src' => $url,
             'width' => $this->width,
@@ -71,7 +92,7 @@ class Audio implements Media
         }
 
         if ($this->provider) {
-            $tag->setAttribute('data-audio', $this->provider);
+            $tag->setAttribute('data-video', $this->provider);
         }
 
         return $tag;

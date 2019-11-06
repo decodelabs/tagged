@@ -4,14 +4,14 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace DecodeLabs\Tagged;
+namespace DecodeLabs\Tagged\Html;
 
 use DecodeLabs\Tagged\Markup;
 use DecodeLabs\Tagged\Buffer;
 use DecodeLabs\Tagged\Builder\Tag as TagInterface;
-use DecodeLabs\Tagged\Builder\Html\ContentCollection;
-use DecodeLabs\Tagged\Builder\Html\Tag;
-use DecodeLabs\Tagged\Builder\Html\Element;
+use DecodeLabs\Tagged\Html\ContentCollection;
+use DecodeLabs\Tagged\Html\Tag;
+use DecodeLabs\Tagged\Html\Element;
 
 use DecodeLabs\Veneer\FacadeTarget;
 use DecodeLabs\Veneer\FacadeTargetTrait;
@@ -21,7 +21,7 @@ use DecodeLabs\Veneer\FacadePlugin;
 
 use DecodeLabs\Glitch;
 
-class HtmlFactory implements Markup, FacadeTarget, FacadePluginAccessTarget
+class Factory implements Markup, FacadeTarget, FacadePluginAccessTarget
 {
     use FacadeTargetTrait;
     use FacadePluginAccessTargetTrait;
@@ -81,7 +81,7 @@ class HtmlFactory implements Markup, FacadeTarget, FacadePluginAccessTarget
             throw Glitch::EInvalidArgument($name.' is not a recognised facade plugin');
         }
 
-        $class = '\\DecodeLabs\\Tagged\\FactoryPlugins\\'.ucfirst($name);
+        $class = '\\DecodeLabs\\Tagged\\Html\\Plugins\\'.ucfirst($name);
         return new $class($this);
     }
 

@@ -4,15 +4,17 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace DecodeLabs\Tagged\Embed;
+namespace DecodeLabs\Tagged\Html\Embed;
 
-use DecodeLabs\Tagged\Buffer;
-use DecodeLabs\Tagged\Builder\Html\ContentCollection;
-use DecodeLabs\Tagged\Builder\Html\Tag;
-use DecodeLabs\Tagged\Builder\Html\Element;
-
-use DecodeLabs\Tagged\Embed\Media;
 use DecodeLabs\Tagged\Markup;
+use DecodeLabs\Tagged\Buffer;
+
+use DecodeLabs\Tagged\Html\ContentCollection;
+use DecodeLabs\Tagged\Html\Tag;
+use DecodeLabs\Tagged\Html\Element;
+
+use DecodeLabs\Tagged\Html\Embed\Media;
+use DecodeLabs\Tagged\Html\Embed\Video;
 
 use DecodeLabs\Collections\Tree\NativeMutable as Tree;
 

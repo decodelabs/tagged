@@ -1,4 +1,12 @@
 # Tagged
+
+[![PHP from Packagist](https://img.shields.io/packagist/php-v/decodelabs/tagged?style=flat-square)](https://packagist.org/packages/decodelabs/tagged)
+[![Latest Version](https://img.shields.io/packagist/v/decodelabs/tagged.svg?style=flat-square)](https://packagist.org/packages/decodelabs/tagged)
+[![Total Downloads](https://img.shields.io/packagist/dt/decodelabs/tagged.svg?style=flat-square)](https://packagist.org/packages/decodelabs/tagged)
+[![Build Status](https://img.shields.io/travis/decodelabs/tagged/develop.svg?style=flat-square)](https://travis-ci.org/decodelabs/tagged)
+[![PHPStan](https://img.shields.io/badge/PHPStan-enabled-44CC11.svg?longCache=true&style=flat-square)](https://github.com/phpstan/phpstan)
+[![License](https://img.shields.io/packagist/l/decodelabs/tagged?style=flat-square)](https://packagist.org/packages/decodelabs/tagged)
+
 PHP markup generation without the fuss.
 
 
@@ -7,7 +15,17 @@ PHP markup generation without the fuss.
 composer install decodelabs/tagged
 ```
 
-## Usage
+### Importing
+
+The Html factory of Tagged uses a [Veneer Facade](https://github.com/decodelabs/veneer) so you don't _need_ to add any <code>use</code> declarations to your code, the class will be aliased into whatever namespace you are working in.
+
+However, if you want to avoid filling your namespace with class aliases, you can import the Facade with:
+
+```php
+use DecodeLabs\Tagged\Html;
+```
+
+## HTML markup
 
 Generate markup using a simple, flexible interface.
 
@@ -15,12 +33,12 @@ Generate markup using a simple, flexible interface.
 echo Html::{'div.my-class#my-id'}('This is element content', [
     'title' => 'This is a title'
 ]);
+```
 
-/*
-Creates -
+...creates:
 
+```html
 <div class="my-class" id="my-id" title="This is a title">This is element content</div>
-*/
 ```
 
 Create individual tags without content:
@@ -156,33 +174,69 @@ Html::$toText->preview('<h1>My html</h1>', 5); // My ht...
 ```
 
 
-## Namespaces
+## XML handling
 
-Because Tagged uses [Veneer](https://github.com/decodelabs/veneer) to generate the <code>Html</code> facade, sometimes it is possible for class name collisions if you use Tagged in the same namespace as dynamically loaded classes (in frameworks for example).
+### Reading & manipulating
 
-In this case, it is best to declare the namespace for the <code>Html</code> facade (rather than depending on auto-loading) to avoid clashes with any classes (or potential future classes!) in your current namespace called <code>Html</code>.
-
-For simplicity, the facade should be declared as being in <code>DecodeLabs\Tagged\Html</code>.
+Access and manipulate XML files with a consolidated interface wrapping the DOM functionality available in PHP:
 
 ```php
-namespace MyFramework\Plugins;
+use DecodeLabs\Tagged\Xml\Element as XmlElement;
 
-/**
- * Declare the Html facade as in the Tagged library, not local namespace
- *
- * Under normal circumstances this wouldn't be necessary, however without
- * this use statement, the Facade would be aliased as MyFramework\Plugins\Html
- * and could conflict with other plugin classes
- */
-use DecodeLabs\Tagged\Html;
+$element = XmlElement::fromFile('/path/to/my/file.xml');
 
-class MyPlugin {
-    public function doSomething() {
-        return Html::div('hello world');
-    }
+if($element->hasAttribute('old')) {
+    $element->removeAttribute('old');
 }
+
+$element->setAttribute('new', 'value');
+
+foreach($element->scanChildrenOfType('section') as $sectTag) {
+    $inner = $sectTag->getFirstChildOfType('title');
+    $sectTag->removeChild($inner);
+
+    // Flatten to plain text
+    echo $sectTag->getComposedTextContent();
+}
+
+file_put_contents('newfile.xml', (string)$element);
 ```
+
+See [Element.php](./src/Tagged/Xml/Element.php) for the full interface.
+
+
+### Writing
+
+Programatically generate XML output with a full-featured wrapper around PHP's XML Writer:
+
+```php
+use DecodeLabs\Tagged\Xml\Writer as XmlWriter;
+
+$writer = new XmlWriter();
+$writer->writeHeader();
+
+$writer->{'ns:section[ns:attr1=value].test'}(function ($writer) {
+    $writer->{'title#main'}('This is a title');
+
+    $writer->{'@body'}('This is an element with content wrapped in CDATA tags.');
+    $writer->writeCData('This is plain CDATA');
+});
+
+echo $writer;
+```
+
+This creates:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<ns:section ns:attr1="value" class="test">
+    <title id="main">This is a title</title>
+    <body><![CDATA[This is an element with content wrapped in CDATA tags.]]></body>
+<![CDATA[This is plain CDATA]]></ns:section>
+```
+
+See [Writer.php](./src/Tagged/Xml/Writer.php) for the full interface.
 
 
 ## Licensing
-Glitch is licensed under the MIT License. See [LICENSE](./LICENSE) for the full license text.
+Tagged is licensed under the MIT License. See [LICENSE](./LICENSE) for the full license text.

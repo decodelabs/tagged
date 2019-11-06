@@ -1,3 +1,11 @@
+## v0.7.0 (2019-11-06)
+* Refactored namespaces
+* Added XML Element library
+* Added XML Writer library
+* Added XML Serializable interfaces
+* Fixed Html embeds
+* Updated veneer dependency
+
 ## v0.6.9 (2019-10-16)
 * Added PHPStan support
 * Bugfixes and updates from max level PHPStan scan
