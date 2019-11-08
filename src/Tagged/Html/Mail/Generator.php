@@ -159,7 +159,7 @@ class Generator
     /**
      * Render h1 heading
      */
-    public function h1($content, array $attributes): Element
+    public function h1($content, array $attributes=null): Element
     {
         return $this->h(1, $content, $attributes);
     }
@@ -167,7 +167,7 @@ class Generator
     /**
      * Render h2 heading
      */
-    public function h2($content, array $attributes): Element
+    public function h2($content, array $attributes=null): Element
     {
         return $this->h(2, $content, $attributes);
     }
@@ -175,7 +175,7 @@ class Generator
     /**
      * Render h3 heading
      */
-    public function h3($content, array $attributes): Element
+    public function h3($content, array $attributes=null): Element
     {
         return $this->h(3, $content, $attributes);
     }
@@ -183,7 +183,7 @@ class Generator
     /**
      * Render h4 heading
      */
-    public function h4($content, array $attributes): Element
+    public function h4($content, array $attributes=null): Element
     {
         return $this->h(4, $content, $attributes);
     }
@@ -191,7 +191,7 @@ class Generator
     /**
      * Render h5 heading
      */
-    public function h5($content, array $attributes): Element
+    public function h5($content, array $attributes=null): Element
     {
         return $this->h(5, $content, $attributes);
     }
@@ -199,7 +199,7 @@ class Generator
     /**
      * Render h6 heading
      */
-    public function h6($content, array $attributes): Element
+    public function h6($content, array $attributes=null): Element
     {
         return $this->h(6, $content, $attributes);
     }
@@ -207,7 +207,7 @@ class Generator
     /**
      * Render heading
      */
-    public function h(int $size, $content, array $attributes): Element
+    public function h(int $size, $content, array $attributes=null): Element
     {
         return Html::{'h'.$size.'.heading'}($content, $attributes)
             ->addStyles($this->getStylesFor('h'.$size, 'heading'));
