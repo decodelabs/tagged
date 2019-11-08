@@ -354,7 +354,8 @@ class Generator
         'contentArea' => [
             'background-color' => '#ffffff',
             'box-shadow' => '0 0 3px #DDDDDD',
-            'border-radius' => '5px'
+            'border-radius' => '5px',
+            'overflow' => 'hidden'
         ],
         'banner' => [
             'padding' => '0 0 15px 0'
