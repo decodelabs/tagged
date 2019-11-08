@@ -175,6 +175,6 @@ class StyleBlock implements \IteratorAggregate, Inspectable
         $entity
             ->setText($this->render())
             ->setSectionVisible('text', false)
-            ->setValues($inspector->inspectList($this->style));
+            ->setValues($inspector->inspectList($this->styles));
     }
 }

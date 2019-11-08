@@ -70,7 +70,7 @@ class Generator
 
         return Html::{'body.email'}(
             function () use ($content, $styles) {
-                return $this->container(function ($el) use ($content) {
+                $output = $this->container(function ($el) use ($content) {
                     $containerStyles = $this->getStylesFor('bodyContainer');
                     $contentStyles = $this->getStylesFor('content');
                     $width = $contentStyles->get('width');
@@ -85,14 +85,18 @@ class Generator
                     return Html::{'div.content'}($content, [
                         'style' => $contentStyles
                     ]);
-                })->addStyles($styles->export(
+                });
+
+                $output->addClass('body');
+
+                $output->addStyles($styles->export(
                     'background-color'
-                ))->addClass('body');
+                ));
+
+                return $output;
             },
             $attributes
         )->addStyles($styles);
-
-        return $output;
     }
 
 
