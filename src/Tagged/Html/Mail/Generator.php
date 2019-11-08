@@ -30,7 +30,7 @@ class Generator
     /**
      * Generate document
      */
-    public function document($content, array $bodyAttributes=null): Markup
+    public function document(string $subject, $content, array $bodyAttributes=null): Markup
     {
         $output =
             '<!doctype html>'."\n".
@@ -40,6 +40,7 @@ class Generator
             '    <meta name="viewport" content="width=device-width" />'."\n".
             '    <meta name="robots" content="noindex, nofollow" />'."\n".
             '    <meta name="googlebot" content="noindex, nofollow, noarchive" />'."\n".
+            '    '.Html::title($subject)."\n".
             '    '.$this->css()."\n".
             '</head>'."\n".
             $this->body($content, $bodyAttributes).
@@ -230,7 +231,8 @@ class Generator
     {
         return Html::a($content, $attributes)
             ->addStyles($this->getStylesFor('link', 'text'))
-            ->setAttribute('href', $url);
+            ->setAttribute('href', $url)
+            ->setAttribute('target', '_blank');
     }
 
     /**
@@ -359,9 +361,27 @@ class Generator
             'padding' => '15px'
         ],
         'heading' => [
-            'margin' => '0 0 15px',
+            'margin' => '0 0 8px',
             'font-weight' => 'bold',
             'line-height' => '1.2'
+        ],
+        'h1' => [
+            'font-size' => '24px'
+        ],
+        'h2' => [
+            'font-size' => '21px'
+        ],
+        'h3' => [
+            'font-size' => '17px'
+        ],
+        'h4' => [
+            'font-size' => '15px'
+        ],
+        'h5' => [
+            'font-size' => '14px'
+        ],
+        'h6' => [
+            'font-size' => '14px'
         ],
         'p' => [
             'margin' => '0 0 15px'
