@@ -25,10 +25,18 @@ class ClassList implements \Countable, Inspectable
     /**
      * Add class list
      */
-    public function add(string ...$classes): ClassList
+    public function add(?string ...$classes): ClassList
     {
         foreach ($classes as $value) {
+            if ($value === null) {
+                continue;
+            }
+
             foreach (explode(' ', $value) as $class) {
+                if (!strlen($class)) {
+                    continue;
+                }
+
                 $this->classes[$class] = true;
             }
         }
@@ -67,9 +75,13 @@ class ClassList implements \Countable, Inspectable
     /**
      * Remove all classes in list
      */
-    public function remove(string ...$classes): ClassList
+    public function remove(?string ...$classes): ClassList
     {
         foreach ($classes as $class) {
+            if ($class === null) {
+                continue;
+            }
+
             unset($this->classes[$class]);
         }
 

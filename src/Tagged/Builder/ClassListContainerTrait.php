@@ -41,7 +41,7 @@ trait ClassListContainerTrait
     /**
      * Add class set to list
      */
-    public function setClass(string ...$classes): ClassListContainer
+    public function setClass(?string ...$classes): ClassListContainer
     {
         return $this->setClasses(...$classes);
     }
@@ -49,7 +49,7 @@ trait ClassListContainerTrait
     /**
      * Get class list from attribute set
      */
-    public function addClass(string ...$classes): ClassListContainer
+    public function addClass(?string ...$classes): ClassListContainer
     {
         return $this->addClasses(...$classes);
     }
@@ -57,7 +57,7 @@ trait ClassListContainerTrait
     /**
      * Remove set of classes from list
      */
-    public function removeClass(string ...$classes): ClassListContainer
+    public function removeClass(?string ...$classes): ClassListContainer
     {
         $this->getClasses()->remove(...$classes);
         return $this;

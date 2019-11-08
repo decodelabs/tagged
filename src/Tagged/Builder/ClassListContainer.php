@@ -13,9 +13,9 @@ interface ClassListContainer extends AttributeContainer
     public function setClasses(...$classes): ClassListContainer;
     public function addClasses(...$classes): ClassListContainer;
     public function getClasses(): ClassList;
-    public function setClass(string ...$classes): ClassListContainer;
-    public function addClass(string ...$classes): ClassListContainer;
-    public function removeClass(string ...$classes): ClassListContainer;
+    public function setClass(?string ...$classes): ClassListContainer;
+    public function addClass(?string ...$classes): ClassListContainer;
+    public function removeClass(?string ...$classes): ClassListContainer;
     public function hasClass(string ...$classes): bool;
     public function hasClasses(string ...$classes): bool;
     public function clearClasses(): ClassListContainer;
