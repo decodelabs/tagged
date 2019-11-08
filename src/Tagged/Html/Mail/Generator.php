@@ -361,7 +361,7 @@ class Generator
             'padding' => '0 0 15px 0'
         ],
         'section' => [
-            'padding' => '15px'
+            'padding' => '20px 20px 10px'
         ],
         'heading' => [
             'margin' => '0 0 8px',
