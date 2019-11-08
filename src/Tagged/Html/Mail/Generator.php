@@ -230,7 +230,7 @@ class Generator
     public function link(string $url, $content, array $attributes=null): Element
     {
         return Html::a($content, $attributes)
-            ->addStyles($this->getStylesFor('link', 'text'))
+            ->addStyles($this->getStylesFor('link'))
             ->setAttribute('href', $url)
             ->setAttribute('target', '_blank');
     }
