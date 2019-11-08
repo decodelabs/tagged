@@ -277,11 +277,13 @@ class Generator
     public function container($content, array $attributes=null): Element
     {
         return Html::{'table'}([
-            Html::{'tbody > tr'}(
-                Html::{'td.container'}($content, $attributes)
+            Html::{'tbody > tr'}(function () use ($content, $attributes) {
+                $styles = $attributes['style'] ?? [];
+                return Html::{'td.container'}($content, $attributes)
                     ->setStyle('vertical-align', 'top')
                     ->addStyles($this->getStylesFor('text'))
-            )
+                    ->addStyles($styles);
+            })
         ], [
             'border' => '0',
             'cellpadding' => '0',
