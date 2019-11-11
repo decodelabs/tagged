@@ -286,7 +286,7 @@ class Generator
      */
     public function columns(...$contents): Element
     {
-        return Html::{'table'}([
+        return Html::{'table.columns'}([
             Html::{'tbody > tr'}(function () use ($contents) {
                 foreach ($contents as $content) {
                     yield Html::{'td.container'}($content)
@@ -516,6 +516,10 @@ class Generator
             'height' => 'auto !important',
             'max-width' => '600px !important',
             'width' => '100% !important'
+        ],
+        'table[class=body] table.columns > tbody > tr > td' => [
+            'display' => 'block !important',
+            'margin-bottom' => '10px'
         ],
         'table[class=body] .gutter' => [
             'width' => '0 !important'
