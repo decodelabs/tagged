@@ -537,8 +537,8 @@ class Generator
             'border-radius' => '4px'
         ],
         'smallprint' => [
-            'border-top' => '1px #AAAAAA solid',
-            'padding' => '10px 0 20px',
+            'border-top' => '1px #EEEEEE solid',
+            'padding' => '20px 0 20px',
             'color' => '#CCCCCC',
             'font-size' => '10px'
         ],
