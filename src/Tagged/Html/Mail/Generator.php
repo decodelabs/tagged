@@ -65,7 +65,7 @@ class Generator
     /**
      * Render body tag
      */
-    public function body($content, array $attributes=null): Element
+    public function body($content, array $tagStyles=null, array $attributes=null): Element
     {
         $styles = $this->getStylesFor('body', 'text');
 
@@ -96,6 +96,7 @@ class Generator
 
                 return $output;
             },
+            $tagStyles,
             $attributes
         )->addStyles($styles);
     }
@@ -114,7 +115,7 @@ class Generator
     /**
      * Render content block
      */
-    public function contentArea($content, array $attributes=null): Element
+    public function contentArea($content, array $tagStyles=null, array $attributes=null): Element
     {
         $styles = $this->getStylesFor('contentArea');
 
@@ -124,6 +125,7 @@ class Generator
                 $el->addStyles($styles);
                 yield $content;
             },
+            $tagStyles,
             $attributes
         );
     }
@@ -144,7 +146,7 @@ class Generator
     /**
      * Render section block
      */
-    public function section($content, array $attributes=null): Element
+    public function section($content, array $tagStyles=null, array $attributes=null): Element
     {
         return $this->container(
             function ($el) use ($content) {
@@ -153,6 +155,7 @@ class Generator
 
                 yield $content;
             },
+            $tagStyles,
             $attributes
         );
     }
@@ -160,57 +163,57 @@ class Generator
     /**
      * Render h1 heading
      */
-    public function h1($content, array $attributes=null): Element
+    public function h1($content, array $tagStyles=null, array $attributes=null): Element
     {
-        return $this->h(1, $content, $attributes);
+        return $this->h(1, $content, $tagStyles, $attributes);
     }
 
     /**
      * Render h2 heading
      */
-    public function h2($content, array $attributes=null): Element
+    public function h2($content, array $tagStyles=null, array $attributes=null): Element
     {
-        return $this->h(2, $content, $attributes);
+        return $this->h(2, $content, $tagStyles, $attributes);
     }
 
     /**
      * Render h3 heading
      */
-    public function h3($content, array $attributes=null): Element
+    public function h3($content, array $tagStyles=null, array $attributes=null): Element
     {
-        return $this->h(3, $content, $attributes);
+        return $this->h(3, $content, $tagStyles, $attributes);
     }
 
     /**
      * Render h4 heading
      */
-    public function h4($content, array $attributes=null): Element
+    public function h4($content, array $tagStyles=null, array $attributes=null): Element
     {
-        return $this->h(4, $content, $attributes);
+        return $this->h(4, $content, $tagStyles, $attributes);
     }
 
     /**
      * Render h5 heading
      */
-    public function h5($content, array $attributes=null): Element
+    public function h5($content, array $tagStyles=null, array $attributes=null): Element
     {
-        return $this->h(5, $content, $attributes);
+        return $this->h(5, $content, $tagStyles, $attributes);
     }
 
     /**
      * Render h6 heading
      */
-    public function h6($content, array $attributes=null): Element
+    public function h6($content, array $tagStyles=null, array $attributes=null): Element
     {
-        return $this->h(6, $content, $attributes);
+        return $this->h(6, $content, $tagStyles, $attributes);
     }
 
     /**
      * Render heading
      */
-    public function h(int $size, $content, array $attributes=null): Element
+    public function h(int $size, $content, array $tagStyles=null, array $attributes=null): Element
     {
-        return Html::{'h'.$size.'.heading'}($content, $attributes)
+        return Html::{'h'.$size.'.heading'}($content, $tagStyles, $attributes)
             ->addStyles($this->getStylesFor('h'.$size, 'heading'));
     }
 
@@ -218,18 +221,18 @@ class Generator
     /**
      * Render paragraph
      */
-    public function p($content, array $attributes=null): Element
+    public function p($content, array $tagStyles=null, array $attributes=null): Element
     {
-        return Html::p($content, $attributes)
+        return Html::p($content, $tagStyles, $attributes)
             ->addStyles($this->getStylesFor('p', 'text'));
     }
 
     /**
      * Render link
      */
-    public function link(string $url, $content, array $attributes=null): Element
+    public function link(string $url, $content, array $tagStyles=null, array $attributes=null): Element
     {
-        return Html::a($content, $attributes)
+        return Html::a($content, $tagStyles, $attributes)
             ->addStyles($this->getStylesFor('link'))
             ->setAttribute('href', $url)
             ->setAttribute('target', '_blank');
@@ -253,7 +256,7 @@ class Generator
     /**
      * Render foot block
      */
-    public function footer($content, array $attributes=null): Element
+    public function footer($content, array $tagStyles=null, array $attributes=null): Element
     {
         return Html::{'div.clearContent'}(
             $this->container(
@@ -263,6 +266,7 @@ class Generator
 
                     yield $content;
                 },
+                $tagStyles,
                 $attributes
             )
         )->addStyles(
@@ -274,15 +278,14 @@ class Generator
     /**
      * Container table
      */
-    public function container($content, array $attributes=null): Element
+    public function container($content, array $tagStyles=null, array $attributes=null): Element
     {
         return Html::{'table'}([
-            Html::{'tbody > tr'}(function () use ($content, $attributes) {
-                $styles = $attributes['style'] ?? [];
+            Html::{'tbody > tr'}(function () use ($content, $tagStyles, $attributes) {
                 return Html::{'td.container'}($content, $attributes)
                     ->setStyle('vertical-align', 'top')
                     ->addStyles($this->getStylesFor('text'))
-                    ->addStyles($styles);
+                    ->addStyles((array)$tagStyles);
             })
         ], [
             'border' => '0',
