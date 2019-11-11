@@ -519,7 +519,7 @@ class Generator
         ],
         'table[class=body] table.columns > tbody > tr > td' => [
             'display' => 'block !important',
-            'margin-bottom' => '10px',
+            'margin-bottom' => '20px',
             'width' => 'auto'
         ],
         'table[class=body] .gutter' => [
