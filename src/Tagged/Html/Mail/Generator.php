@@ -213,8 +213,9 @@ class Generator
      */
     public function h(int $size, $content, array $tagStyles=null, array $attributes=null): Element
     {
-        return Html::{'h'.$size.'.heading'}($content, $tagStyles, $attributes)
-            ->addStyles($this->getStylesFor('h'.$size, 'heading'));
+        return Html::{'h'.$size.'.heading'}($content, $attributes)
+            ->addStyles($this->getStylesFor('h'.$size, 'heading'))
+            ->addStyles((array)$tagStyles);
     }
 
 
@@ -223,8 +224,9 @@ class Generator
      */
     public function p($content, array $tagStyles=null, array $attributes=null): Element
     {
-        return Html::p($content, $tagStyles, $attributes)
-            ->addStyles($this->getStylesFor('p', 'text'));
+        return Html::p($content, $attributes)
+            ->addStyles($this->getStylesFor('p', 'text'))
+            ->addStyles((array)$tagStyles);
     }
 
     /**
@@ -232,8 +234,9 @@ class Generator
      */
     public function link(string $url, $content, array $tagStyles=null, array $attributes=null): Element
     {
-        return Html::a($content, $tagStyles, $attributes)
+        return Html::a($content, $attributes)
             ->addStyles($this->getStylesFor('link'))
+            ->addStyles((array)$tagStyles)
             ->setAttribute('href', $url)
             ->setAttribute('target', '_blank');
     }
@@ -241,15 +244,19 @@ class Generator
     /**
      * Render image
      */
-    public function image(string $url, int $width, int $height, ?string $alt=null): Element
+    public function image(string $url, int $width, int $height, ?string $alt=null, array $tagStyles=null, array $attributes=null): Element
     {
         return Html::img(null, [
             'src' => $url,
             'width' => $width,
             'height' => $height,
             'alt' => $alt
-        ])->addStyles(
+        ])->setAttributes(
+            $attributes
+        )->addStyles(
             $this->getStylesFor('image')
+        )->addStyles(
+            $tagStyles
         )->addClass('image');
     }
 
