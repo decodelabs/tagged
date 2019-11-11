@@ -579,7 +579,8 @@ class Generator
         'table[class=body] table.columns.collapse > tbody > tr > td' => [
             'display' => 'block !important',
             'margin-bottom' => '20px',
-            'width' => 'auto !important'
+            'width' => 'auto !important',
+            'text-align' => 'left !important'
         ],
         'table[class=body] .gutter' => [
             'width' => '0 !important'
