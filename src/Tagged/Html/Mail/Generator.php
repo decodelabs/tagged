@@ -252,11 +252,11 @@ class Generator
             'height' => $height,
             'alt' => $alt
         ])->setAttributes(
-            $attributes
+            (array)$attributes
         )->addStyles(
             $this->getStylesFor('image')
         )->addStyles(
-            $tagStyles
+            (array)$tagStyles
         )->addClass('image');
     }
 
