@@ -351,6 +351,28 @@ class Generator
         ]);
     }
 
+
+    /**
+     * Render smallprint element
+     */
+    public function smallprint($content, array $tagStyles=null, array $attributes=null): Element
+    {
+        $output = $this->container(
+            function ($el) use ($content) {
+                $el->addClass('smallprint');
+                $el->addStyles($this->getStylesFor('smallprint'));
+
+                yield $content;
+            },
+            $tagStyles,
+            $attributes
+        );
+
+        $output->setStyle('margin-bottom', '20px');
+        return $output;
+    }
+
+
     /**
      * Render foot block
      */
@@ -513,6 +535,12 @@ class Generator
             'padding' => '20px',
             'background' => '#F5F5F5',
             'border-radius' => '4px'
+        ],
+        'smallprint' => [
+            'border-top' => '1px #AAAAAA solid',
+            'padding' => '10px 0 20px',
+            'color' => '#CCCCCC',
+            'font-size' => '10px'
         ],
         'footer' => [
             'color' => '#999999',
