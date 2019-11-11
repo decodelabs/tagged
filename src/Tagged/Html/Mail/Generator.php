@@ -551,7 +551,7 @@ class Generator
             'max-width' => '600px !important',
             'width' => '100% !important'
         ],
-        'table[class=body] table.columns > tbody > tr > td' => [
+        'table[class=body] table.columns.collapse > tbody > tr > td' => [
             'display' => 'block !important',
             'margin-bottom' => '20px',
             'width' => 'auto !important'
