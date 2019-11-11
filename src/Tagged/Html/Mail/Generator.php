@@ -447,23 +447,34 @@ class Generator
             'line-height' => '1.2'
         ],
         'h1' => [
-            'font-size' => '24px'
+            'font-weight' => '200',
+            'font-size' => '28px',
+            'margin-bottom' => '20px'
         ],
         'h2' => [
-            'font-size' => '21px'
+            'font-size' => '25px'
         ],
         'h3' => [
-            'font-size' => '17px'
+            'font-weight' => '300',
+            'font-size' => '220px',
+            'margin-bottom' => '15px'
         ],
         'h4' => [
-            'font-size' => '15px'
+            'font-weight' => '300',
+            'font-size' => '20px',
+            'margin-bottom' => '15px'
         ],
         'h5' => [
-            'font-size' => '14px'
+            'color' => '#AAAAAA',
+            'font-weight' => 'bold',
+            'font-size' => '12px',
+            'margin-bottom' => '5px',
+            'text-transform' => 'uppercase'
         ],
         'h6' => [
             'font-size' => '14px'
         ],
+
         'p' => [
             'margin' => '0 0 15px'
         ],
@@ -520,7 +531,7 @@ class Generator
         'table[class=body] table.columns > tbody > tr > td' => [
             'display' => 'block !important',
             'margin-bottom' => '20px',
-            'width' => 'auto'
+            'width' => 'auto !important'
         ],
         'table[class=body] .gutter' => [
             'width' => '0 !important'
