@@ -540,7 +540,7 @@ class Generator
             'border-top' => '1px #EEEEEE solid',
             'padding' => '20px 0 20px',
             'color' => '#CCCCCC',
-            'font-size' => '10px'
+            'font-size' => '12px'
         ],
         'footer' => [
             'color' => '#999999',
