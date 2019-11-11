@@ -266,7 +266,7 @@ class Generator
      */
     public function card($content, array $tagStyles=null, array $attributes=null): Element
     {
-        return $this->container(
+        $output = $this->container(
             function ($el) use ($content) {
                 $el->addClass('card');
                 $el->addStyles($this->getStylesFor('card'));
@@ -275,7 +275,10 @@ class Generator
             },
             $tagStyles,
             $attributes
-        )->setStyle('margin-bottom', '20px');
+        );
+
+        $output->setStyle('margin-bottom', '20px');
+        return $output;
     }
 
     /**
