@@ -435,7 +435,7 @@ class Generator
 
     const STYLES = [
         'text' => [
-            'font-size' => '14px',
+            'font-size' => '15px',
             'font-family' => '-apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Ubuntu, sans-serif',
             'color' => '#444444',
             'line-height' => '1.4'
@@ -570,9 +570,6 @@ class Generator
         ],
         'table[class=body] .contentArea' => [
             'border-radius' => '0 !important'
-        ],
-        'table[class=body] p, table[class=body] ul, table[class=body] ol, table[class=body] td, table[class=body] span, table[class=body] a' => [
-            'font-size' => '16px !important'
         ],
         'table[class=body] .image' => [
             'height' => 'auto !important',
