@@ -303,6 +303,29 @@ class Generator
     }
 
     /**
+     * Render list of rows
+     */
+    public function rows(...$contents): Element
+    {
+        return Html::{'table.rows'}([
+            Html::{'tbody'}(function () use ($contents) {
+                foreach ($contents as $content) {
+                    yield Html::{'tr'}(
+                        Html::{'td.container'}($content)
+                            ->setStyle('vertical-align', 'top')
+                            ->addStyles($this->getStylesFor('text'))
+                    );
+                }
+            })
+        ], [
+            'border' => '0',
+            'cellpadding' => '0',
+            'cellspacing' => '0',
+            'style' => $this->getStylesFor('container')
+        ]);
+    }
+
+    /**
      * Render container with gutter columns
      */
     public function gutter(string $width, $content, array $tagStyles=null, array $attributes=null): Element
