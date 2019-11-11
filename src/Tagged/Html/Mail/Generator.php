@@ -225,7 +225,7 @@ class Generator
     public function p($content, array $tagStyles=null, array $attributes=null): Element
     {
         return Html::p($content, $attributes)
-            ->addStyles($this->getStylesFor('p', 'text'))
+            ->addStyles($this->getStylesFor('p'))
             ->addStyles((array)$tagStyles);
     }
 
