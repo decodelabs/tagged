@@ -260,6 +260,71 @@ class Generator
         )->addClass('image');
     }
 
+
+    /**
+     * Render card element
+     */
+    public function card($content, array $tagStyles=null, array $attributes=null): Element
+    {
+        return $this->container(
+            function ($el) use ($content) {
+                $el->addClass('card');
+                $el->addStyles($this->getStylesFor('card'));
+
+                yield $content;
+            },
+            $tagStyles,
+            $attributes
+        )->setStyle('margin-bottom', '20px');
+    }
+
+    /**
+     * Render list of columns
+     */
+    public function columns(...$contents): Element
+    {
+        return Html::{'table'}([
+            Html::{'tbody > tr'}(function () use ($contents) {
+                foreach ($contents as $content) {
+                    yield Html::{'td.container'}($content)
+                        ->setStyle('vertical-align', 'top')
+                        ->addStyles($this->getStylesFor('text'));
+                }
+            })
+        ], [
+            'border' => '0',
+            'cellpadding' => '0',
+            'cellspacing' => '0',
+            'style' => $this->getStylesFor('container')
+        ]);
+    }
+
+    /**
+     * Render container with gutter columns
+     */
+    public function gutter(string $width, $content, array $tagStyles=null, array $attributes=null): Element
+    {
+        return Html::{'table'}([
+            Html::{'tbody > tr'}(function () use ($content, $width, $tagStyles, $attributes) {
+                yield Html::{'td.gutter'}('')
+                    ->setStyle('width', $width);
+
+                yield Html::{'td.container'}($content, $attributes)
+                    ->setStyle('vertical-align', 'top')
+                    ->addStyles($this->getStylesFor('text'))
+                    ->addStyles((array)$tagStyles);
+
+                yield Html::{'td.gutter'}('')
+                    ->setStyle('width', $width);
+            })
+        ], [
+            'border' => '0',
+            'cellpadding' => '0',
+            'cellspacing' => '0',
+            'style' => $this->getStylesFor('container')
+        ]);
+    }
+
     /**
      * Render foot block
      */
@@ -407,6 +472,11 @@ class Generator
             'border' => 'none',
             'display' => 'block'
         ],
+        'card' => [
+            'padding' => '20px',
+            'background' => '#F5F5F5',
+            'border-radius' => '4px'
+        ],
         'footer' => [
             'color' => '#999999',
             'text-align' => 'center',
@@ -443,6 +513,9 @@ class Generator
             'height' => 'auto !important',
             'max-width' => '600px !important',
             'width' => '100% !important'
+        ],
+        'table[class=body] .gutter' => [
+            'width' => '0 !important'
         ],
         'table[class=body] .footer' => [
             'font-size' => '14px !important'
