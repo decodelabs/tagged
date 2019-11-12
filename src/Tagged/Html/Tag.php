@@ -52,7 +52,7 @@ class Tag implements TagInterface, ClassListContainer, StyleListContainer, Inspe
     /**
      * Can tag be closed with full </tag>
      */
-    public static function isClosableTagName($name): bool
+    public static function isClosableTagName(string $name): bool
     {
         return !in_array(strtolower($name), self::CLOSED_TAGS);
     }
@@ -60,7 +60,7 @@ class Tag implements TagInterface, ClassListContainer, StyleListContainer, Inspe
     /**
      * Should tag be single inline entity
      */
-    public static function isInlineTagName($name): bool
+    public static function isInlineTagName(string $name): bool
     {
         return in_array(strtolower($name), self::INLINE_TAGS);
     }
@@ -286,7 +286,6 @@ class Tag implements TagInterface, ClassListContainer, StyleListContainer, Inspe
     {
         return $this->getAttribute('title');
     }
-
 
     /**
      * Shortcut to set attribute

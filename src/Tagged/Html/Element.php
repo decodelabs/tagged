@@ -13,6 +13,7 @@ use DecodeLabs\Tagged\Builder\Element as ElementInterface;
 use DecodeLabs\Collections\Sequence;
 use DecodeLabs\Collections\Native\SequenceTrait;
 
+use DecodeLabs\Glitch;
 use DecodeLabs\Glitch\Inspectable;
 use DecodeLabs\Glitch\Dumper\Entity;
 use DecodeLabs\Glitch\Dumper\Inspector;
@@ -61,7 +62,21 @@ class Element extends Tag implements \IteratorAggregate, ElementInterface
      */
     public function __toString(): string
     {
-        return (string)$this->renderWith($this->renderContent());
+        try {
+            return (string)$this->renderWith($this->renderContent());
+        } catch (\Throwable $e) {
+            Glitch::logException($e);
+            $message = '<strong>'.$e->getMessage().'</strong>';
+
+            if (!Glitch::isProduction()) {
+                $message .= '<br /><samp>'.Glitch::normalizePath($e->getFile()).'</samp> : <samp>'.$e->getLine().'</samp>';
+                $title = $this->esc((string)$e);
+            } else {
+                $title = 'HTML Error';
+            }
+
+            return '<div class="error" style="color: red; background: white; padding: 0.5rem;" title="'.$title.'">'.$message.'</div>';
+        }
     }
 
     /**

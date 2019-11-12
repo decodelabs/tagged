@@ -6,22 +6,20 @@
 declare(strict_types=1);
 namespace DecodeLabs\Tagged\Builder;
 
-use DecodeLabs\Collections\HashMap;
 use DecodeLabs\Collections\ArrayProvider;
-use DecodeLabs\Collections\Native\HashMapTrait;
 
 use DecodeLabs\Glitch;
 use DecodeLabs\Glitch\Inspectable;
 use DecodeLabs\Glitch\Dumper\Entity;
 use DecodeLabs\Glitch\Dumper\Inspector;
 
-class StyleBlock implements \IteratorAggregate, HashMap, Inspectable
-{
-    use HashMapTrait {
-        HashMapTrait::set as private parentSet;
-    }
+use ArrayIterator;
 
+class StyleBlock implements \IteratorAggregate, Inspectable
+{
     const MUTABLE = true;
+
+    protected $styles = [];
 
     /**
      * Init with styles
@@ -49,7 +47,9 @@ class StyleBlock implements \IteratorAggregate, HashMap, Inspectable
                 throw Glitch::EInvalidArgument('Invalid style data', null, $data);
             }
 
-            $this->merge($data);
+            foreach ($data as $key => $value) {
+                $this->set($key, $value);
+            }
         }
 
         return $this;
@@ -82,13 +82,39 @@ class StyleBlock implements \IteratorAggregate, HashMap, Inspectable
     /**
      * Direct set a value
      */
-    public function set(string $key, $value): HashMap
+    public function set(string $key, $value): StyleBlock
     {
         if (!$value instanceof StyleList) {
             $value = new StyleList($value);
         }
 
-        return $this->parentSet($key, $value);
+        $this->styles[$key] = $value;
+        return $this;
+    }
+
+    /**
+     * Get a style list
+     */
+    public function get(string $key): ?StyleList
+    {
+        return $this->styles[$key] ?? null;
+    }
+
+    /**
+     * Has style list set?
+     */
+    public function has(string $key): bool
+    {
+        return isset($this->styles[$key]);
+    }
+
+    /**
+     * Remove style list
+     */
+    public function remove(string $key): StyleBlock
+    {
+        unset($this->styles[$key]);
+        return $this;
     }
 
     /**
@@ -96,17 +122,29 @@ class StyleBlock implements \IteratorAggregate, HashMap, Inspectable
      */
     public function render(): ?string
     {
-        if (empty($this->items)) {
-            return '';
+        if (null === ($styles = $this->renderStyles())) {
+            return null;
+        }
+
+        return '<style type="text/css">'."\n    ".$styles."\n".'</style>';
+    }
+
+    /**
+     * Render styles blocks
+     */
+    public function renderStyles(): ?string
+    {
+        if (empty($this->styles)) {
+            return null;
         }
 
         $output = [];
 
-        foreach ($this->items as $selector => $styles) {
+        foreach ($this->styles as $selector => $styles) {
             $output[] = $selector.' { '.$styles.' }';
         }
 
-        return '<style type="text/css">'."\n    ".implode("\n".'    ', $output)."\n".'</style>';
+        return implode("\n".'    ', $output);
     }
 
     /**
@@ -122,6 +160,14 @@ class StyleBlock implements \IteratorAggregate, HashMap, Inspectable
     }
 
     /**
+     * Get iterator
+     */
+    public function getIterator()
+    {
+        return new ArrayIterator($this->styles);
+    }
+
+    /**
      * Inspect for Glitch
      */
     public function glitchInspect(Entity $entity, Inspector $inspector): void
@@ -129,6 +175,6 @@ class StyleBlock implements \IteratorAggregate, HashMap, Inspectable
         $entity
             ->setText($this->render())
             ->setSectionVisible('text', false)
-            ->setValues($inspector->inspectList($this->items));
+            ->setValues($inspector->inspectList($this->styles));
     }
 }

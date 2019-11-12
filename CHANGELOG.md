@@ -1,3 +1,7 @@
+## v0.8.0 (2019-11-12)
+* Added HTML mail generator
+* Handle exceptions in HTML element rendering
+
 ## v0.7.0 (2019-11-06)
 * Refactored namespaces
 * Added XML Element library

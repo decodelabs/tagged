@@ -76,6 +76,24 @@ class StyleList implements \IteratorAggregate, HashMap
     }
 
     /**
+     * Export list of styles that have been set
+     */
+    public function export(string ...$keys): array
+    {
+        $output = [];
+
+        foreach ($keys as $key) {
+            $value = $this->get($key);
+
+            if ($value !== null) {
+                $output[$key] = $value;
+            }
+        }
+
+        return $output;
+    }
+
+    /**
      * Render to string
      */
     public function __toString(): string
