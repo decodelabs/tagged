@@ -31,7 +31,7 @@ class Number implements FacadePlugin
     /**
      * Format and wrap currency
      */
-    public function currency($value, string $code): ?Markup
+    public function currency($value, string $code, ?bool $rounded=null): ?Markup
     {
         if ($value === null) {
             return null;
@@ -42,6 +42,14 @@ class Number implements FacadePlugin
         }
 
         $formatter = new \NumberFormatter(Systemic::$locale->get(),  \NumberFormatter::CURRENCY);
+
+        if (
+            $rounded === true ||
+            ($rounded === null && ((int)$value == $value))
+        ) {
+            $formatter->setAttribute(\NumberFormatter::FRACTION_DIGITS, 0);
+        }
+
         $output = $formatter->formatCurrency($value, $code);
 
         if (!preg_match('/^(([^0-9.,\s][^0-9]*)([\s]*))?([0-9.,]+)(([\s]*)([^0-9.,\s][^0-9]*))?$/u', $output, $matches)) {
