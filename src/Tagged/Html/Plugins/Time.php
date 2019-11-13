@@ -8,7 +8,6 @@ namespace DecodeLabs\Tagged\Html\Plugins;
 
 use DecodeLabs\Veneer\FacadePlugin;
 
-use DecodeLabs\Tagged\Markup;
 use DecodeLabs\Tagged\Buffer;
 use DecodeLabs\Tagged\Html\Factory as HtmlFactory;
 
@@ -41,7 +40,7 @@ class Time implements FacadePlugin
     /**
      * Custom format a date and wrap it
      */
-    public function format($date, string $format, $timezone=true): ?Markup
+    public function format($date, string $format, $timezone=true): ?Element
     {
         if (!$date = $this->prepare($date, $timezone, true)) {
             return null;
@@ -56,7 +55,7 @@ class Time implements FacadePlugin
     /**
      * Format date according to locale
      */
-    public function locale($date, $dateSize=true, $timeSize=true, $timezone=true): ?Markup
+    public function locale($date, $dateSize=true, $timeSize=true, $timezone=true): ?Element
     {
         $dateSize = $this->normalizeLocaleSize($dateSize);
         $timeSize = $this->normalizeLocaleSize($timeSize);
@@ -97,7 +96,7 @@ class Time implements FacadePlugin
     /**
      * Format full date time
      */
-    public function fullDateTime($date, $timezone=true): ?Markup
+    public function fullDateTime($date, $timezone=true): ?Element
     {
         return $this->locale($date, 'full', 'full', $timezone);
     }
@@ -105,7 +104,7 @@ class Time implements FacadePlugin
     /**
      * Format full date
      */
-    public function fullDate($date, $timezone=true): ?Markup
+    public function fullDate($date, $timezone=true): ?Element
     {
         return $this->locale($date, 'full', false, $timezone);
     }
@@ -113,7 +112,7 @@ class Time implements FacadePlugin
     /**
      * Format full time
      */
-    public function fullTime($date, $timezone=true): ?Markup
+    public function fullTime($date, $timezone=true): ?Element
     {
         return $this->locale($date, false, 'full', $timezone);
     }
@@ -122,7 +121,7 @@ class Time implements FacadePlugin
     /**
      * Format long date time
      */
-    public function longDateTime($date, $timezone=true): ?Markup
+    public function longDateTime($date, $timezone=true): ?Element
     {
         return $this->locale($date, 'long', 'long', $timezone);
     }
@@ -130,7 +129,7 @@ class Time implements FacadePlugin
     /**
      * Format long date
      */
-    public function longDate($date, $timezone=true): ?Markup
+    public function longDate($date, $timezone=true): ?Element
     {
         return $this->locale($date, 'long', false, $timezone);
     }
@@ -138,7 +137,7 @@ class Time implements FacadePlugin
     /**
      * Format long time
      */
-    public function longTime($date, $timezone=true): ?Markup
+    public function longTime($date, $timezone=true): ?Element
     {
         return $this->locale($date, false, 'long', $timezone);
     }
@@ -147,7 +146,7 @@ class Time implements FacadePlugin
     /**
      * Format medium date time
      */
-    public function mediumDateTime($date, $timezone=true): ?Markup
+    public function mediumDateTime($date, $timezone=true): ?Element
     {
         return $this->locale($date, 'medium', 'medium', $timezone);
     }
@@ -155,7 +154,7 @@ class Time implements FacadePlugin
     /**
      * Format medium date
      */
-    public function mediumDate($date, $timezone=true): ?Markup
+    public function mediumDate($date, $timezone=true): ?Element
     {
         return $this->locale($date, 'medium', false, $timezone);
     }
@@ -163,7 +162,7 @@ class Time implements FacadePlugin
     /**
      * Format medium time
      */
-    public function mediumTime($date, $timezone=true): ?Markup
+    public function mediumTime($date, $timezone=true): ?Element
     {
         return $this->locale($date, false, 'medium', $timezone);
     }
@@ -172,7 +171,7 @@ class Time implements FacadePlugin
     /**
      * Format short date time
      */
-    public function shortDateTime($date, $timezone=true): ?Markup
+    public function shortDateTime($date, $timezone=true): ?Element
     {
         return $this->locale($date, 'short', 'short', $timezone);
     }
@@ -180,7 +179,7 @@ class Time implements FacadePlugin
     /**
      * Format short date
      */
-    public function shortDate($date, $timezone=true): ?Markup
+    public function shortDate($date, $timezone=true): ?Element
     {
         return $this->locale($date, 'short', false, $timezone);
     }
@@ -188,7 +187,7 @@ class Time implements FacadePlugin
     /**
      * Format short time
      */
-    public function shortTime($date, $timezone=true): ?Markup
+    public function shortTime($date, $timezone=true): ?Element
     {
         return $this->locale($date, false, 'short', $timezone);
     }
@@ -199,7 +198,7 @@ class Time implements FacadePlugin
     /**
      * Format interval since date
      */
-    public function since($date, ?int $parts=1, bool $negateClass=false): ?Markup
+    public function since($date, ?int $parts=1, bool $negateClass=false): ?Element
     {
         return $this->wrapInterval($date, false, $parts, false, false, $negateClass);
     }
@@ -207,7 +206,7 @@ class Time implements FacadePlugin
     /**
      * Format interval since date
      */
-    public function sinceAbs($date, ?int $parts=1, bool $negateClass=false): ?Markup
+    public function sinceAbs($date, ?int $parts=1, bool $negateClass=false): ?Element
     {
         return $this->wrapInterval($date, false, $parts, false, true, $negateClass);
     }
@@ -215,7 +214,7 @@ class Time implements FacadePlugin
     /**
      * Format interval since date
      */
-    public function sinceAbbr($date, ?int $parts=1, bool $negateClass=false): ?Markup
+    public function sinceAbbr($date, ?int $parts=1, bool $negateClass=false): ?Element
     {
         return $this->wrapInterval($date, false, $parts, true, true, $negateClass);
     }
@@ -223,7 +222,7 @@ class Time implements FacadePlugin
     /**
      * Format interval until date
      */
-    public function until($date, ?int $parts=1, bool $negateClass=false): ?Markup
+    public function until($date, ?int $parts=1, bool $negateClass=false): ?Element
     {
         return $this->wrapInterval($date, true, $parts, false, false, $negateClass);
     }
@@ -231,7 +230,7 @@ class Time implements FacadePlugin
     /**
      * Format interval until date
      */
-    public function untilAbs($date, ?int $parts=1, bool $negateClass=false): ?Markup
+    public function untilAbs($date, ?int $parts=1, bool $negateClass=false): ?Element
     {
         return $this->wrapInterval($date, true, $parts, false, true, $negateClass);
     }
@@ -239,7 +238,7 @@ class Time implements FacadePlugin
     /**
      * Format interval until date
      */
-    public function untilAbbr($date, ?int $parts=1, bool $negateClass=false): ?Markup
+    public function untilAbbr($date, ?int $parts=1, bool $negateClass=false): ?Element
     {
         return $this->wrapInterval($date, true, $parts, true, true, $negateClass);
     }
@@ -248,7 +247,7 @@ class Time implements FacadePlugin
     /**
      * Format interval until date
      */
-    public function fromNow($date, ?int $parts=1): ?Markup
+    public function fromNow($date, ?int $parts=1): ?Element
     {
         return $this->wrapInterval($date, false, $parts, false, false, null);
     }
@@ -256,7 +255,7 @@ class Time implements FacadePlugin
     /**
      * Format interval until date
      */
-    public function fromNowAbs($date, ?int $parts=1): ?Markup
+    public function fromNowAbs($date, ?int $parts=1): ?Element
     {
         return $this->wrapInterval($date, false, $parts, false, true, null);
     }
@@ -264,7 +263,7 @@ class Time implements FacadePlugin
     /**
      * Format interval until date
      */
-    public function fromNowAbbr($date, ?int $parts=1): ?Markup
+    public function fromNowAbbr($date, ?int $parts=1): ?Element
     {
         return $this->wrapInterval($date, false, $parts, true, true, null);
     }
@@ -273,7 +272,7 @@ class Time implements FacadePlugin
     /**
      * Format interval
      */
-    protected function wrapInterval($date, bool $invert, ?int $parts, bool $short=false, bool $absolute=false, ?bool $negateClass=false): Element
+    protected function wrapInterval($date, bool $invert, ?int $parts, bool $short=false, bool $absolute=false, ?bool $negateClass=false): ?Element
     {
         $this->checkCarbon();
 
@@ -344,7 +343,7 @@ class Time implements FacadePlugin
     /**
      * Format interval until date
      */
-    public function between($date1, $date2, ?int $parts=1): ?Markup
+    public function between($date1, $date2, ?int $parts=1): ?Element
     {
         return $this->betweenRaw($date1, $date2, $parts, false);
     }
@@ -352,7 +351,7 @@ class Time implements FacadePlugin
     /**
      * Format interval until date
      */
-    public function betweenAbbr($date1, $date2, ?int $parts=1): ?Markup
+    public function betweenAbbr($date1, $date2, ?int $parts=1): ?Element
     {
         return $this->betweenRaw($date1, $date2, $parts, true);
     }
@@ -360,7 +359,7 @@ class Time implements FacadePlugin
     /**
      * Format interval until date
      */
-    protected function betweenRaw($date1, $date2, ?int $parts=1, bool $short=false): ?Markup
+    protected function betweenRaw($date1, $date2, ?int $parts=1, bool $short=false): ?Element
     {
         $this->checkCarbon();
 
