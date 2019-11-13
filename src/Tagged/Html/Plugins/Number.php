@@ -31,9 +31,9 @@ class Number implements FacadePlugin
     /**
      * Format and wrap currency
      */
-    public function currency($value, string $code, ?bool $rounded=null): ?Markup
+    public function currency($value, ?string $code, ?bool $rounded=null): ?Markup
     {
-        if ($value === null) {
+        if ($value === null || $code === null) {
             return null;
         }
 
