@@ -199,7 +199,81 @@ class Time implements FacadePlugin
     /**
      * Format interval since date
      */
-    public function since($date, ?int $parts=2, bool $short=false): ?Markup
+    public function since($date, ?int $parts=1, bool $negateClass=false): ?Markup
+    {
+        return $this->wrapInterval($date, false, $parts, false, false, $negateClass);
+    }
+
+    /**
+     * Format interval since date
+     */
+    public function sinceAbs($date, ?int $parts=1, bool $negateClass=false): ?Markup
+    {
+        return $this->wrapInterval($date, false, $parts, false, true, $negateClass);
+    }
+
+    /**
+     * Format interval since date
+     */
+    public function sinceAbbr($date, ?int $parts=1, bool $negateClass=false): ?Markup
+    {
+        return $this->wrapInterval($date, false, $parts, true, true, $negateClass);
+    }
+
+    /**
+     * Format interval until date
+     */
+    public function until($date, ?int $parts=1, bool $negateClass=false): ?Markup
+    {
+        return $this->wrapInterval($date, true, $parts, false, false, $negateClass);
+    }
+
+    /**
+     * Format interval until date
+     */
+    public function untilAbs($date, ?int $parts=1, bool $negateClass=false): ?Markup
+    {
+        return $this->wrapInterval($date, true, $parts, false, true, $negateClass);
+    }
+
+    /**
+     * Format interval until date
+     */
+    public function untilAbbr($date, ?int $parts=1, bool $negateClass=false): ?Markup
+    {
+        return $this->wrapInterval($date, true, $parts, true, true, $negateClass);
+    }
+
+
+    /**
+     * Format interval until date
+     */
+    public function fromNow($date, ?int $parts=1): ?Markup
+    {
+        return $this->wrapInterval($date, false, $parts, false, false, null);
+    }
+
+    /**
+     * Format interval until date
+     */
+    public function fromNowAbs($date, ?int $parts=1): ?Markup
+    {
+        return $this->wrapInterval($date, false, $parts, false, true, null);
+    }
+
+    /**
+     * Format interval until date
+     */
+    public function fromNowAbbr($date, ?int $parts=1): ?Markup
+    {
+        return $this->wrapInterval($date, false, $parts, true, true, null);
+    }
+
+
+    /**
+     * Format interval
+     */
+    protected function wrapInterval($date, bool $invert, ?int $parts, bool $short=false, bool $absolute=false, ?bool $negateClass=false): Element
     {
         $this->checkCarbon();
 
@@ -215,53 +289,6 @@ class Time implements FacadePlugin
             throw Glitch::EUnexpectedValue('Unable to create interval');
         }
 
-        $output = $this->wrapInterval($date, $interval, $parts, $short);
-
-        if ($interval->invert) {
-            $output->addClass('future negative');
-        } else {
-            $output->addClass('passed positive');
-        }
-
-        return $output;
-    }
-
-    /**
-     * Format interval until date
-     */
-    public function until($date, ?int $parts=2, bool $short=false): ?Markup
-    {
-        $this->checkCarbon();
-
-        if (!$date = $this->normalizeDate($date)) {
-            return null;
-        }
-
-        if (null === ($now = $this->normalizeDate('now'))) {
-            throw Glitch::EUnexpectedValue('Unable to create now date');
-        }
-
-        if (null === ($interval = CarbonInterval::make($now->diff($date)))) {
-            throw Glitch::EUnexpectedValue('Unable to create interval');
-        }
-
-        $output = $this->wrapInterval($date, $interval, $parts, $short);
-
-        if ($interval->invert) {
-            $output->addClass('passed negative');
-        } else {
-            $output->addClass('future positive');
-        }
-
-        return $output;
-    }
-
-
-    /**
-     * Format interval
-     */
-    protected function wrapInterval(DateTime $date, DateInterval $interval, ?int $parts, bool $short=false): Element
-    {
         $formatter = new IntlDateFormatter(
             Systemic::$locale->get(),
             IntlDateFormatter::LONG,
@@ -272,56 +299,21 @@ class Time implements FacadePlugin
             throw Glitch::EUnexpectedValue('Unable to create interval');
         }
 
+        $inverted = $interval->invert;
+
+        if ($invert) {
+            $inverted = !$inverted;
+        }
+
         $output = $this->wrap(
             $date->format(DateTime::W3C),
-            ($interval->invert ? '-' : '').
+            (($inverted && $absolute) ? '-' : '').
             $interval->forHumans([
                 'short' => $short,
                 'join' => true,
                 'parts' => $parts,
                 'options' => CarbonInterface::JUST_NOW | CarbonInterface::ONE_DAY_WORDS,
-                'syntax' => CarbonInterface::DIFF_ABSOLUTE
-            ]),
-            $formatter->format($date)
-        );
-
-        return $output;
-    }
-
-
-    /**
-     * Format interval until date
-     */
-    public function fromNow($date, ?int $parts=2, bool $short=false): ?Markup
-    {
-        $this->checkCarbon();
-
-        if (!$date = $this->normalizeDate($date)) {
-            return null;
-        }
-
-        if (null === ($now = $this->normalizeDate('now'))) {
-            throw Glitch::EUnexpectedValue('Unable to create now date');
-        }
-
-        if (null === ($interval = CarbonInterval::make($date->diff($now)))) {
-            throw Glitch::EUnexpectedValue('Unable to create interval');
-        }
-
-        $formatter = new IntlDateFormatter(
-            Systemic::$locale->get(),
-            IntlDateFormatter::LONG,
-            IntlDateFormatter::LONG
-        );
-
-        $output = $this->wrap(
-            $date->format(DateTime::W3C),
-            $interval->forHumans([
-                'short' => $short,
-                'join' => true,
-                'parts' => $parts,
-                'options' => CarbonInterface::JUST_NOW | CarbonInterface::ONE_DAY_WORDS,
-                'syntax' => CarbonInterface::DIFF_RELATIVE_TO_NOW
+                'syntax' => $absolute ? CarbonInterface::DIFF_ABSOLUTE : CarbonInterface::DIFF_RELATIVE_TO_NOW
             ]),
             $formatter->format($date)
         );
@@ -332,15 +324,43 @@ class Time implements FacadePlugin
             $output->addClass('passed');
         }
 
+        if ($negateClass !== null) {
+            $negative = $negateClass ? 'positive' : 'negative';
+            $positive = $negateClass ? 'negative' : 'positive';
+
+            if ($interval->invert) {
+                $output->addClass($invert ? $positive : $negative.' pending');
+            } else {
+                $output->addClass($invert ? $negative : $positive);
+            }
+        }
+
         return $output;
     }
+
 
 
 
     /**
      * Format interval until date
      */
-    public function between($date1, $date2, ?int $parts=2, bool $short=false): ?Markup
+    public function between($date1, $date2, ?int $parts=1): ?Markup
+    {
+        return $this->betweenRaw($date1, $date2, $parts, false);
+    }
+
+    /**
+     * Format interval until date
+     */
+    public function betweenAbbr($date1, $date2, ?int $parts=1): ?Markup
+    {
+        return $this->betweenRaw($date1, $date2, $parts, true);
+    }
+
+    /**
+     * Format interval until date
+     */
+    protected function betweenRaw($date1, $date2, ?int $parts=1, bool $short=false): ?Markup
     {
         $this->checkCarbon();
 
