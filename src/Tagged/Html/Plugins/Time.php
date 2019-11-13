@@ -441,7 +441,7 @@ class Time implements FacadePlugin
             $date = 'now';
         }
 
-        $date = new DateTime($date);
+        $date = new DateTime((string)$date);
 
         if ($timestamp !== null) {
             $date->setTimestamp((int)$timestamp);
