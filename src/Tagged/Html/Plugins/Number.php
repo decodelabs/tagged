@@ -37,6 +37,10 @@ class Number implements FacadePlugin
             return null;
         }
 
+        if (!is_float($value)) {
+            $value = (float)((string)$value);
+        }
+
         $formatter = new \NumberFormatter(Systemic::$locale->get(),  \NumberFormatter::CURRENCY);
         $output = $formatter->formatCurrency($value, $code);
 
