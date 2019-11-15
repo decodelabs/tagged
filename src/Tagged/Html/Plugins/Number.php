@@ -15,6 +15,8 @@ use DecodeLabs\Tagged\Html\Factory as HtmlFactory;
 use DecodeLabs\Tagged\Html\ContentCollection;
 use DecodeLabs\Tagged\Html\Element;
 
+use NumberFormatter;
+
 class Number implements FacadePlugin
 {
     protected $html;
@@ -41,13 +43,14 @@ class Number implements FacadePlugin
             $value = (float)((string)$value);
         }
 
-        $formatter = new \NumberFormatter(Systemic::$locale->get(),  \NumberFormatter::CURRENCY);
+        $formatter = new NumberFormatter(Systemic::$locale->get(),  NumberFormatter::CURRENCY);
 
         if (
             $rounded === true ||
             ($rounded === null && ((int)$value == $value))
         ) {
-            $formatter->setAttribute(\NumberFormatter::FRACTION_DIGITS, 0);
+            $formatter->setTextAttribute(NumberFormatter::CURRENCY_CODE, $code);
+            $formatter->setAttribute(NumberFormatter::FRACTION_DIGITS, 0);
         }
 
         $output = $formatter->formatCurrency($value, $code);
@@ -95,7 +98,7 @@ class Number implements FacadePlugin
             if (is_int($value)
             || is_float($value)
             || is_string($value) && (string)((float)$value) === $value) {
-                $formatter = new \NumberFormatter(Systemic::$locale->get(), \NumberFormatter::DECIMAL);
+                $formatter = new NumberFormatter(Systemic::$locale->get(), NumberFormatter::DECIMAL);
                 $value = $formatter->format($value);
             }
 
