@@ -44,12 +44,12 @@ class Number implements FacadePlugin
         }
 
         $formatter = new NumberFormatter(Systemic::$locale->get(),  NumberFormatter::CURRENCY);
+        $formatter->setTextAttribute(NumberFormatter::CURRENCY_CODE, $code);
 
         if (
             $rounded === true ||
             ($rounded === null && ((int)$value == $value))
         ) {
-            $formatter->setTextAttribute(NumberFormatter::CURRENCY_CODE, $code);
             $formatter->setAttribute(NumberFormatter::FRACTION_DIGITS, 0);
         }
 
