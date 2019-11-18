@@ -84,7 +84,7 @@ class Number implements FacadePlugin
 
         $symbolTag = $this->html->el('span.unit.symbol', $symbol);
 
-        if (mb_strlen($symbol) > 1) {
+        if (preg_match('/^[A-Z]{2,}$/', $symbol)) {
             $symbolTag->addClass('code');
         }
 
