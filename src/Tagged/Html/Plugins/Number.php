@@ -39,7 +39,9 @@ class Number implements FacadePlugin
             return null;
         }
 
-        if (!is_float($value)) {
+        if (is_int($value)) {
+            $value = (float)$value;
+        } elseif (!is_float($value)) {
             $value = (float)((string)$value);
         }
 
@@ -61,23 +63,32 @@ class Number implements FacadePlugin
 
         return $this->html->el('span.currency', function () use ($matches) {
             if (!empty($matches[2])) {
-                yield $this->html->el('span.symbol', $matches[2]);
-
-                if (!empty($matches[3])) {
-                    yield $matches[3];
-                }
+                yield $this->wrapCurrencySymbol($matches[2]);
             }
 
             yield $this->html->el('span.value', $matches[4]);
 
             if (isset($matches[7])) {
-                if (isset($matches[6])) {
-                    yield $matches[6];
-                }
-
-                yield $this->html->el('span.symbol', $matches[7]);
+                yield $this->wrapCurrencySymbol($matches[7]);
             }
         });
+    }
+
+    protected function wrapCurrencySymbol(string $symbolInput): Element
+    {
+        if (empty($symbol = str_replace('&nbsp;', '', htmlentities($symbolInput)))) {
+            $symbol = $symbolInput;
+        } else {
+            $symbol = html_entity_decode($symbol);
+        }
+
+        $symbolTag = $this->html->el('span.symbol', $symbol);
+
+        if (mb_strlen($symbol) > 1) {
+            $symbolTag->addClass('code');
+        }
+
+        return $symbolTag;
     }
 
 
