@@ -61,7 +61,7 @@ class Number implements FacadePlugin
             return $this->html->el('span.number.currency', $output);
         }
 
-        return $this->html->el('span.currency', function () use ($matches) {
+        return $this->html->el('span.number.currency', function () use ($matches) {
             if (!empty($matches[2])) {
                 yield $this->wrapCurrencySymbol($matches[2]);
             }
