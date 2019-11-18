@@ -58,7 +58,7 @@ class Number implements FacadePlugin
         $output = $formatter->formatCurrency($value, $code);
 
         if (!preg_match('/^(([^0-9.,\s][^0-9]*)([\s]*))?([0-9.,]+)(([\s]*)([^0-9.,\s][^0-9]*))?$/u', $output, $matches)) {
-            return $this->html->el('span.currency', $output);
+            return $this->html->el('span.number.currency', $output);
         }
 
         return $this->html->el('span.currency', function () use ($matches) {
@@ -82,7 +82,7 @@ class Number implements FacadePlugin
             $symbol = html_entity_decode($symbol);
         }
 
-        $symbolTag = $this->html->el('span.symbol', $symbol);
+        $symbolTag = $this->html->el('span.unit.symbol', $symbol);
 
         if (mb_strlen($symbol) > 1) {
             $symbolTag->addClass('code');
