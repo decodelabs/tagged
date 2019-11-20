@@ -106,9 +106,14 @@ class Number implements FacadePlugin
         }
 
         return $this->html->el('span.number', function () use ($value, $unit) {
-            if (is_int($value)
-            || is_float($value)
-            || is_string($value) && (string)((float)$value) === $value) {
+            if (
+                is_int($value) ||
+                is_float($value) ||
+                (
+                    is_string($value) &&
+                    is_numeric($value)
+                )
+            ) {
                 $formatter = new NumberFormatter(Systemic::$locale->get(), NumberFormatter::DECIMAL);
                 $value = $formatter->format($value);
             } else {
@@ -138,7 +143,7 @@ class Number implements FacadePlugin
                 is_float($value) ||
                 (
                     is_string($value) &&
-                    (string)((float)$value) === $value
+                    is_numeric($value)
                 )
             ) {
                 $formatter = new NumberFormatter(Systemic::$locale->get(), NumberFormatter::PERCENT);
