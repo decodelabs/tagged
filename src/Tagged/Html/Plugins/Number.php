@@ -95,7 +95,7 @@ class Number implements FacadePlugin
     /**
      * Format and wrap number
      */
-    public function format($value, ?string $unit=null): ?Markup
+    public function format($value, ?string $unit=null): ?Element
     {
         if ($value === null) {
             return null;
@@ -111,6 +111,8 @@ class Number implements FacadePlugin
             || is_string($value) && (string)((float)$value) === $value) {
                 $formatter = new NumberFormatter(Systemic::$locale->get(), NumberFormatter::DECIMAL);
                 $value = $formatter->format($value);
+            } else {
+                throw Glitch::EInvalidArgument('Value is not a number', null, $value);
             }
 
             yield $this->html->el('span.value', $value);
@@ -121,11 +123,52 @@ class Number implements FacadePlugin
         });
     }
 
+    /**
+     * Format and render a percentage
+     */
+    public function percent($value, float $total=100.0, int $decimals=0): ?Element
+    {
+        if ($value === null || $total <= 0) {
+            return null;
+        }
+
+        return $this->html->el('span.number.percent', function () use ($value, $total, $decimals) {
+            if (
+                is_int($value) ||
+                is_float($value) ||
+                (
+                    is_string($value) &&
+                    (string)((float)$value) === $value
+                )
+            ) {
+                $formatter = new NumberFormatter(Systemic::$locale->get(), NumberFormatter::PERCENT);
+                $formatter->setAttribute(NumberFormatter::MAX_FRACTION_DIGITS, $decimals);
+                $value = $formatter->format($value / $total);
+            } else {
+                throw Glitch::EInvalidArgument('Percent value is not a number', null, $value);
+            }
+
+            if (!preg_match('/^(%)?([0-9,.]+)(%)?$/u', $value, $matches)) {
+                return $value;
+            }
+
+            if (!empty($matches[1])) {
+                yield $this->html->el('span.unit', '%');
+            }
+
+            yield $this->html->el('span.value', $matches[2]);
+
+            if (!empty($matches[3])) {
+                yield $this->html->el('span.unit', '%');
+            }
+        });
+    }
+
 
     /**
      * Render difference of number from 0
      */
-    public function diff(?float $diff, ?bool $invert=false, string $tag='span'): Markup
+    public function diff(?float $diff, ?bool $invert=false, string $tag='span'): Element
     {
         $diff = (float)$diff;
 
