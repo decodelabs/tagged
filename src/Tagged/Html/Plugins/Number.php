@@ -30,6 +30,25 @@ class Number implements FacadePlugin
     }
 
 
+    const CURRENCY_DECIMALS = [
+        'BIF' => 0,
+        'CLP' => 0,
+        'DJF' => 0,
+        'GNF' => 0,
+        'JPY' => 0,
+        'KMF' => 0,
+        'KRW' => 0,
+        'MGA' => 0,
+        'PYG' => 0,
+        'RWF' => 0,
+        'UGX' => 0,
+        'VND' => 0,
+        'VUV' => 0,
+        'XAF' => 0,
+        'XOF' => 0,
+        'XPF' => 0
+    ];
+
     /**
      * Format and wrap currency
      */
@@ -45,6 +64,7 @@ class Number implements FacadePlugin
             $value = (float)((string)$value);
         }
 
+        $code = strtoupper($code);
         $formatter = new NumberFormatter(Systemic::$locale->get(),  NumberFormatter::CURRENCY);
         $formatter->setTextAttribute(NumberFormatter::CURRENCY_CODE, $code);
 
@@ -53,6 +73,8 @@ class Number implements FacadePlugin
             ($rounded === null && ((int)$value == $value))
         ) {
             $formatter->setAttribute(NumberFormatter::FRACTION_DIGITS, 0);
+        } elseif (isset(static::CURRENCY_DECIMALS[$code])) {
+            $formatter->setAttribute(NumberFormatter::FRACTION_DIGITS, static::CURRENCY_DECIMALS[$code]);
         }
 
         $output = $formatter->formatCurrency($value, $code);
