@@ -51,7 +51,10 @@ class Number implements FacadePlugin
 
         if (
             $rounded === true ||
-            ($rounded === null && ((int)$value == round($value, 2)))
+            (
+                $rounded === null &&
+                (round($value, 0) == round($value, 2))
+            )
         ) {
             $formatter->setAttribute(NumberFormatter::FRACTION_DIGITS, 0);
         }
