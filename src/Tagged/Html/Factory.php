@@ -311,11 +311,7 @@ class Factory implements Markup, FacadeTarget, FacadePluginAccessTarget
             }
 
             if ($more) {
-                if (!$first) {
-                    yield $delimiter;
-                }
-
-                yield Element::create('em.more', '…+ '.$more);
+                yield Element::create('em.more', '… +'.$more);
             }
         });
     }
