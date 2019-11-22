@@ -138,7 +138,7 @@ class Factory implements Markup, FacadeTarget, FacadePluginAccessTarget
      */
     public function list(?iterable $list, string $container, string $name, callable $callback=null, array $attributes=[]): Element
     {
-        return Element::create($container, function () use ($list, $name, $callback) {
+        $output = Element::create($container, function () use ($list, $name, $callback) {
             if (!$list) {
                 return;
             }
@@ -154,14 +154,17 @@ class Factory implements Markup, FacadeTarget, FacadePluginAccessTarget
                     }
                 });
             }
-        }, $attributes)->setRenderEmpty(false);
+        }, $attributes);
+
+        $output->setRenderEmpty(false);
+        return $output;
     }
 
 
     /**
      * Generate naked list
      */
-    public function elements(?iterable $list, string $name, callable $callback=null, array $attributes=[]): Element
+    public function elements(?iterable $list, string $name, callable $callback=null, array $attributes=[]): Buffer
     {
         return ContentCollection::normalize(function () use ($list, $name, $callback, $attributes) {
             if (!$list) {
@@ -211,7 +214,7 @@ class Factory implements Markup, FacadeTarget, FacadePluginAccessTarget
             return $value;
         };
 
-        return Element::create('dl', function () use ($list, $renderer) {
+        $output = Element::create('dl', function () use ($list, $renderer) {
             if (!$list) {
                 return;
             }
@@ -231,7 +234,10 @@ class Factory implements Markup, FacadeTarget, FacadePluginAccessTarget
                 yield $dt;
                 yield new Buffer($dd);
             }
-        }, $attributes)->setRenderEmpty(false);
+        }, $attributes);
+
+        $output->setRenderEmpty(false);
+        return $output;
     }
 
     /**
