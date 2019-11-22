@@ -109,9 +109,9 @@ class Factory implements Markup, FacadeTarget, FacadePluginAccessTarget
     /**
      * Wrap raw html string
      */
-    public function raw(string $html): Buffer
+    public function raw($html): Buffer
     {
-        return new Buffer($html);
+        return new Buffer((string)$html);
     }
 
     /**
