@@ -174,7 +174,7 @@ class Factory implements Markup, FacadeTarget, FacadePluginAccessTarget
             $i = 0;
 
             foreach ($list as $key => $item) {
-                yield $this->el($name, function ($el) use ($key, $item, $callback, &$i) {
+                yield Element::create($name, function ($el) use ($key, $item, $callback, &$i) {
                     if ($callback) {
                         return $callback($item, $el, $key, ++$i);
                     } else {
@@ -190,7 +190,7 @@ class Factory implements Markup, FacadeTarget, FacadePluginAccessTarget
      */
     public function uList(?iterable $list, callable $renderer=null, array $attributes=[]): Element
     {
-        return $this->list($list, 'ul', 'li', $renderer ?? function ($value) {
+        return $this->list($list, 'ul', '?li', $renderer ?? function ($value) {
             return $value;
         }, $attributes);
     }
@@ -200,7 +200,7 @@ class Factory implements Markup, FacadeTarget, FacadePluginAccessTarget
      */
     public function oList(?iterable $list, callable $renderer=null, array $attributes=[]): Element
     {
-        return $this->list($list, 'ol', 'li', $renderer ?? function ($value) {
+        return $this->list($list, 'ol', '?li', $renderer ?? function ($value) {
             return $value;
         }, $attributes);
     }
