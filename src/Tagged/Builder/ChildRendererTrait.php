@@ -30,7 +30,7 @@ trait ChildRendererTrait
         }
 
         if ($value instanceof Element) {
-            $output = $value->render($pretty);
+            $output = (string)$value->render($pretty);
         } else {
             $output = (string)$value;
         }

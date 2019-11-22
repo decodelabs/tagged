@@ -82,13 +82,13 @@ class Element extends Tag implements \IteratorAggregate, ElementInterface
     /**
      * Render to more readable string (for dump)
      */
-    public function render(bool $pretty=false): ?string
+    public function render(bool $pretty=false): ?Buffer
     {
         if (null === ($output = $this->renderWith($this->renderContent($pretty), $pretty))) {
             return null;
         }
 
-        return (string)$output;
+        return new Buffer((string)$output);
     }
 
     /**

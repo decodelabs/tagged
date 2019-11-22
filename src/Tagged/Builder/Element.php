@@ -15,6 +15,6 @@ use DecodeLabs\Collections\Sequence;
 interface Element extends Tag, Sequence
 {
     public function setBody($body): Element;
-    public function render(bool $pretty=false): ?string;
+    public function render(bool $pretty=false): ?Buffer;
     public function renderContent(bool $pretty=false): ?Buffer;
 }
