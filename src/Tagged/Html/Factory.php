@@ -136,7 +136,7 @@ class Factory implements Markup, FacadeTarget, FacadePluginAccessTarget
     /**
      * Generate nested list
      */
-    public function list(?iterable $list, string $container, string $name, callable $callback=null, array $attributes=[]): Markup
+    public function list(?iterable $list, string $container, string $name, callable $callback=null, array $attributes=[]): Element
     {
         return Element::create($container, function () use ($list, $name, $callback) {
             if (!$list) {
@@ -161,7 +161,7 @@ class Factory implements Markup, FacadeTarget, FacadePluginAccessTarget
     /**
      * Generate naked list
      */
-    public function elements(?iterable $list, string $name, callable $callback=null, array $attributes=[]): Markup
+    public function elements(?iterable $list, string $name, callable $callback=null, array $attributes=[]): Element
     {
         return ContentCollection::normalize(function () use ($list, $name, $callback, $attributes) {
             if (!$list) {
@@ -185,7 +185,7 @@ class Factory implements Markup, FacadeTarget, FacadePluginAccessTarget
     /**
      * Create a standard ul > li structure
      */
-    public function uList(?iterable $list, callable $renderer=null, array $attributes=[]): Markup
+    public function uList(?iterable $list, callable $renderer=null, array $attributes=[]): Element
     {
         return $this->list($list, 'ul', 'li', $renderer ?? function ($value) {
             return $value;
@@ -195,7 +195,7 @@ class Factory implements Markup, FacadeTarget, FacadePluginAccessTarget
     /**
      * Create a standard ol > li structure
      */
-    public function oList(?iterable $list, callable $renderer=null, array $attributes=[]): Markup
+    public function oList(?iterable $list, callable $renderer=null, array $attributes=[]): Element
     {
         return $this->list($list, 'ol', 'li', $renderer ?? function ($value) {
             return $value;
@@ -205,7 +205,7 @@ class Factory implements Markup, FacadeTarget, FacadePluginAccessTarget
     /**
      * Create a standard dl > dt + dd structure
      */
-    public function dList(?iterable $list, callable $renderer=null, array $attributes=[]): Markup
+    public function dList(?iterable $list, callable $renderer=null, array $attributes=[]): Element
     {
         $renderer = $renderer ?? function ($value) {
             return $value;
@@ -237,7 +237,7 @@ class Factory implements Markup, FacadeTarget, FacadePluginAccessTarget
     /**
      * Create an inline comma separated list with optional item limit
      */
-    public function iList(?iterable $list, callable $renderer=null, string $delimiter=null, string $finalDelimiter=null, int $limit=null): Markup
+    public function iList(?iterable $list, callable $renderer=null, string $delimiter=null, string $finalDelimiter=null, int $limit=null): Element
     {
         if ($delimiter === null) {
             $delimiter = ', ';
@@ -320,7 +320,7 @@ class Factory implements Markup, FacadeTarget, FacadePluginAccessTarget
     /**
      * Create image tag
      */
-    public function image($url, string $alt=null, $width=null, $height=null): Markup
+    public function image($url, string $alt=null, $width=null, $height=null): Element
     {
         $output = $this->el('img', null, [
             'src' => $url,
