@@ -6,6 +6,8 @@
 declare(strict_types=1);
 namespace DecodeLabs\Tagged\Builder;
 
+use DecodeLabs\Collections\ArrayUtils;
+
 trait ClassListContainerTrait
 {
     /**
@@ -13,6 +15,7 @@ trait ClassListContainerTrait
      */
     public function setClasses(...$classes): ClassListContainer
     {
+        $classes = ArrayUtils::collapse($classes, false, true, true);
         $this->getClasses()->clear()->add(...$classes);
         return $this;
     }
@@ -22,6 +25,7 @@ trait ClassListContainerTrait
      */
     public function addClasses(...$classes): ClassListContainer
     {
+        $classes = ArrayUtils::collapse($classes, false, true, true);
         $this->getClasses()->add(...$classes);
         return $this;
     }
@@ -43,7 +47,7 @@ trait ClassListContainerTrait
      */
     public function setClass(?string ...$classes): ClassListContainer
     {
-        return $this->setClasses(...$classes);
+        return $this->getClasses()->clear()->add(...$classes);
     }
 
     /**
@@ -51,7 +55,7 @@ trait ClassListContainerTrait
      */
     public function addClass(?string ...$classes): ClassListContainer
     {
-        return $this->addClasses(...$classes);
+        return $this->getClasses()->add(...$classes);
     }
 
     /**
