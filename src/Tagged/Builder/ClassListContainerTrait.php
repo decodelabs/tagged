@@ -47,7 +47,8 @@ trait ClassListContainerTrait
      */
     public function setClass(?string ...$classes): ClassListContainer
     {
-        return $this->getClasses()->clear()->add(...$classes);
+        $this->getClasses()->clear()->add(...$classes);
+        return $this;
     }
 
     /**
@@ -55,7 +56,8 @@ trait ClassListContainerTrait
      */
     public function addClass(?string ...$classes): ClassListContainer
     {
-        return $this->getClasses()->add(...$classes);
+        $this->getClasses()->add(...$classes);
+        return $this;
     }
 
     /**
