@@ -345,7 +345,7 @@ class Factory implements Markup, FacadeTarget, FacadePluginAccessTarget
     /**
      * Escape HTML
      */
-    public function esc(?string $value): ?string
+    public function esc($value): ?string
     {
         if ($value === null) {
             return null;
