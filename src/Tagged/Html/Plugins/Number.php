@@ -204,4 +204,49 @@ class Number implements FacadePlugin
 
         return $output;
     }
+
+
+
+
+    /**
+     * Format filesize
+     */
+    public function fileSize(?int $bytes): ?Element
+    {
+        if ($bytes === null) {
+            return null;
+        }
+
+        $units = ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB'];
+
+        for ($i = 0; $bytes > 1024; $i++) {
+            $bytes /= 1024;
+        }
+
+        return $this->html->el('span.numeric.filesize', [
+            $this->html->el('span.value', round($bytes, 2)),
+            $this->html->el('span.unit', $units[$i])
+        ]);
+    }
+
+    /**
+     * Format filesize as decimal
+     */
+    public function fileSizeDec(?int $bytes): ?Element
+    {
+        if ($bytes === null) {
+            return null;
+        }
+
+        $units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
+
+        for ($i = 0; $bytes > 1000; $i++) {
+            $bytes /= 1000;
+        }
+
+        return $this->html->el('span.numeric.filesize', [
+            $this->html->el('span.value', round($bytes, 2)),
+            $this->html->el('span.unit', $units[$i])
+        ]);
+    }
 }
