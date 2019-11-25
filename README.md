@@ -134,10 +134,10 @@ Html::$time->shortDate('yesterday');
 
 
 // Intervals
-Html::$time->since('yesterday'); // 1 day
-Html::$time->until('yesterday'); // -1 day
-Html::$time->fromNow('yesterday'); // 1 day ago
-Html::$time->fromNow('tomorrow'); // 1 day from now
+Html::$time->since('yesterday'); // 1 day ago
+Html::$time->until('tomorrow'); // 1 day from now
+Html::$time->sinceAbs('yesterday'); // 1 day
+Html::$time->untilAbs('yesterday'); // -1 day
 Html::$time->between('yesterday', 'tomorrow'); // 1 day
 ```
 

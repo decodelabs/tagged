@@ -198,81 +198,56 @@ class Time implements FacadePlugin
     /**
      * Format interval since date
      */
-    public function since($date, ?int $parts=1, bool $negateClass=false): ?Element
+    public function since($date, ?int $parts=1, ?bool $positive=null): ?Element
     {
-        return $this->wrapInterval($date, false, $parts, false, false, $negateClass);
+        return $this->wrapInterval($date, false, $parts, false, false, $positive);
     }
 
     /**
      * Format interval since date
      */
-    public function sinceAbs($date, ?int $parts=1, bool $negateClass=false): ?Element
+    public function sinceAbs($date, ?int $parts=1, ?bool $positive=null): ?Element
     {
-        return $this->wrapInterval($date, false, $parts, false, true, $negateClass);
+        return $this->wrapInterval($date, false, $parts, false, true, $positive);
     }
 
     /**
      * Format interval since date
      */
-    public function sinceAbbr($date, ?int $parts=1, bool $negateClass=false): ?Element
+    public function sinceAbbr($date, ?int $parts=1, ?bool $positive=null): ?Element
     {
-        return $this->wrapInterval($date, false, $parts, true, true, $negateClass);
+        return $this->wrapInterval($date, false, $parts, true, true, $positive);
     }
 
     /**
      * Format interval until date
      */
-    public function until($date, ?int $parts=1, bool $negateClass=false): ?Element
+    public function until($date, ?int $parts=1, ?bool $positive=null): ?Element
     {
-        return $this->wrapInterval($date, true, $parts, false, false, $negateClass);
+        return $this->wrapInterval($date, true, $parts, false, false, $positive);
     }
 
     /**
      * Format interval until date
      */
-    public function untilAbs($date, ?int $parts=1, bool $negateClass=false): ?Element
+    public function untilAbs($date, ?int $parts=1, ?bool $positive=null): ?Element
     {
-        return $this->wrapInterval($date, true, $parts, false, true, $negateClass);
+        return $this->wrapInterval($date, true, $parts, false, true, $positive);
     }
 
     /**
      * Format interval until date
      */
-    public function untilAbbr($date, ?int $parts=1, bool $negateClass=false): ?Element
+    public function untilAbbr($date, ?int $parts=1, ?bool $positive=null): ?Element
     {
-        return $this->wrapInterval($date, true, $parts, true, true, $negateClass);
-    }
-
-
-    /**
-     * Format interval until date
-     */
-    public function fromNow($date, ?int $parts=1): ?Element
-    {
-        return $this->wrapInterval($date, false, $parts, false, false, null);
-    }
-
-    /**
-     * Format interval until date
-     */
-    public function fromNowAbs($date, ?int $parts=1): ?Element
-    {
-        return $this->wrapInterval($date, false, $parts, false, true, null);
-    }
-
-    /**
-     * Format interval until date
-     */
-    public function fromNowAbbr($date, ?int $parts=1): ?Element
-    {
-        return $this->wrapInterval($date, false, $parts, true, true, null);
+        return $this->wrapInterval($date, true, $parts, true, true, $positive);
     }
 
 
     /**
      * Format interval
      */
-    protected function wrapInterval($date, bool $invert, ?int $parts, bool $short=false, bool $absolute=false, ?bool $negateClass=false): ?Element
+    protected function wrapInterval($date, bool $invert, ?int $parts, bool $short=false, bool $absolute=false, ?bool $positive=false): ?Element
     {
         $this->checkCarbon();
 
@@ -320,12 +295,12 @@ class Time implements FacadePlugin
         if ($interval->invert) {
             $output->addClass('future');
         } else {
-            $output->addClass('passed');
+            $output->addClass('past');
         }
 
-        if ($negateClass !== null) {
-            $negative = $negateClass ? 'positive' : 'negative';
-            $positive = $negateClass ? 'negative' : 'positive';
+        if ($positive !== null) {
+            $negative = $positive ? 'positive' : 'negative';
+            $positive = $positive ? 'negative' : 'positive';
 
             if ($interval->invert) {
                 $output->addClass($invert ? $positive : $negative.' pending');
