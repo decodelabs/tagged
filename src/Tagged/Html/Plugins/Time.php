@@ -276,6 +276,10 @@ class Time implements FacadePlugin
         $inverted = $interval->invert;
 
         if ($invert) {
+            if ($inverted) {
+                $absolute = true;
+            }
+
             $inverted = !$inverted;
         }
 
