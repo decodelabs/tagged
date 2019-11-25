@@ -127,7 +127,7 @@ Html::$time->format('now', 'd/m/Y', 'Europe/London');
 Html::$time->locale('now', 'long', 'long', true);
 
 // Locale shortcuts
-Html::$time->mediumDateTime('tomorrow');
+Html::$time->dateTime('tomorrow'); // medium
 Html::$time->longTime('yesterday');
 Html::$time->shortDate('yesterday');
 // ...etc
