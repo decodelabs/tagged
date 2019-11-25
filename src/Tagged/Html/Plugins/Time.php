@@ -391,7 +391,7 @@ class Time implements FacadePlugin
     /**
      * Prepare date for formatting
      */
-    protected function prepare($date, $timezone=true, bool $includeTime=true): ?\DateTime
+    protected function prepare($date, $timezone=true, bool $includeTime=true): ?DateTime
     {
         if (null === ($date = $this->normalizeDate($date))) {
             return null;
@@ -416,7 +416,7 @@ class Time implements FacadePlugin
     /**
      * Normalize a date input
      */
-    protected function normalizeDate($date): ?\DateTime
+    protected function normalizeDate($date): ?DateTime
     {
         if ($date === null) {
             return null;
@@ -453,8 +453,12 @@ class Time implements FacadePlugin
     /**
      * Normalize timezone
      */
-    protected function normalizeTimezone($timezone): ?\DateTimeZone
+    protected function normalizeTimezone($timezone): ?DateTimeZone
     {
+        if ($timezone === false || $timezone === null) {
+            return null;
+        }
+
         if ($timezone === true) {
             $timezone = Systemic::$timezone->get();
         }
