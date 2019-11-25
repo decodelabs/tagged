@@ -299,13 +299,13 @@ class Time implements FacadePlugin
         }
 
         if ($positive !== null) {
-            $positive = $positive ? 'positive' : 'negative';
-            $negative = $positive ? 'negative' : 'positive';
+            $positiveClass = $positive ? 'positive' : 'negative';
+            $negativeClass = $positive ? 'negative' : 'positive';
 
             if ($interval->invert) {
-                $output->addClass($invert ? $positive : $negative.' pending');
+                $output->addClass($invert ? $positiveClass : $negativeClass.' pending');
             } else {
-                $output->addClass($invert ? $negative : $positive);
+                $output->addClass($invert ? $negativeClass : $positiveClass);
             }
         }
 
