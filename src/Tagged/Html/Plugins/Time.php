@@ -53,6 +53,21 @@ class Time implements FacadePlugin
     }
 
     /**
+     * Custom format a date and wrap it
+     */
+    public function formatDate($date, string $format): ?Element
+    {
+        if (!$date = $this->prepare($date, false, true)) {
+            return null;
+        }
+
+        return $this->wrap(
+            $date->format('Y-m-d'),
+            $date->format($format)
+        );
+    }
+
+    /**
      * Format date according to locale
      */
     public function locale($date, $dateSize=true, $timeSize=true, $timezone=true): ?Element
