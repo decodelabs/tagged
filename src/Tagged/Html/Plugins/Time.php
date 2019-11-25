@@ -299,8 +299,8 @@ class Time implements FacadePlugin
         }
 
         if ($positive !== null) {
-            $negative = $positive ? 'positive' : 'negative';
-            $positive = $positive ? 'negative' : 'positive';
+            $positive = $positive ? 'positive' : 'negative';
+            $negative = $positive ? 'negative' : 'positive';
 
             if ($interval->invert) {
                 $output->addClass($invert ? $positive : $negative.' pending');
