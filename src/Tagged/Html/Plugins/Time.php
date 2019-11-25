@@ -198,7 +198,7 @@ class Time implements FacadePlugin
     /**
      * Format interval since date
      */
-    public function since($date, ?int $parts=1, ?bool $positive=null): ?Element
+    public function since($date, ?bool $positive=null, ?int $parts=1): ?Element
     {
         return $this->wrapInterval($date, false, $parts, false, false, $positive);
     }
@@ -206,7 +206,7 @@ class Time implements FacadePlugin
     /**
      * Format interval since date
      */
-    public function sinceAbs($date, ?int $parts=1, ?bool $positive=null): ?Element
+    public function sinceAbs($date, ?bool $positive=null, ?int $parts=1): ?Element
     {
         return $this->wrapInterval($date, false, $parts, false, true, $positive);
     }
@@ -214,7 +214,7 @@ class Time implements FacadePlugin
     /**
      * Format interval since date
      */
-    public function sinceAbbr($date, ?int $parts=1, ?bool $positive=null): ?Element
+    public function sinceAbbr($date, ?bool $positive=null, ?int $parts=1): ?Element
     {
         return $this->wrapInterval($date, false, $parts, true, true, $positive);
     }
@@ -222,7 +222,7 @@ class Time implements FacadePlugin
     /**
      * Format interval until date
      */
-    public function until($date, ?int $parts=1, ?bool $positive=null): ?Element
+    public function until($date, ?bool $positive=null, ?int $parts=1): ?Element
     {
         return $this->wrapInterval($date, true, $parts, false, false, $positive);
     }
@@ -230,7 +230,7 @@ class Time implements FacadePlugin
     /**
      * Format interval until date
      */
-    public function untilAbs($date, ?int $parts=1, ?bool $positive=null): ?Element
+    public function untilAbs($date, ?bool $positive=null, ?int $parts=1): ?Element
     {
         return $this->wrapInterval($date, true, $parts, false, true, $positive);
     }
@@ -238,7 +238,7 @@ class Time implements FacadePlugin
     /**
      * Format interval until date
      */
-    public function untilAbbr($date, ?int $parts=1, ?bool $positive=null): ?Element
+    public function untilAbbr($date, ?bool $positive=null, ?int $parts=1): ?Element
     {
         return $this->wrapInterval($date, true, $parts, true, true, $positive);
     }
