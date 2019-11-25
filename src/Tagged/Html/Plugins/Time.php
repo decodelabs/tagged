@@ -87,6 +87,8 @@ class Time implements FacadePlugin
             $timeSize
         );
 
+        $formatter->setTimezone($date->getTimezone());
+
         return $this->wrap(
             $date->format($format),
             $formatter->format($date)
