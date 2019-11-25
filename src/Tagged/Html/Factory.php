@@ -351,6 +351,11 @@ class Factory implements Markup, FacadeTarget, FacadePluginAccessTarget
             return null;
         }
 
-        return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
+        try {
+            return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
+        } catch (\Throwable $e) {
+            Glitch::logException($e);
+            return (string)$value;
+        }
     }
 }
