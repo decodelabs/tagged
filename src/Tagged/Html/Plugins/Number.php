@@ -176,7 +176,7 @@ class Number implements FacadePlugin
     /**
      * Render difference of number from 0
      */
-    public function diff($diff, ?bool $invert=false, string $tag='span'): Element
+    public function diff($diff, ?bool $invert=false, string $tag='sup'): Element
     {
         if (!is_numeric($diff)) {
             throw Glitch::EInvalidArgument('Diff value is not a number', null, $diff);
