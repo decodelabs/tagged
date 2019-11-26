@@ -31,6 +31,42 @@ class Number implements FacadePlugin
 
 
     /**
+     * Format and wrap number
+     */
+    public function wrap($value, ?string $unit=null): ?Element
+    {
+        if ($value === null) {
+            return null;
+        }
+
+        if ($unit === null && is_string($value) && false !== strpos($value, ' ')) {
+            list($value, $unit) = explode(' ', $value, 2);
+        }
+
+        return $this->html->el('span.number', function () use ($value, $unit) {
+            if (
+                is_int($value) ||
+                is_float($value) ||
+                (
+                    is_string($value) &&
+                    is_numeric($value)
+                )
+            ) {
+                $formatter = new NumberFormatter(Systemic::$locale->get(), NumberFormatter::DECIMAL);
+                $value = $formatter->format($value);
+            } else {
+                throw Glitch::EInvalidArgument('Value is not a number', null, $value);
+            }
+
+            yield $this->html->el('span.value', $value);
+
+            if ($unit !== null) {
+                yield $this->html->el('span.unit', $unit);
+            }
+        });
+    }
+
+    /**
      * Format and wrap currency
      */
     public function currency($value, ?string $code, ?bool $rounded=null): ?Markup
@@ -93,43 +129,6 @@ class Number implements FacadePlugin
         }
 
         return $symbolTag;
-    }
-
-
-    /**
-     * Format and wrap number
-     */
-    public function format($value, ?string $unit=null): ?Element
-    {
-        if ($value === null) {
-            return null;
-        }
-
-        if ($unit === null && is_string($value) && false !== strpos($value, ' ')) {
-            list($value, $unit) = explode(' ', $value, 2);
-        }
-
-        return $this->html->el('span.number', function () use ($value, $unit) {
-            if (
-                is_int($value) ||
-                is_float($value) ||
-                (
-                    is_string($value) &&
-                    is_numeric($value)
-                )
-            ) {
-                $formatter = new NumberFormatter(Systemic::$locale->get(), NumberFormatter::DECIMAL);
-                $value = $formatter->format($value);
-            } else {
-                throw Glitch::EInvalidArgument('Value is not a number', null, $value);
-            }
-
-            yield $this->html->el('span.value', $value);
-
-            if ($unit !== null) {
-                yield $this->html->el('span.unit', $unit);
-            }
-        });
     }
 
     /**
