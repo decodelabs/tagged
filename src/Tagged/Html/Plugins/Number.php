@@ -190,7 +190,7 @@ class Number implements FacadePlugin
 
         $output = $this->html->el($tag, [
             $arrow,
-            $this->format(abs($diff))
+            $this->wrap(abs($diff))
         ])->addClass('diff');
 
         if ($invert !== null) {
