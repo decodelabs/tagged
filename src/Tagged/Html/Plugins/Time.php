@@ -179,7 +179,7 @@ class Time implements FacadePlugin
     /**
      * Format medium time
      */
-    public function time($date, $timezone=true): ?Element
+    public function mediumTime($date, $timezone=true): ?Element
     {
         return $this->locale($date, false, 'medium', $timezone);
     }
@@ -204,7 +204,7 @@ class Time implements FacadePlugin
     /**
      * Format short time
      */
-    public function shortTime($date, $timezone=true): ?Element
+    public function time($date, $timezone=true): ?Element
     {
         return $this->locale($date, false, 'short', $timezone);
     }
