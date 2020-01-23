@@ -136,7 +136,7 @@ class Factory implements Markup, FacadeTarget, FacadePluginAccessTarget
     /**
      * Generate nested list
      */
-    public function list(?iterable $list, string $container, string $name, callable $callback=null, array $attributes=[]): Element
+    public function list(?iterable $list, string $container, ?string $name, callable $callback=null, array $attributes=[]): Element
     {
         $output = Element::create($container, function () use ($list, $name, $callback) {
             if (!$list) {
@@ -146,13 +146,25 @@ class Factory implements Markup, FacadeTarget, FacadePluginAccessTarget
             $i = 0;
 
             foreach ($list as $key => $item) {
-                yield Element::create($name, function ($el) use ($key, $item, $callback, &$i) {
+                $i++;
+
+                if ($name === null) {
+                    // Unwrapped
                     if ($callback) {
-                        return $callback($item, $el, $key, ++$i);
+                        yield $callback($item, null, $key, $i);
                     } else {
-                        return $item;
+                        yield $item;
                     }
-                });
+                } else {
+                    // Wrapped
+                    yield Element::create($name, function ($el) use ($key, $item, $callback, $i) {
+                        if ($callback) {
+                            return $callback($item, $el, $key, $i);
+                        } else {
+                            return $item;
+                        }
+                    });
+                }
             }
         }, $attributes);
 
@@ -164,7 +176,7 @@ class Factory implements Markup, FacadeTarget, FacadePluginAccessTarget
     /**
      * Generate naked list
      */
-    public function elements(?iterable $list, string $name, callable $callback=null, array $attributes=[]): Buffer
+    public function elements(?iterable $list, ?string $name, callable $callback=null, array $attributes=[]): Buffer
     {
         return ContentCollection::normalize(function () use ($list, $name, $callback, $attributes) {
             if (!$list) {
@@ -174,16 +186,54 @@ class Factory implements Markup, FacadeTarget, FacadePluginAccessTarget
             $i = 0;
 
             foreach ($list as $key => $item) {
-                yield Element::create($name, function ($el) use ($key, $item, $callback, &$i) {
+                $i++;
+
+                if ($name === null) {
+                    // Unwrapped
                     if ($callback) {
-                        return $callback($item, $el, $key, ++$i);
+                        yield $callback($item, null, $key, $i);
                     } else {
-                        return $item;
+                        yield $item;
                     }
-                }, $attributes);
+                } else {
+                    // Wrapped
+                    yield Element::create($name, function ($el) use ($key, $item, $callback, $i) {
+                        if ($callback) {
+                            return $callback($item, $el, $key, $i);
+                        } else {
+                            return $item;
+                        }
+                    }, $attributes);
+                }
             }
         });
     }
+
+
+    /**
+     * Generate unwrapped naked list
+     */
+    public function loop(?iterable $list, callable $callback=null): Buffer
+    {
+        return ContentCollection::normalize(function () use ($list, $callback) {
+            if (!$list) {
+                return;
+            }
+
+            $i = 0;
+
+            foreach ($list as $key => $item) {
+                $i++;
+
+                if ($callback) {
+                    yield $callback($item, null, $key, $i);
+                } else {
+                    yield $item;
+                }
+            }
+        });
+    }
+
 
     /**
      * Create a standard ul > li structure
