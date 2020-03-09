@@ -109,32 +109,26 @@ class Vimeo extends Video
     /**
      * Lookup thumbnail URL
      */
-    public function lookupThumbnail(): ?string
+    public function lookupThumbnail(?array $options=null): ?string
     {
-        $url = 'https://vimeo.com/api/oembed.json?url='.$this->url;
-
-        try {
-            if (false === ($json = file_get_contents($url))) {
-                return null;
-            }
-
-            $json = json_decode($json, true);
-        } catch (\ErrorException $e) {
-            return null;
-        }
-
-        return $json['thumbnail_url'] ?? null;
+        return $this->lookupMeta($options)['thumbnailUrl'] ?? null;
     }
 
     /**
      * Lookup media meta information
      */
-    public function lookupMeta(): ?array
+    public function lookupMeta(?array $options=null): ?array
     {
         $url = 'https://vimeo.com/api/oembed.json?url='.urlencode($this->url);
+        $referrer = $options['referrer'] ?? $options['referer'] ?? $_SERVER['SERVER_NAME'];
 
         try {
-            if (false !== ($json = file_get_contents($url))) {
+            if (false !== ($json = file_get_contents($url, false, stream_context_create([
+                'http' => [
+                    'method' => 'GET',
+                    'header' => 'Referer: '.$referrer
+                ]
+            ])))) {
                 $json = new Tree(json_decode($json, true));
             } else {
                 $json = new Tree();
