@@ -34,6 +34,10 @@ class Embed implements FacadePlugin
      */
     public function video(?string $embed, int $width=null, int $height=null): ?Markup
     {
+        if ($embed === null) {
+            return null;
+        }
+
         $embed = trim($embed);
 
         if (empty($embed)) {
@@ -49,6 +53,10 @@ class Embed implements FacadePlugin
      */
     public function audio(?string $embed, int $width=null, int $height=null): ?Markup
     {
+        if ($embed === null) {
+            return null;
+        }
+
         $embed = trim($embed);
 
         if (empty($embed)) {
