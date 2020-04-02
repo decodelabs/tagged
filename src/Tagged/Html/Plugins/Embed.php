@@ -32,7 +32,7 @@ class Embed implements FacadePlugin
     /**
      * Embed shared video code
      */
-    public function video(string $embed, int $width=null, int $height=null): ?Markup
+    public function video(?string $embed, int $width=null, int $height=null): ?Markup
     {
         $embed = trim($embed);
 
@@ -47,7 +47,7 @@ class Embed implements FacadePlugin
     /**
      * Embed shared audio code
      */
-    public function audio(string $embed, int $width=null, int $height=null): ?Markup
+    public function audio(?string $embed, int $width=null, int $height=null): ?Markup
     {
         $embed = trim($embed);
 
