@@ -15,6 +15,8 @@ use DecodeLabs\Collections\Native\SequenceTrait;
 
 class ContentCollection implements Markup, \IteratorAggregate, Sequence
 {
+    const MUTABLE = false;
+
     use SequenceTrait;
     use ChildRendererTrait;
 
