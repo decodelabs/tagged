@@ -4,23 +4,21 @@
     "type": "library",
     "keywords": ["markup", "html", "generator"],
     "license": "MIT",
-    "authors": [
-        {
-            "name": "Tom Wright",
-            "email": "tom@inflatablecookie.com"
-        }
-    ],
+    "authors": [{
+        "name": "Tom Wright",
+        "email": "tom@inflatablecookie.com"
+    }],
     "require": {
         "php": "^7.2",
-        "ext-intl" : "*",
+        "ext-intl": "*",
         "symfony/polyfill-mbstring": "^1.7",
 
-        "decodelabs/glitch": "<2",
-        "decodelabs/collections": "~0.5",
-        "decodelabs/gadgets": "~0.6",
-        "decodelabs/veneer": "~0.5",
-        "decodelabs/systemic": "~0.6",
-        "decodelabs/atlas": "~0.7"
+        "decodelabs/glitch": "^0.15",
+        "decodelabs/collections": "^0.5",
+        "decodelabs/gadgets": "^0.6",
+        "decodelabs/veneer": "^0.5",
+        "decodelabs/systemic": "^0.6",
+        "decodelabs/atlas": "^0.7"
     },
     "require-dev": {
         "phpunit/phpunit": "^8",
@@ -51,7 +49,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-develop": "0.x-dev"
+            "dev-develop": "0.8.x-dev"
         }
     }
 }
