@@ -109,9 +109,9 @@ class Factory implements Markup, FacadeTarget, FacadePluginAccessTarget
     /**
      * Wrap raw html string
      */
-    public function raw(string $html): Buffer
+    public function raw($html): Buffer
     {
-        return new Buffer($html);
+        return new Buffer((string)$html);
     }
 
     /**
@@ -136,9 +136,9 @@ class Factory implements Markup, FacadeTarget, FacadePluginAccessTarget
     /**
      * Generate nested list
      */
-    public function list(?iterable $list, string $container, string $name, callable $callback=null, array $attributes=[]): Markup
+    public function list(?iterable $list, string $container, ?string $name, callable $callback=null, array $attributes=[]): Element
     {
-        return Element::create($container, function () use ($list, $name, $callback) {
+        $output = Element::create($container, function () use ($list, $name, $callback) {
             if (!$list) {
                 return;
             }
@@ -146,22 +146,37 @@ class Factory implements Markup, FacadeTarget, FacadePluginAccessTarget
             $i = 0;
 
             foreach ($list as $key => $item) {
-                yield Element::create($name, function ($el) use ($key, $item, $callback, &$i) {
+                $i++;
+
+                if ($name === null) {
+                    // Unwrapped
                     if ($callback) {
-                        return $callback($item, $el, $key, ++$i);
+                        yield $callback($item, null, $key, $i);
                     } else {
-                        return $item;
+                        yield $item;
                     }
-                });
+                } else {
+                    // Wrapped
+                    yield Element::create($name, function ($el) use ($key, $item, $callback, $i) {
+                        if ($callback) {
+                            return $callback($item, $el, $key, $i);
+                        } else {
+                            return $item;
+                        }
+                    });
+                }
             }
-        }, $attributes)->setRenderEmpty(false);
+        }, $attributes);
+
+        $output->setRenderEmpty(false);
+        return $output;
     }
 
 
     /**
      * Generate naked list
      */
-    public function elements(?iterable $list, string $name, callable $callback=null, array $attributes=[]): Markup
+    public function elements(?iterable $list, ?string $name, callable $callback=null, array $attributes=[]): Buffer
     {
         return ContentCollection::normalize(function () use ($list, $name, $callback, $attributes) {
             if (!$list) {
@@ -171,23 +186,61 @@ class Factory implements Markup, FacadeTarget, FacadePluginAccessTarget
             $i = 0;
 
             foreach ($list as $key => $item) {
-                yield $this->el($name, function ($el) use ($key, $item, $callback, &$i) {
+                $i++;
+
+                if ($name === null) {
+                    // Unwrapped
                     if ($callback) {
-                        return $callback($item, $el, $key, ++$i);
+                        yield $callback($item, null, $key, $i);
                     } else {
-                        return $item;
+                        yield $item;
                     }
-                }, $attributes);
+                } else {
+                    // Wrapped
+                    yield Element::create($name, function ($el) use ($key, $item, $callback, $i) {
+                        if ($callback) {
+                            return $callback($item, $el, $key, $i);
+                        } else {
+                            return $item;
+                        }
+                    }, $attributes);
+                }
             }
         });
     }
 
+
+    /**
+     * Generate unwrapped naked list
+     */
+    public function loop(?iterable $list, callable $callback=null): Buffer
+    {
+        return ContentCollection::normalize(function () use ($list, $callback) {
+            if (!$list) {
+                return;
+            }
+
+            $i = 0;
+
+            foreach ($list as $key => $item) {
+                $i++;
+
+                if ($callback) {
+                    yield $callback($item, null, $key, $i);
+                } else {
+                    yield $item;
+                }
+            }
+        });
+    }
+
+
     /**
      * Create a standard ul > li structure
      */
-    public function uList(?iterable $list, callable $renderer=null, array $attributes=[]): Markup
+    public function uList(?iterable $list, callable $renderer=null, array $attributes=[]): Element
     {
-        return $this->list($list, 'ul', 'li', $renderer ?? function ($value) {
+        return $this->list($list, 'ul', '?li', $renderer ?? function ($value) {
             return $value;
         }, $attributes);
     }
@@ -195,9 +248,9 @@ class Factory implements Markup, FacadeTarget, FacadePluginAccessTarget
     /**
      * Create a standard ol > li structure
      */
-    public function oList(?iterable $list, callable $renderer=null, array $attributes=[]): Markup
+    public function oList(?iterable $list, callable $renderer=null, array $attributes=[]): Element
     {
-        return $this->list($list, 'ol', 'li', $renderer ?? function ($value) {
+        return $this->list($list, 'ol', '?li', $renderer ?? function ($value) {
             return $value;
         }, $attributes);
     }
@@ -205,13 +258,13 @@ class Factory implements Markup, FacadeTarget, FacadePluginAccessTarget
     /**
      * Create a standard dl > dt + dd structure
      */
-    public function dList(?iterable $list, callable $renderer=null, array $attributes=[]): Markup
+    public function dList(?iterable $list, callable $renderer=null, array $attributes=[]): Element
     {
         $renderer = $renderer ?? function ($value) {
             return $value;
         };
 
-        return Element::create('dl', function () use ($list, $renderer) {
+        $output = Element::create('dl', function () use ($list, $renderer) {
             if (!$list) {
                 return;
             }
@@ -231,13 +284,16 @@ class Factory implements Markup, FacadeTarget, FacadePluginAccessTarget
                 yield $dt;
                 yield new Buffer($dd);
             }
-        }, $attributes)->setRenderEmpty(false);
+        }, $attributes);
+
+        $output->setRenderEmpty(false);
+        return $output;
     }
 
     /**
      * Create an inline comma separated list with optional item limit
      */
-    public function iList(?iterable $list, callable $renderer=null, string $delimiter=null, string $finalDelimiter=null, int $limit=null): Markup
+    public function iList(?iterable $list, callable $renderer=null, string $delimiter=null, string $finalDelimiter=null, int $limit=null): Element
     {
         if ($delimiter === null) {
             $delimiter = ', ';
@@ -305,11 +361,7 @@ class Factory implements Markup, FacadeTarget, FacadePluginAccessTarget
             }
 
             if ($more) {
-                if (!$first) {
-                    yield $delimiter;
-                }
-
-                yield Element::create('em.more', '…+ '.$more);
+                yield Element::create('em.more', '… +'.$more);
             }
         });
     }
@@ -320,7 +372,7 @@ class Factory implements Markup, FacadeTarget, FacadePluginAccessTarget
     /**
      * Create image tag
      */
-    public function image($url, string $alt=null, $width=null, $height=null): Markup
+    public function image($url, string $alt=null, $width=null, $height=null): Element
     {
         $output = $this->el('img', null, [
             'src' => $url,
@@ -343,12 +395,17 @@ class Factory implements Markup, FacadeTarget, FacadePluginAccessTarget
     /**
      * Escape HTML
      */
-    public function esc(?string $value): ?string
+    public function esc($value): ?string
     {
         if ($value === null) {
             return null;
         }
 
-        return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
+        try {
+            return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
+        } catch (\Throwable $e) {
+            Glitch::logException($e);
+            return (string)$value;
+        }
     }
 }

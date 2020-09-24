@@ -421,7 +421,7 @@ trait MediaTrait
     /**
      * Lookup thumbnail URL
      */
-    public function lookupThumbnail(): ?string
+    public function lookupThumbnail(?array $options=null): ?string
     {
         return null;
     }
@@ -429,7 +429,7 @@ trait MediaTrait
     /**
      * Lookup media meta information
      */
-    public function lookupMeta(): ?array
+    public function lookupMeta(?array $options=null): ?array
     {
         return null;
     }

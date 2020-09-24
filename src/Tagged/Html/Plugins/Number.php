@@ -15,6 +15,8 @@ use DecodeLabs\Tagged\Html\Factory as HtmlFactory;
 use DecodeLabs\Tagged\Html\ContentCollection;
 use DecodeLabs\Tagged\Html\Element;
 
+use NumberFormatter;
+
 class Number implements FacadePlugin
 {
     protected $html;
@@ -29,47 +31,9 @@ class Number implements FacadePlugin
 
 
     /**
-     * Format and wrap currency
-     */
-    public function currency($value, string $code): ?Markup
-    {
-        if ($value === null) {
-            return null;
-        }
-
-        $formatter = new \NumberFormatter(Systemic::$locale->get(),  \NumberFormatter::CURRENCY);
-        $output = $formatter->formatCurrency($value, $code);
-
-        if (!preg_match('/^(([^0-9.,\s][^0-9]*)([\s]*))?([0-9.,]+)(([\s]*)([^0-9.,\s][^0-9]*))?$/u', $output, $matches)) {
-            return $this->html->el('span.currency', $output);
-        }
-
-        return $this->html->el('span.currency', function () use ($matches) {
-            if (!empty($matches[2])) {
-                yield $this->html->el('span.symbol', $matches[2]);
-
-                if (!empty($matches[3])) {
-                    yield $matches[3];
-                }
-            }
-
-            yield $this->html->el('span.value', $matches[4]);
-
-            if (isset($matches[7])) {
-                if (isset($matches[6])) {
-                    yield $matches[6];
-                }
-
-                yield $this->html->el('span.symbol', $matches[7]);
-            }
-        });
-    }
-
-
-    /**
      * Format and wrap number
      */
-    public function format($value, ?string $unit=null): ?Markup
+    public function wrap($value, ?string $unit=null): ?Element
     {
         if ($value === null) {
             return null;
@@ -80,11 +44,18 @@ class Number implements FacadePlugin
         }
 
         return $this->html->el('span.number', function () use ($value, $unit) {
-            if (is_int($value)
-            || is_float($value)
-            || is_string($value) && (string)((float)$value) === $value) {
-                $formatter = new \NumberFormatter(Systemic::$locale->get(), \NumberFormatter::DECIMAL);
+            if (
+                is_int($value) ||
+                is_float($value) ||
+                (
+                    is_string($value) &&
+                    is_numeric($value)
+                )
+            ) {
+                $formatter = new NumberFormatter(Systemic::$locale->get(), NumberFormatter::DECIMAL);
                 $value = $formatter->format($value);
+            } else {
+                throw Glitch::EInvalidArgument('Value is not a number', null, $value);
             }
 
             yield $this->html->el('span.value', $value);
@@ -95,12 +66,122 @@ class Number implements FacadePlugin
         });
     }
 
+    /**
+     * Format and wrap currency
+     */
+    public function currency($value, ?string $code, ?bool $rounded=null): ?Markup
+    {
+        if ($value === null || $code === null) {
+            return null;
+        }
+
+        if (is_int($value)) {
+            $value = (float)$value;
+        } elseif (!is_float($value)) {
+            $value = (float)((string)$value);
+        }
+
+        $code = strtoupper($code);
+        $formatter = new NumberFormatter(Systemic::$locale->get(),  NumberFormatter::CURRENCY);
+        $formatter->setTextAttribute(NumberFormatter::CURRENCY_CODE, $code);
+
+        if (
+            $rounded === true ||
+            (
+                $rounded === null &&
+                (round($value, 0) == round($value, 2))
+            )
+        ) {
+            $formatter->setAttribute(NumberFormatter::FRACTION_DIGITS, 0);
+        }
+
+        $output = $formatter->formatCurrency($value, $code);
+
+        if (!preg_match('/^(([^0-9.,\s][^0-9]*)([\s]*))?([0-9.,]+)(([\s]*)([^0-9.,\s][^0-9]*))?$/u', $output, $matches)) {
+            return $this->html->el('span.number.currency', $output);
+        }
+
+        return $this->html->el('span.number.currency', function () use ($matches) {
+            if (!empty($matches[2])) {
+                yield $this->wrapCurrencySymbol($matches[2]);
+            }
+
+            yield $this->html->el('span.value', $matches[4]);
+
+            if (isset($matches[7])) {
+                yield $this->wrapCurrencySymbol($matches[7]);
+            }
+        });
+    }
+
+    protected function wrapCurrencySymbol(string $symbolInput): Element
+    {
+        if (empty($symbol = str_replace('&nbsp;', '', htmlentities($symbolInput)))) {
+            $symbol = $symbolInput;
+        } else {
+            $symbol = html_entity_decode($symbol);
+        }
+
+        $symbolTag = $this->html->el('span.unit.symbol', $symbol);
+
+        if (preg_match('/^[A-Z]{2,}$/', $symbol)) {
+            $symbolTag->addClass('code');
+        }
+
+        return $symbolTag;
+    }
+
+    /**
+     * Format and render a percentage
+     */
+    public function percent($value, float $total=100.0, int $decimals=0): ?Element
+    {
+        if ($value === null || $total <= 0) {
+            return null;
+        }
+
+        return $this->html->el('span.number.percent', function () use ($value, $total, $decimals) {
+            if (
+                is_int($value) ||
+                is_float($value) ||
+                (
+                    is_string($value) &&
+                    is_numeric($value)
+                )
+            ) {
+                $formatter = new NumberFormatter(Systemic::$locale->get(), NumberFormatter::PERCENT);
+                $formatter->setAttribute(NumberFormatter::MAX_FRACTION_DIGITS, $decimals);
+                $value = $formatter->format($value / $total);
+            } else {
+                throw Glitch::EInvalidArgument('Percent value is not a number', null, $value);
+            }
+
+            if (!preg_match('/^(%)?([0-9,.]+)(%)?$/u', $value, $matches)) {
+                return $value;
+            }
+
+            if (!empty($matches[1])) {
+                yield $this->html->el('span.unit', '%');
+            }
+
+            yield $this->html->el('span.value', $matches[2]);
+
+            if (!empty($matches[3])) {
+                yield $this->html->el('span.unit', '%');
+            }
+        });
+    }
+
 
     /**
      * Render difference of number from 0
      */
-    public function diff(?float $diff, ?bool $invert=false, string $tag='span'): Markup
+    public function diff($diff, ?bool $invert=false, string $tag='sup'): Element
     {
+        if (!is_numeric($diff)) {
+            throw Glitch::EInvalidArgument('Diff value is not a number', null, $diff);
+        }
+
         $diff = (float)$diff;
 
         if ($diff > 0) {
@@ -113,7 +194,7 @@ class Number implements FacadePlugin
 
         $output = $this->html->el($tag, [
             $arrow,
-            $this->format(abs($diff))
+            $this->wrap(abs($diff))
         ])->addClass('diff');
 
         if ($invert !== null) {
@@ -125,5 +206,50 @@ class Number implements FacadePlugin
         }
 
         return $output;
+    }
+
+
+
+
+    /**
+     * Format filesize
+     */
+    public function fileSize(?int $bytes): ?Element
+    {
+        if ($bytes === null) {
+            return null;
+        }
+
+        $units = ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB'];
+
+        for ($i = 0; $bytes > 1024; $i++) {
+            $bytes /= 1024;
+        }
+
+        return $this->html->el('span.numeric.filesize', [
+            $this->html->el('span.value', round($bytes, 2)),
+            $this->html->el('span.unit', $units[$i])
+        ]);
+    }
+
+    /**
+     * Format filesize as decimal
+     */
+    public function fileSizeDec(?int $bytes): ?Element
+    {
+        if ($bytes === null) {
+            return null;
+        }
+
+        $units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
+
+        for ($i = 0; $bytes > 1000; $i++) {
+            $bytes /= 1000;
+        }
+
+        return $this->html->el('span.numeric.filesize', [
+            $this->html->el('span.value', round($bytes, 2)),
+            $this->html->el('span.unit', $units[$i])
+        ]);
     }
 }

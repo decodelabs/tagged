@@ -15,13 +15,15 @@ use DecodeLabs\Collections\Native\SequenceTrait;
 
 class ContentCollection implements Markup, \IteratorAggregate, Sequence
 {
+    const MUTABLE = true;
+
     use SequenceTrait;
     use ChildRendererTrait;
 
     /**
      * Normalize abitrary content
      */
-    public static function normalize($content, bool $pretty=false): Markup
+    public static function normalize($content, bool $pretty=false): Buffer
     {
         if (!is_array($content)) {
             $content = [$content];
@@ -41,7 +43,7 @@ class ContentCollection implements Markup, \IteratorAggregate, Sequence
     /**
      * Render contents
      */
-    public function render(bool $pretty=false): Markup
+    public function render(bool $pretty=false): Buffer
     {
         $output = '';
 

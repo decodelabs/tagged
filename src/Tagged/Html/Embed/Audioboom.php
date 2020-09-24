@@ -116,7 +116,7 @@ class Audioboom extends Audio
     /**
      * Lookup thumbnail URL
      */
-    public function lookupThumbnail(): ?string
+    public function lookupThumbnail(?array $options=null): ?string
     {
         switch ($this->type) {
             case 'embed':
@@ -144,21 +144,21 @@ class Audioboom extends Audio
     /**
      * Lookup media meta information
      */
-    public function lookupMeta(): ?array
+    public function lookupMeta(?array $options=null): ?array
     {
         switch ($this->type) {
             case 'embed':
-                return $this->lookupEmbedMeta();
+                return $this->lookupEmbedMeta($options);
 
             case 'playlist':
-                return $this->lookupPlaylistMeta();
+                return $this->lookupPlaylistMeta($options);
         }
     }
 
     /**
      * Lookup meta for embed
      */
-    protected function lookupEmbedMeta(): ?array
+    protected function lookupEmbedMeta(?array $options=null): ?array
     {
         $url = 'https://audioboom.com/publishing/oembed.json?url=https://audioboom.com/posts/'.$this->audioboomId;
 
@@ -192,7 +192,7 @@ class Audioboom extends Audio
     /**
      * Lookup meta for embed
      */
-    protected function lookupPlaylistMeta(): ?array
+    protected function lookupPlaylistMeta(?array $options=null): ?array
     {
         $url = 'https://api.audioboom.com/playlists/'.$this->audioboomId;
 

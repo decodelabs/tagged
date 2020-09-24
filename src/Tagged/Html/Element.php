@@ -82,15 +82,19 @@ class Element extends Tag implements \IteratorAggregate, ElementInterface
     /**
      * Render to more readable string (for dump)
      */
-    public function render(bool $pretty=false): string
+    public function render(bool $pretty=false): ?Buffer
     {
-        return (string)$this->renderWith($this->renderContent($pretty), $pretty);
+        if (null === ($output = $this->renderWith($this->renderContent($pretty), $pretty))) {
+            return null;
+        }
+
+        return new Buffer((string)$output);
     }
 
     /**
      * Render inner content
      */
-    public function renderContent(bool $pretty=false): Markup
+    public function renderContent(bool $pretty=false): ?Buffer
     {
         $output = '';
 
@@ -100,6 +104,10 @@ class Element extends Tag implements \IteratorAggregate, ElementInterface
             }
 
             $output .= $this->renderChild($value, $pretty);
+        }
+
+        if (empty($output) && $output != '0') {
+            return null;
         }
 
         return new Buffer($output);
@@ -121,9 +129,18 @@ class Element extends Tag implements \IteratorAggregate, ElementInterface
      */
     public function glitchInspect(Entity $entity, Inspector $inspector): void
     {
+        $renderEmpty = $this->renderEmpty;
+        $this->renderEmpty = true;
+        $def = (string)$this->render(true);
+        $this->renderEmpty = $renderEmpty;
+
+        if (!$renderEmpty) {
+            $def = '<?'.substr($def, 1);
+        }
+
         $entity
             ->setClassName($this->name)
-            ->setDefinition($this->render(true))
+            ->setDefinition($def)
             ->setProperties([
                 //'*name' => $inspector($this->name),
                 '*renderEmpty' => $inspector($this->renderEmpty),

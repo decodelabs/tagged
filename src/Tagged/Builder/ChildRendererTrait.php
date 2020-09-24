@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace DecodeLabs\Tagged\Builder;
 
 use DecodeLabs\Tagged\Markup;
+use DecodeLabs\Tagged\MarkupProxy;
 
 trait ChildRendererTrait
 {
@@ -21,6 +22,10 @@ trait ChildRendererTrait
 
         $output = '';
 
+        if ($value instanceof MarkupProxy) {
+            $value = $value->toMarkup();
+        }
+
         if (is_iterable($value) && !$value instanceof Markup) {
             foreach ($value as $part) {
                 $output .= $this->renderChild($part, $pretty);
@@ -30,7 +35,7 @@ trait ChildRendererTrait
         }
 
         if ($value instanceof Element) {
-            $output = $value->render($pretty);
+            $output = (string)$value->render($pretty);
         } else {
             $output = (string)$value;
         }

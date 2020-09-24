@@ -44,8 +44,8 @@ interface Media extends Markup
     public function setDuration(?int $seconds): Media;
     public function getDuration(): ?int;
 
-    public function lookupThumbnail(): ?string;
-    public function lookupMeta(): ?array;
+    public function lookupThumbnail(?array $options=null): ?string;
+    public function lookupMeta(?array $options=null): ?array;
 
     public function render(): ?Markup;
     public function __toString(): string;

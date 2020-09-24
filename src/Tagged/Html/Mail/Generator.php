@@ -501,7 +501,7 @@ class Generator
         ],
         'h3' => [
             'font-weight' => '300',
-            'font-size' => '220px',
+            'font-size' => '22px',
             'margin-bottom' => '15px'
         ],
         'h4' => [
