@@ -168,6 +168,7 @@ class Parse implements FacadePlugin
         }
 
         Glitch::incomplete($text);
+        return null;
     }
 
 

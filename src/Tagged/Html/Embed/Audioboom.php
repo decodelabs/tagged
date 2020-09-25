@@ -152,6 +152,9 @@ class Audioboom extends Audio
 
             case 'playlist':
                 return $this->lookupPlaylistMeta($options);
+
+            default:
+                throw Glitch::EUnexpectedValue('Unsupported Audioboom type: '.$this->type);
         }
     }
 

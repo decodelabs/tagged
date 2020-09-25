@@ -105,6 +105,9 @@ class Icon implements FacadePlugin
 
             case 'font':
                 return $this->html->el('i.'.$this->baseClass.'.icon-'.$name);
+
+            default:
+                throw Glitch::EUnexpectedValue('Unsupported icon format: '.$this->format);
         }
     }
 
