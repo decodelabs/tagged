@@ -16,12 +16,9 @@ use DecodeLabs\Tagged\Builder\StyleListContainer;
 use DecodeLabs\Tagged\Builder\StyleListContainerTrait;
 
 use DecodeLabs\Collections\AttributeContainer;
+use DecodeLabs\Glitch\Dumpable;
 
-use DecodeLabs\Glitch\Inspectable;
-use DecodeLabs\Glitch\Dumper\Entity;
-use DecodeLabs\Glitch\Dumper\Inspector;
-
-class Tag implements TagInterface, ClassListContainer, StyleListContainer, Inspectable
+class Tag implements TagInterface, ClassListContainer, StyleListContainer, Dumpable
 {
     use TagTrait;
     use ClassListContainerTrait;

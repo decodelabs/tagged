@@ -11,9 +11,7 @@ use DecodeLabs\Tagged\Buffer;
 use DecodeLabs\Collections\AttributeContainerTrait;
 
 use DecodeLabs\Glitch;
-use DecodeLabs\Glitch\Inspectable;
-use DecodeLabs\Glitch\Dumper\Entity;
-use DecodeLabs\Glitch\Dumper\Inspector;
+use DecodeLabs\Glitch\Dumpable;
 
 trait TagTrait
 {
@@ -315,7 +313,7 @@ trait TagTrait
     /**
      * Inspect for Glitch
      */
-    public function glitchInspect(Entity $entity, Inspector $inspector): void
+    public function glitchDump(): iterable
     {
         $output = $this->__toString();
 
@@ -323,14 +321,15 @@ trait TagTrait
             $output = '<?'.substr($output, 1);
         }
 
-        $entity
-            ->setClassName($this->name)
-            ->setDefinition($output)
-            ->setProperties([
-                //'*name' => $inspector($this->name),
-                '*renderEmpty' => $inspector($this->renderEmpty),
-                '*attributes' => $inspector($this->attributes),
-            ])
-            ->hideSection('properties');
+        yield 'className' => $this->name;
+        yield 'definition' => $output;
+
+        yield 'properties' => [
+            //'*name' => $this->name,
+            '*renderEmpty' => $this->renderEmpty,
+            '*attributes' => $this->attributes,
+        ];
+
+        yield 'section:properties' => false;
     }
 }

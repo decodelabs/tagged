@@ -9,13 +9,11 @@ namespace DecodeLabs\Tagged\Builder;
 use DecodeLabs\Collections\ArrayProvider;
 
 use DecodeLabs\Glitch;
-use DecodeLabs\Glitch\Inspectable;
-use DecodeLabs\Glitch\Dumper\Entity;
-use DecodeLabs\Glitch\Dumper\Inspector;
+use DecodeLabs\Glitch\Dumpable;
 
 use ArrayIterator;
 
-class StyleBlock implements \IteratorAggregate, Inspectable
+class StyleBlock implements \IteratorAggregate, Dumpable
 {
     const MUTABLE = true;
 
@@ -170,11 +168,10 @@ class StyleBlock implements \IteratorAggregate, Inspectable
     /**
      * Inspect for Glitch
      */
-    public function glitchInspect(Entity $entity, Inspector $inspector): void
+    public function glitchDump(): iterable
     {
-        $entity
-            ->setText($this->render())
-            ->setSectionVisible('text', false)
-            ->setValues($inspector->inspectList($this->styles));
+        yield 'definition' => $this->render();
+        yield 'section:definition' => false;
+        yield 'values' => $this->styles;
     }
 }

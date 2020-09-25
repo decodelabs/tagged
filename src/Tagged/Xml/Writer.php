@@ -17,14 +17,12 @@ use DecodeLabs\Atlas;
 use DecodeLabs\Atlas\File;
 
 use DecodeLabs\Glitch;
-use DecodeLabs\Glitch\Inspectable;
-use DecodeLabs\Glitch\Dumper\Entity;
-use DecodeLabs\Glitch\Dumper\Inspector;
+use DecodeLabs\Glitch\Dumpable;
 
 use XMLWriter;
 use ArrayAccess;
 
-class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Inspectable
+class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpable
 {
     const ELEMENT = 1;
     const CDATA = 2;
@@ -798,12 +796,12 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Inspe
     /**
      * Inspect for Glitch
      */
-    public function glitchInspect(Entity $entity, Inspector $inspector): void
+    public function glitchDump(): iterable
     {
-        $entity->setText($this->__toString());
+        yield 'text' => $this->__toString();
 
         if ($this->path !== null) {
-            $entity->setProperty('*path', $inspector($this->path));
+            yield 'property:*path' => $this->path;
         }
     }
 }

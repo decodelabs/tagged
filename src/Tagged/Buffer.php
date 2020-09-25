@@ -6,11 +6,9 @@
 declare(strict_types=1);
 namespace DecodeLabs\Tagged;
 
-use DecodeLabs\Glitch\Inspectable;
-use DecodeLabs\Glitch\Dumper\Entity;
-use DecodeLabs\Glitch\Dumper\Inspector;
+use DecodeLabs\Glitch\Dumpable;
 
-class Buffer implements Markup, Inspectable
+class Buffer implements Markup, Dumpable
 {
     protected $content;
 
@@ -69,8 +67,8 @@ class Buffer implements Markup, Inspectable
     /**
      * Inspect for Glitch
      */
-    public function glitchInspect(Entity $entity, Inspector $inspector): void
+    public function glitchDump(): iterable
     {
-        $entity->setDefinition($this->content);
+        yield 'definition' => $this->content;
     }
 }
