@@ -14,9 +14,6 @@ use DecodeLabs\Collections\Sequence;
 use DecodeLabs\Collections\Native\SequenceTrait;
 
 use DecodeLabs\Glitch;
-use DecodeLabs\Glitch\Inspectable;
-use DecodeLabs\Glitch\Dumper\Entity;
-use DecodeLabs\Glitch\Dumper\Inspector;
 
 class Element extends Tag implements \IteratorAggregate, ElementInterface
 {
@@ -127,7 +124,7 @@ class Element extends Tag implements \IteratorAggregate, ElementInterface
     /**
      * Inspect for Glitch
      */
-    public function glitchInspect(Entity $entity, Inspector $inspector): void
+    public function glitchDump(): iterable
     {
         $renderEmpty = $this->renderEmpty;
         $this->renderEmpty = true;
@@ -138,16 +135,20 @@ class Element extends Tag implements \IteratorAggregate, ElementInterface
             $def = '<?'.substr($def, 1);
         }
 
-        $entity
-            ->setClassName($this->name)
-            ->setDefinition($def)
-            ->setProperties([
-                //'*name' => $inspector($this->name),
-                '*renderEmpty' => $inspector($this->renderEmpty),
-                '*attributes' => $inspector($this->attributes),
-            ])
-            ->setValues($inspector->inspectList($this->items))
-            ->hideSection('properties')
-            ->hideSection('values');
+        yield 'className' => $this->name;
+        yield 'definition' => $def;
+
+        yield 'properties' => [
+            //'*name' => $this->name,
+            '*renderEmpty' => $this->renderEmpty,
+            '*attributes' => $this->attributes,
+        ];
+
+        yield 'values' => $this->items;
+
+        yield 'sections' => [
+            'properties' => false,
+            'values' => false
+        ];
     }
 }
