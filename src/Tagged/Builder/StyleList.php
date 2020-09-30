@@ -10,7 +10,7 @@ use DecodeLabs\Collections\HashMap;
 use DecodeLabs\Collections\ArrayProvider;
 use DecodeLabs\Collections\Native\HashMapTrait;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 class StyleList implements \IteratorAggregate, HashMap
 {
@@ -41,7 +41,7 @@ class StyleList implements \IteratorAggregate, HashMap
             } elseif ($data === null) {
                 continue;
             } elseif (!is_array($data)) {
-                throw Glitch::EInvalidArgument('Invalid style data', null, $data);
+                throw Exceptional::InvalidArgument('Invalid style data', null, $data);
             }
 
             $this->merge($data);

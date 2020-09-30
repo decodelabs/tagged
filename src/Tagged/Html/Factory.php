@@ -19,7 +19,7 @@ use DecodeLabs\Veneer\FacadePluginAccessTarget;
 use DecodeLabs\Veneer\FacadePluginAccessTargetTrait;
 use DecodeLabs\Veneer\FacadePlugin;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 class Factory implements Markup, FacadeTarget, FacadePluginAccessTarget
 {
@@ -78,7 +78,7 @@ class Factory implements Markup, FacadeTarget, FacadePluginAccessTarget
     public function loadFacadePlugin(string $name): FacadePlugin
     {
         if (!in_array($name, self::PLUGINS)) {
-            throw Glitch::EInvalidArgument($name.' is not a recognised facade plugin');
+            throw Exceptional::InvalidArgument($name.' is not a recognised facade plugin');
         }
 
         $class = '\\DecodeLabs\\Tagged\\Html\\Plugins\\'.ucfirst($name);

@@ -15,7 +15,7 @@ use DecodeLabs\Collections\AttributeContainer;
 use DecodeLabs\Atlas;
 use DecodeLabs\Atlas\File;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 use DOMDocument;
 use DOMElement;
@@ -51,7 +51,9 @@ class Element implements
         } elseif (is_string($xml) || (is_object($xml) && method_exists($xml, '__toString'))) {
             return static::fromXmlString((string)$xml);
         } else {
-            throw Glitch::EUnexpectedValue('Unable to convert item to XML Element', null, $xml);
+            throw Exceptional::UnexpectedValue(
+                'Unable to convert item to XML Element', null, $xml
+            );
         }
     }
 
@@ -79,7 +81,7 @@ class Element implements
             $document = static::newDomDocument();
             $document->load($path);
         } catch (\Throwable $e) {
-            throw Glitch::EIo('Unable to load XML file', [
+            throw Exceptional::Io('Unable to load XML file', [
                 'previous' => $e
             ]);
         }
@@ -116,7 +118,7 @@ class Element implements
             $document = static::newDOMDocument();
             $document->loadXML($xml);
         } catch (\Throwable $e) {
-            throw Glitch::EIo('Unable to load XML string', [
+            throw Exceptional::Io('Unable to load XML string', [
                 'previous' => $e
             ]);
         }
@@ -133,7 +135,7 @@ class Element implements
             $document = static::newDomDocument();
             $document->loadHtmlFile($path);
         } catch (\Throwable $e) {
-            throw Glitch::EIo('Unable to load HTML file', [
+            throw Exceptional::Io('Unable to load HTML file', [
                 'previous' => $e
             ]);
         }
@@ -150,7 +152,7 @@ class Element implements
             $document = static::newDomDocument();
             $document->loadHTML($xml);
         } catch (\Throwable $e) {
-            throw Glitch::EIo('Unable to load HTML string', [
+            throw Exceptional::Io('Unable to load HTML string', [
                 'previous' => $e
             ]);
         }
@@ -806,7 +808,7 @@ class Element implements
     protected function getNthChildNode(int $index, string $name=null): ?Element
     {
         if ($index < 1) {
-            throw Glitch::EInvalidArgument(
+            throw Exceptional::InvalidArgument(
                 $index.' is an invalid child index'
             );
         }
@@ -849,7 +851,7 @@ class Element implements
         }
 
         if (!preg_match('/^([\-]?)([0-9]*)[n]([+]([0-9]+))?$/i', str_replace(' ', '', $formula), $matches)) {
-            throw Glitch::EInvalidArgument(
+            throw Exceptional::InvalidArgument(
                 $formula.' is not a valid nth-child formula'
             );
         }
@@ -957,7 +959,7 @@ class Element implements
         }
 
         if ($index < 0) {
-            throw Glitch::EOutOfBounds(
+            throw Exceptional::OutOfBounds(
                 'Index '.$origIndex.' is out of bounds'
             );
         }
@@ -1004,7 +1006,7 @@ class Element implements
         $origChild = $origChild->getDomElement();
 
         if (!$origChild instanceof DOMElement) {
-            throw Glitch::EInvalidArgument(
+            throw Exceptional::InvalidArgument(
                 'Original child is not a valid element'
             );
         }

@@ -15,7 +15,7 @@ use DecodeLabs\Tagged\Html\Factory as HtmlFactory;
 use DecodeLabs\Tagged\Html\ContentCollection;
 use DecodeLabs\Tagged\Html\Element;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 class Icon implements FacadePlugin
 {
@@ -44,7 +44,7 @@ class Icon implements FacadePlugin
                 break;
 
             default:
-                throw Glitch::EInvalidArgument('Invalid icon format: '.$format);
+                throw Exceptional::InvalidArgument('Invalid icon format: '.$format);
         }
 
         return $this;
@@ -105,6 +105,9 @@ class Icon implements FacadePlugin
 
             case 'font':
                 return $this->html->el('i.'.$this->baseClass.'.icon-'.$name);
+
+            default:
+                throw Exceptional::UnexpectedValue('Unsupported icon format: '.$this->format);
         }
     }
 

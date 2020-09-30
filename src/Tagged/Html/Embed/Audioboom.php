@@ -17,7 +17,7 @@ use DecodeLabs\Tagged\Html\Embed\Media;
 use DecodeLabs\Tagged\Html\Embed\Audio;
 
 use DecodeLabs\Collections\Tree\NativeMutable as Tree;
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 class Audioboom extends Audio
 {
@@ -39,7 +39,7 @@ class Audioboom extends Audio
         $urlParts = parse_url($this->url);
 
         if ($urlParts === false || empty($urlParts)) {
-            throw Glitch::EUnexpectedValue('Unable to parse URL', null, $this->url);
+            throw Exceptional::UnexpectedValue('Unable to parse URL', null, $this->url);
         }
 
         parse_str($urlParts['query'] ?? '', $query);
@@ -82,7 +82,7 @@ class Audioboom extends Audio
                 $url .= '?'.http_build_query($this->options);
             }
         } else {
-            throw Glitch::EUnexpectedValue('Unexpected Audioboom type', null, $this->type);
+            throw Exceptional::UnexpectedValue('Unexpected Audioboom type', null, $this->type);
         }
 
         return $url;
@@ -152,6 +152,9 @@ class Audioboom extends Audio
 
             case 'playlist':
                 return $this->lookupPlaylistMeta($options);
+
+            default:
+                throw Exceptional::UnexpectedValue('Unsupported Audioboom type: '.$this->type);
         }
     }
 

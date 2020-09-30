@@ -29,7 +29,7 @@ class ContentCollection implements Markup, \IteratorAggregate, Sequence
             $content = [$content];
         }
 
-        return (new static($content))->render($pretty);
+        return (new self($content))->render($pretty);
     }
 
     /**

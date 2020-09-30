@@ -8,7 +8,7 @@ namespace DecodeLabs\Tagged\Html\Embed;
 
 use DecodeLabs\Tagged\Html\Embed\Media;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 trait MediaTrait
 {
@@ -46,7 +46,7 @@ trait MediaTrait
             $embed = '<'.array_pop($parts);
 
             if (!preg_match('/^\<([a-zA-Z0-9\-]+) /i', $embed, $matches)) {
-                throw Glitch::EUnexpectedValue(
+                throw Exceptional::UnexpectedValue(
                     'Don\'t know how to parse this embed'
                 );
             }
@@ -57,7 +57,7 @@ trait MediaTrait
                 case 'iframe':
                 case 'object':
                     if (!preg_match('/src\=(\"|\')([^\'"]+)(\"|\')/i', $embed, $matches)) {
-                        throw Glitch::EUnexpectedValue(
+                        throw Exceptional::UnexpectedValue(
                             'Could not extract source from flash embed'
                         );
                     }
@@ -94,7 +94,7 @@ trait MediaTrait
                     break;
 
                 default:
-                    throw Glitch::EUnexpectedValue(
+                    throw Exceptional::UnexpectedValue(
                         'Don\'t know how to parse this video embed'
                     );
             }

@@ -13,6 +13,7 @@ use DecodeLabs\Tagged\Buffer;
 use DecodeLabs\Tagged\Html\Factory as HtmlFactory;
 
 use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 use Parsedown;
 use Michelf\Markdown;
@@ -117,7 +118,7 @@ class Parse implements FacadePlugin
 
             return new Buffer($parser->transform((string)$text));
         } else {
-            throw Glitch::EComponentUnavailable(
+            throw Exceptional::ComponentUnavailable(
                 'No supported Markdown processors could be found for the requested format - try installing Parsedown'
             );
         }
@@ -183,7 +184,7 @@ class Parse implements FacadePlugin
         }
 
         if (!class_exists(Chirp::class)) {
-            throw Glitch::EComponentUnavailable(
+            throw Exceptional::ComponentUnavailable(
                 'No supported Tweet processors could be found - try installing decodelabs/chirp'
             );
         }
