@@ -18,7 +18,7 @@ use DecodeLabs\Tagged\Html\Embed\Video;
 
 use DecodeLabs\Collections\Tree\NativeMutable as Tree;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 class Vimeo extends Video
 {
@@ -39,7 +39,7 @@ class Vimeo extends Video
         $urlParts = parse_url($this->url);
 
         if ($urlParts === false || empty($urlParts)) {
-            throw Glitch::EUnexpectedValue('Unable to parse URL', null, $this->url);
+            throw Exceptional::UnexpectedValue('Unable to parse URL', null, $this->url);
         }
 
         parse_str($urlParts['query'] ?? '', $query);
@@ -47,7 +47,7 @@ class Vimeo extends Video
         $id = array_pop($parts);
 
         if (!is_numeric($id)) {
-            throw Glitch::EUnexpectedValue('Malformed vimeo URL', null, $this->url);
+            throw Exceptional::UnexpectedValue('Malformed vimeo URL', null, $this->url);
         }
 
         $this->vimeoId = $id;

@@ -8,7 +8,7 @@ namespace DecodeLabs\Tagged\Builder;
 
 use DecodeLabs\Collections\ArrayProvider;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 use DecodeLabs\Glitch\Dumpable;
 
 use ArrayIterator;
@@ -42,7 +42,7 @@ class StyleBlock implements \IteratorAggregate, Dumpable
             } elseif ($data === null) {
                 continue;
             } elseif (!is_array($data)) {
-                throw Glitch::EInvalidArgument('Invalid style data', null, $data);
+                throw Exceptional::InvalidArgument('Invalid style data', null, $data);
             }
 
             foreach ($data as $key => $value) {

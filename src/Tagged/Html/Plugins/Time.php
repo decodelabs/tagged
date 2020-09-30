@@ -14,7 +14,7 @@ use DecodeLabs\Tagged\Html\Factory as HtmlFactory;
 use DecodeLabs\Tagged\Html\ContentCollection;
 use DecodeLabs\Tagged\Html\Element;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 use DateTime;
 use DateInterval;
@@ -300,11 +300,11 @@ class Time implements FacadePlugin
         }
 
         if (null === ($now = $this->normalizeDate('now'))) {
-            throw Glitch::EUnexpectedValue('Unable to create now date');
+            throw Exceptional::UnexpectedValue('Unable to create now date');
         }
 
         if (null === ($interval = CarbonInterval::make($date->diff($now)))) {
-            throw Glitch::EUnexpectedValue('Unable to create interval');
+            throw Exceptional::UnexpectedValue('Unable to create interval');
         }
 
         $formatter = new IntlDateFormatter(
@@ -314,7 +314,7 @@ class Time implements FacadePlugin
         );
 
         if (null === ($interval = CarbonInterval::make($interval))) {
-            throw Glitch::EUnexpectedValue('Unable to create interval');
+            throw Exceptional::UnexpectedValue('Unable to create interval');
         }
 
         $inverted = $interval->invert;
@@ -395,7 +395,7 @@ class Time implements FacadePlugin
         }
 
         if (null === ($interval = CarbonInterval::make($date1->diff($date2)))) {
-            throw Glitch::EUnexpectedValue('Unable to create interval');
+            throw Exceptional::UnexpectedValue('Unable to create interval');
         }
 
         $formatter = new IntlDateFormatter(
@@ -470,7 +470,7 @@ class Time implements FacadePlugin
             $int = $date;
 
             if (null === ($now = $this->normalizeDate('now'))) {
-                throw Glitch::EUnexpectedValue('Unable to create now date');
+                throw Exceptional::UnexpectedValue('Unable to create now date');
             }
 
             return $now->add($int);
@@ -562,7 +562,9 @@ class Time implements FacadePlugin
                 return $size;
 
             default:
-                throw Glitch::EInvalidArgument('Invalid locale formatter size: '.$size);
+                throw Exceptional::InvalidArgument(
+                    'Invalid locale formatter size: '.$size
+                );
         }
     }
 
@@ -573,7 +575,9 @@ class Time implements FacadePlugin
     protected function checkCarbon(): void
     {
         if (!class_exists(Carbon::class)) {
-            throw Glitch::EComponentUnavailable('nesbot/carbon is required for formatting intervals');
+            throw Exceptional::ComponentUnavailable(
+                'nesbot/carbon is required for formatting intervals'
+            );
         }
     }
 }

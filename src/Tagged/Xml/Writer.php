@@ -16,7 +16,7 @@ use DecodeLabs\Collections\AttributeContainerTrait;
 use DecodeLabs\Atlas;
 use DecodeLabs\Atlas\File;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 use DecodeLabs\Glitch\Dumpable;
 
 use XMLWriter;
@@ -114,17 +114,17 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpa
     public function writeHeader(string $version='1.0', string $encoding='UTF-8', bool $standalone=false): Writer
     {
         if ($this->headerWritten) {
-            throw Glitch::ELogic('XML header has already been written');
+            throw Exceptional::Logic('XML header has already been written');
         }
 
         if ($this->dtdWritten || $this->rootWritten) {
-            throw Glitch::ELogic('XML header cannot be written once the document is open');
+            throw Exceptional::Logic('XML header cannot be written once the document is open');
         }
 
         try {
             $this->document->startDocument($version, $encoding, $standalone ? true : null);
         } catch (\ErrorException $e) {
-            throw Glitch::EInvalidArguement($e->getMessage(), [
+            throw Exceptional::InvalidArguement($e->getMessage(), [
                 'previous' => $e
             ]);
         }
@@ -139,7 +139,7 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpa
     public function writeDtd(string $name, string $publicId=null, string $systemId=null, string $subset=null): Writer
     {
         if ($this->rootWritten) {
-            throw Glitch::ELogic('XML DTD cannot be written once the document is open');
+            throw Exceptional::Logic('XML DTD cannot be written once the document is open');
         }
 
         if (!$this->headerWritten) {
@@ -149,7 +149,7 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpa
         try {
             $this->document->writeDtd($name, $publicId, $systemId, $subset);
         } catch (\ErrorException $e) {
-            throw Glitch::EInvalidArguement($e->getMessage(), [
+            throw Exceptional::InvalidArguement($e->getMessage(), [
                 'previous' => $e
             ]);
         }
@@ -164,7 +164,7 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpa
     public function writeDtdAttlist(string $name, string $content): Writer
     {
         if ($this->rootWritten) {
-            throw Glitch::ELogic('XML DTD cannot be written once the document is open');
+            throw Exceptional::Logic('XML DTD cannot be written once the document is open');
         }
 
         if (!$this->headerWritten) {
@@ -174,7 +174,7 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpa
         try {
             $this->document->writeDtdAttlist($name, $content);
         } catch (\ErrorException $e) {
-            throw Glitch::EInvalidArguement($e->getMessage(), [
+            throw Exceptional::InvalidArguement($e->getMessage(), [
                 'previous' => $e
             ]);
         }
@@ -189,7 +189,7 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpa
     public function writeDtdElement(string $name, string $content): Writer
     {
         if ($this->rootWritten) {
-            throw Glitch::ELogic('XML DTD cannot be written once the document is open');
+            throw Exceptional::Logic('XML DTD cannot be written once the document is open');
         }
 
         if (!$this->headerWritten) {
@@ -199,7 +199,7 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpa
         try {
             $this->document->writeDtdElement($name, $content);
         } catch (\ErrorException $e) {
-            throw Glitch::EInvalidArguement($e->getMessage(), [
+            throw Exceptional::InvalidArguement($e->getMessage(), [
                 'previous' => $e
             ]);
         }
@@ -214,7 +214,7 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpa
     public function writeDtdEntity(string $name, string $content, string $pe, string $publicId, string $systemId, string $nDataId): Writer
     {
         if ($this->rootWritten) {
-            throw Glitch::ELogic('XML DTD cannot be written once the document is open');
+            throw Exceptional::Logic('XML DTD cannot be written once the document is open');
         }
 
         if (!$this->headerWritten) {
@@ -224,7 +224,7 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpa
         try {
             $this->document->writeDtdEntity($name, $content, $pe, $publicId, $systemId, $nDataId);
         } catch (\ErrorException $e) {
-            throw Glitch::EInvalidArguement($e->getMessage(), [
+            throw Exceptional::InvalidArguement($e->getMessage(), [
                 'previous' => $e
             ]);
         }
@@ -275,7 +275,7 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpa
                 $parts = explode('=', $res[1], 2);
 
                 if (null === ($key = array_shift($parts))) {
-                    throw Glitch::EUnexpectedValue('Invalid tag attribute definition', null, $res);
+                    throw Exceptional::UnexpectedValue('Invalid tag attribute definition', null, $res);
                 }
 
                 $value = (string)array_shift($parts);
@@ -303,7 +303,9 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpa
         $parts = explode('.', $name);
 
         if (null === ($name = array_shift($parts))) {
-            throw Glitch::EUnexpectedValue('Unable to parse tag class definition', null, $origName);
+            throw Exceptional::UnexpectedValue(
+                'Unable to parse tag class definition', null, $origName
+            );
         }
 
         if (!empty($parts)) {
@@ -346,7 +348,7 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpa
             $this->currentNode !== self::ELEMENT &&
             $this->currentNode !== self::CDATA_ELEMENT
         ) {
-            throw Glitch::ELogic('XML writer is not currently writing an element');
+            throw Exceptional::Logic('XML writer is not currently writing an element');
         }
 
         $this->completeCurrentNode();
@@ -439,7 +441,7 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpa
     public function writeCDataContent(?string $content): Writer
     {
         if ($this->currentNode !== self::CDATA) {
-            throw Glitch::ELogic('XML writer is not currently writing CDATA');
+            throw Exceptional::Logic('XML writer is not currently writing CDATA');
         }
 
         $content = self::normalizeString($content);
@@ -453,7 +455,7 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpa
     public function endCData(): Writer
     {
         if ($this->currentNode !== self::CDATA) {
-            throw Glitch::ELogic('XML writer is not current writing CDATA');
+            throw Exceptional::Logic('XML writer is not current writing CDATA');
         }
 
         $this->document->endCData();
@@ -489,7 +491,7 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpa
     public function writeCommentContent(?string $comment): Writer
     {
         if ($this->currentNode !== self::COMMENT) {
-            throw Glitch::ELogic('XML writer is not currently writing a comment');
+            throw Exceptional::Logic('XML writer is not currently writing a comment');
         }
 
         $comment = self::normalizeString($comment);
@@ -503,7 +505,7 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpa
     public function endComment(): Writer
     {
         if ($this->currentNode !== self::COMMENT) {
-            throw Glitch::ELogic('XML writer is not currently writing a comment');
+            throw Exceptional::Logic('XML writer is not currently writing a comment');
         }
 
         $this->document->endComment();
@@ -539,7 +541,9 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpa
     public function writePiContent(?string $content): Writer
     {
         if ($this->currentNode !== self::PI) {
-            throw Glitch::ELogic('XML writer is not currently writing a processing instruction');
+            throw Exceptional::Logic(
+                'XML writer is not currently writing a processing instruction'
+            );
         }
 
         $this->document->text((string)$content);
@@ -552,7 +556,9 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpa
     public function endPi(): Writer
     {
         if ($this->currentNode !== self::PI) {
-            throw Glitch::ELogic('XML writer is not currently writing a processing instruction');
+            throw Exceptional::Logic(
+                'XML writer is not currently writing a processing instruction'
+            );
         }
 
         $this->document->endPI();
@@ -741,7 +747,9 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpa
             $this->document->flush();
 
             if (false === ($output = file_get_contents($this->path))) {
-                throw Glitch::EUnexpectedValue('Unable to read contents of file', null, $this->path);
+                throw Exceptional::UnexpectedValue(
+                    'Unable to read contents of file', null, $this->path
+                );
             }
 
             return $output;

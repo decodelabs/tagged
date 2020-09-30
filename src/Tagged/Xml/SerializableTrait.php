@@ -12,6 +12,7 @@ use DecodeLabs\Tagged\Xml\Provider;
 use DecodeLabs\Tagged\Xml\Serializable;
 
 use DecodeLabs\Atlas\File;
+use DecodeLabs\Exceptional;
 
 trait SerializableTrait
 {
@@ -33,7 +34,9 @@ trait SerializableTrait
         } elseif (is_string($xml) || (is_object($xml) && method_exists($xml, '__toString'))) {
             return static::fromXmlString((string)$xml);
         } else {
-            throw Glitch::EUnexpectedValue('Unable to convert item to XML Element', null, $xml);
+            throw Exceptional::UnexpectedValue(
+                'Unable to convert item to XML Element', null, $xml
+            );
         }
     }
 
@@ -62,11 +65,16 @@ trait SerializableTrait
         $ref = new \ReflectionClass($class);
 
         if (!$ref->isInstantiable()) {
-            throw Glitch::ELogic('XML consumer cannot be instantiated', null, $class);
+            throw Exceptional::Logic(
+                'XML consumer cannot be instantiated', null, $class
+            );
         }
 
         if (!$ref->implementsInterface(Serializable::class)) {
-            throw Glitch::ELogic('XML consumer does not implement DecodeLabs\\Tagged\\Xml\\Serializable', null, $class);
+            throw Exceptional::Logic(
+                'XML consumer does not implement DecodeLabs\\Tagged\\Xml\\Serializable',
+                null, $class
+            );
         }
 
         $output = $ref->newInstanceWithoutConstructor();

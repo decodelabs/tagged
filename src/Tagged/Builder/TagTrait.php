@@ -10,8 +10,8 @@ use DecodeLabs\Tagged\Markup;
 use DecodeLabs\Tagged\Buffer;
 use DecodeLabs\Collections\AttributeContainerTrait;
 
-use DecodeLabs\Glitch;
 use DecodeLabs\Glitch\Dumpable;
+use DecodeLabs\Exceptional;
 
 trait TagTrait
 {
@@ -59,7 +59,9 @@ trait TagTrait
                 $parts = explode('=', $res[1], 2);
 
                 if (null === ($key = array_shift($parts))) {
-                    throw Glitch::EUnexpectedValue('Invalid tag attribute definition', null, $res);
+                    throw Exceptional::UnexpectedValue(
+                        'Invalid tag attribute definition', null, $res
+                    );
                 }
 
                 $value = (string)array_shift($parts);
@@ -87,7 +89,9 @@ trait TagTrait
         $parts = explode('.', $name);
 
         if (null === ($name = array_shift($parts))) {
-            throw Glitch::EUnexpectedValue('Unable to parse tag class definition', null, $origName);
+            throw Exceptional::UnexpectedValue(
+                'Unable to parse tag class definition', null, $origName
+            );
         }
 
         $this->name = $name;
@@ -143,7 +147,7 @@ trait TagTrait
         }
 
         if (preg_match('/\s/', $id)) {
-            throw Glitch::EInvalidArgument('Invalid tag id: '.$id);
+            throw Exceptional::InvalidArgument('Invalid tag id: '.$id);
         }
 
         $this->setAttribute('id', $id);

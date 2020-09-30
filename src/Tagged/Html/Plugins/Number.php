@@ -15,6 +15,8 @@ use DecodeLabs\Tagged\Html\Factory as HtmlFactory;
 use DecodeLabs\Tagged\Html\ContentCollection;
 use DecodeLabs\Tagged\Html\Element;
 
+use DecodeLabs\Exceptional;
+
 use NumberFormatter;
 
 class Number implements FacadePlugin
@@ -55,7 +57,7 @@ class Number implements FacadePlugin
                 $formatter = new NumberFormatter(Systemic::$locale->get(), NumberFormatter::DECIMAL);
                 $value = $formatter->format($value);
             } else {
-                throw Glitch::EInvalidArgument('Value is not a number', null, $value);
+                throw Exceptional::InvalidArgument('Value is not a number', null, $value);
             }
 
             yield $this->html->el('span.value', $value);
@@ -153,7 +155,7 @@ class Number implements FacadePlugin
                 $formatter->setAttribute(NumberFormatter::MAX_FRACTION_DIGITS, $decimals);
                 $value = $formatter->format($value / $total);
             } else {
-                throw Glitch::EInvalidArgument('Percent value is not a number', null, $value);
+                throw Exceptional::InvalidArgument('Percent value is not a number', null, $value);
             }
 
             if (!preg_match('/^(%)?([0-9,.]+)(%)?$/u', $value, $matches)) {
@@ -179,7 +181,9 @@ class Number implements FacadePlugin
     public function diff($diff, ?bool $invert=false, string $tag='sup'): Element
     {
         if (!is_numeric($diff)) {
-            throw Glitch::EInvalidArgument('Diff value is not a number', null, $diff);
+            throw Exceptional::InvalidArgument(
+                'Diff value is not a number', null, $diff
+            );
         }
 
         $diff = (float)$diff;

@@ -18,7 +18,7 @@ use DecodeLabs\Tagged\Html\Embed\Video;
 
 use DecodeLabs\Collections\Tree\NativeMutable as Tree;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 class Youtube extends Video
 {
@@ -39,7 +39,7 @@ class Youtube extends Video
         $urlParts = parse_url($this->url);
 
         if ($urlParts === false || empty($urlParts)) {
-            throw Glitch::EUnexpectedValue('Unable to parse URL', null, $this->url);
+            throw Exceptional::UnexpectedValue('Unable to parse URL', null, $this->url);
         }
 
         parse_str($urlParts['query'] ?? '', $query);
@@ -51,7 +51,7 @@ class Youtube extends Video
             $id = array_pop($parts);
 
             if ($id == 'watch') {
-                throw Glitch::EUnexpectedValue('Malformed youtube URL', null, $this->url);
+                throw Exceptional::UnexpectedValue('Malformed youtube URL', null, $this->url);
             }
         }
 
