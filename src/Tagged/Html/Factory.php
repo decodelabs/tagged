@@ -19,6 +19,7 @@ use DecodeLabs\Veneer\FacadePluginAccessTarget;
 use DecodeLabs\Veneer\FacadePluginAccessTargetTrait;
 use DecodeLabs\Veneer\FacadePlugin;
 
+use DecodeLabs\Glitch\Proxy as Glitch;
 use DecodeLabs\Exceptional;
 
 class Factory implements Markup, FacadeTarget, FacadePluginAccessTarget

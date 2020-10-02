@@ -13,7 +13,7 @@ use DecodeLabs\Tagged\Builder\Element as ElementInterface;
 use DecodeLabs\Collections\Sequence;
 use DecodeLabs\Collections\Native\SequenceTrait;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Glitch\Proxy as Glitch;
 
 class Element extends Tag implements \IteratorAggregate, ElementInterface
 {
@@ -122,7 +122,7 @@ class Element extends Tag implements \IteratorAggregate, ElementInterface
 
 
     /**
-     * Inspect for Glitch
+     * Export for dump inspection
      */
     public function glitchDump(): iterable
     {

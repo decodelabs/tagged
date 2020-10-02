@@ -12,7 +12,6 @@ use DecodeLabs\Tagged\Markup;
 use DecodeLabs\Tagged\Buffer;
 use DecodeLabs\Tagged\Html\Factory as HtmlFactory;
 
-use DecodeLabs\Glitch;
 use DecodeLabs\Exceptional;
 
 use Parsedown;
@@ -168,7 +167,7 @@ class Parse implements FacadePlugin
             return null;
         }
 
-        Glitch::incomplete($text);
+        Exceptional::incomplete($text);
     }
 
 
