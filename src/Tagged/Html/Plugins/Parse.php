@@ -12,6 +12,7 @@ use DecodeLabs\Tagged\Markup;
 use DecodeLabs\Tagged\Buffer;
 use DecodeLabs\Tagged\Html\Factory as HtmlFactory;
 
+use DecodeLabs\Glitch\Proxy as Glitch;
 use DecodeLabs\Exceptional;
 
 use Parsedown;
@@ -131,7 +132,7 @@ class Parse implements FacadePlugin
      */
     public function simpleTags(?string $text, ?callable $prep=null): ?Markup
     {
-        return $this->parseMarkdown($text, false, false, $prep);
+        return $this->parseSimpleTags($text, false, false, $prep);
     }
 
     /**
@@ -139,7 +140,7 @@ class Parse implements FacadePlugin
      */
     public function userSimpleTags(?string $text, ?callable $prep=null): ?Markup
     {
-        return $this->parseMarkdown($text, false, true, $prep);
+        return $this->parseSimpleTags($text, false, true, $prep);
     }
 
     /**
@@ -147,7 +148,7 @@ class Parse implements FacadePlugin
      */
     public function inlineSimpleTags(?string $text, ?callable $prep=null): ?Markup
     {
-        return $this->parseMarkdown($text, true, false, $prep);
+        return $this->parseSimpleTags($text, true, false, $prep);
     }
 
     /**
@@ -155,7 +156,7 @@ class Parse implements FacadePlugin
      */
     public function inlineUserSimpleTags(?string $text, ?callable $prep=null): ?Markup
     {
-        return $this->parseMarkdown($text, true, true, $prep);
+        return $this->parseSimpleTags($text, true, true, $prep);
     }
 
     /**
@@ -167,7 +168,7 @@ class Parse implements FacadePlugin
             return null;
         }
 
-        Exceptional::incomplete($text);
+        Glitch::incomplete($text);
     }
 
 
