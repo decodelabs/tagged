@@ -14,6 +14,7 @@ use DecodeLabs\Tagged\Html\Factory as HtmlFactory;
 use DecodeLabs\Tagged\Html\ContentCollection;
 use DecodeLabs\Tagged\Html\Element;
 
+use DecodeLabs\Systemic;
 use DecodeLabs\Exceptional;
 
 use DateTime;
