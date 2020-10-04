@@ -1,3 +1,6 @@
+## v0.8.5 (2020-10-04)
+* Switched to Glitch Proxy incomplete()
+
 ## v0.8.4 (2020-10-02)
 * Removed Glitch dependency
 
