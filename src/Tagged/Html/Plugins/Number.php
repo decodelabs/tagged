@@ -6,7 +6,7 @@
 declare(strict_types=1);
 namespace DecodeLabs\Tagged\Html\Plugins;
 
-use DecodeLabs\Veneer\FacadePlugin;
+use DecodeLabs\Veneer\Plugin;
 
 use DecodeLabs\Tagged\Markup;
 use DecodeLabs\Tagged\Buffer;
@@ -20,7 +20,7 @@ use DecodeLabs\Exceptional;
 
 use NumberFormatter;
 
-class Number implements FacadePlugin
+class Number implements Plugin
 {
     protected $html;
 

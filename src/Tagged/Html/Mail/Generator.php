@@ -40,7 +40,7 @@ class Generator
             '    <meta name="viewport" content="width=device-width" />'."\n".
             '    <meta name="robots" content="noindex, nofollow" />'."\n".
             '    <meta name="googlebot" content="noindex, nofollow, noarchive" />'."\n".
-            '    '.Html::title($subject)."\n".
+            '    '.Html::{'title'}($subject)."\n".
             '    '.$this->css()."\n".
             '</head>'."\n".
             $this->body($content, $bodyAttributes).
@@ -224,7 +224,7 @@ class Generator
      */
     public function p($content, array $tagStyles=null, array $attributes=null): Element
     {
-        return Html::p($content, $attributes)
+        return Html::{'p'}($content, $attributes)
             ->addStyles($this->getStylesFor('p'))
             ->addStyles((array)$tagStyles);
     }
@@ -234,11 +234,11 @@ class Generator
      */
     public function link(string $url, $content, array $tagStyles=null, array $attributes=null): Element
     {
-        return Html::a($content, $attributes)
-            ->addStyles($this->getStylesFor('link'))
-            ->addStyles((array)$tagStyles)
+        return Html::{'a'}($content, $attributes)
             ->setAttribute('href', $url)
-            ->setAttribute('target', '_blank');
+            ->setAttribute('target', '_blank')
+            ->addStyles($this->getStylesFor('link'))
+            ->addStyles((array)$tagStyles);
     }
 
     /**
@@ -246,7 +246,7 @@ class Generator
      */
     public function image(string $url, int $width, int $height, ?string $alt=null, array $tagStyles=null, array $attributes=null): Element
     {
-        return Html::img(null, [
+        return Html::{'img'}(null, [
             'src' => $url,
             'width' => $width,
             'height' => $height,

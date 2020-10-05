@@ -13,21 +13,19 @@ use DecodeLabs\Tagged\Html\ContentCollection;
 use DecodeLabs\Tagged\Html\Tag;
 use DecodeLabs\Tagged\Html\Element;
 
-use DecodeLabs\Veneer\FacadeTarget;
-use DecodeLabs\Veneer\FacadeTargetTrait;
-use DecodeLabs\Veneer\FacadePluginAccessTarget;
-use DecodeLabs\Veneer\FacadePluginAccessTargetTrait;
-use DecodeLabs\Veneer\FacadePlugin;
+use DecodeLabs\Veneer\Plugin as VeneerPlugin;
+use DecodeLabs\Veneer\Plugin\Provider as VeneerPluginProvider;
+use DecodeLabs\Veneer\Plugin\ProviderTrait as VeneerPluginProviderTrait;
+use DecodeLabs\Veneer\Plugin\AccessTarget as VeneerPluginAccessTarget;
+use DecodeLabs\Veneer\Plugin\AccessTargetTrait as VeneerPluginAccessTargetTrait;
 
 use DecodeLabs\Glitch\Proxy as Glitch;
 use DecodeLabs\Exceptional;
 
-class Factory implements Markup, FacadeTarget, FacadePluginAccessTarget
+class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
 {
-    use FacadeTargetTrait;
-    use FacadePluginAccessTargetTrait;
-
-    const FACADE = 'Html';
+    use VeneerPluginProviderTrait;
+    use VeneerPluginAccessTargetTrait;
 
     const PLUGINS = [
         'parse',
@@ -68,7 +66,7 @@ class Factory implements Markup, FacadeTarget, FacadePluginAccessTarget
     /**
      * Stub to get empty plugin list to avoid broken targets
      */
-    public function getFacadePluginNames(): array
+    public function getVeneerPluginNames(): array
     {
         return static::PLUGINS;
     }
@@ -76,10 +74,10 @@ class Factory implements Markup, FacadeTarget, FacadePluginAccessTarget
     /**
      * Load factory plugins
      */
-    public function loadFacadePlugin(string $name): FacadePlugin
+    public function loadVeneerPlugin(string $name): VeneerPlugin
     {
         if (!in_array($name, self::PLUGINS)) {
-            throw Exceptional::InvalidArgument($name.' is not a recognised facade plugin');
+            throw Exceptional::InvalidArgument($name.' is not a recognised Veneer plugin');
         }
 
         $class = '\\DecodeLabs\\Tagged\\Html\\Plugins\\'.ucfirst($name);

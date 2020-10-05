@@ -13,19 +13,19 @@
         "ext-intl": "*",
         "symfony/polyfill-mbstring": "^1.7",
 
+        "decodelabs/veneer": "^0.6.2",
+        "decodelabs/atlas": "^0.7.7",
+        "decodelabs/systemic": "^0.6.11",
         "decodelabs/exceptional": "^0.2.8",
         "decodelabs/glitch-support": "^0.2.1",
         "decodelabs/collections": "^0.5",
-        "decodelabs/gadgets": "^0.6",
-        "decodelabs/veneer": "^0.5.5",
-        "decodelabs/systemic": "^0.6.9",
-        "decodelabs/atlas": "^0.7.6"
+        "decodelabs/gadgets": "^0.6"
     },
     "require-dev": {
         "phpunit/phpunit": "^8",
-        "phpstan/phpstan": "0.12.45",
+        "phpstan/phpstan": "^0.12.45",
         "phpstan/extension-installer": "^1.0",
-        "decodelabs/phpstan-decodelabs": "^0.3.7",
+        "decodelabs/phpstan-decodelabs": "^0.3.12",
 
         "nesbot/carbon": "^2.25",
         "soundasleep/html2text": "^1.1",
