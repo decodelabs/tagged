@@ -1,3 +1,5 @@
+* Removed dependency on Systemic
+
 ## v0.8.7 (2020-10-05)
 * Improved readme
 * Updated PHPStan

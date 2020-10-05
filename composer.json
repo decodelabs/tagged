@@ -15,7 +15,6 @@
 
         "decodelabs/veneer": "^0.6.2",
         "decodelabs/atlas": "^0.7.7",
-        "decodelabs/systemic": "^0.6.11",
         "decodelabs/exceptional": "^0.2.8",
         "decodelabs/glitch-support": "^0.2.1",
         "decodelabs/collections": "^0.5",
@@ -31,6 +30,7 @@
         "soundasleep/html2text": "^1.1",
         "erusev/parsedown": "^1.7",
         "michelf/php-markdown": "^1.9",
+        "decodelabs/systemic": "^0.6.11",
         "decodelabs/chirp": "^0.5"
     },
     "suggest": {
@@ -38,6 +38,7 @@
         "soundasleep/html2text": "Better HTML to text conversion",
         "erusev/parsedown": "Add support for Markdown parsing",
         "michelf/php-markdown": "Alternative Markdown parsing provider",
+        "decodelabs/systemic": "Managed locale and timezone info",
         "decodelabs/chirp": "Enable parsing of Tweets"
     },
     "autoload": {
