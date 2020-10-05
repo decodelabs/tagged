@@ -1,3 +1,6 @@
+## v0.8.6 (2020-10-05)
+* Updated to Veneer 0.6
+
 ## v0.8.5 (2020-10-04)
 * Switched to Glitch Proxy incomplete()
 
