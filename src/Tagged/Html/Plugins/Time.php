@@ -6,7 +6,7 @@
 declare(strict_types=1);
 namespace DecodeLabs\Tagged\Html\Plugins;
 
-use DecodeLabs\Veneer\FacadePlugin;
+use DecodeLabs\Veneer\Plugin;
 
 use DecodeLabs\Tagged\Buffer;
 use DecodeLabs\Tagged\Html\Factory as HtmlFactory;
@@ -14,6 +14,7 @@ use DecodeLabs\Tagged\Html\Factory as HtmlFactory;
 use DecodeLabs\Tagged\Html\ContentCollection;
 use DecodeLabs\Tagged\Html\Element;
 
+use DecodeLabs\Systemic;
 use DecodeLabs\Exceptional;
 
 use DateTime;
@@ -25,7 +26,7 @@ use Carbon\Carbon;
 use Carbon\CarbonInterval;
 use Carbon\CarbonInterface;
 
-class Time implements FacadePlugin
+class Time implements Plugin
 {
     protected $html;
 

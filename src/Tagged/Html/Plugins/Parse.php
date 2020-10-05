@@ -6,7 +6,7 @@
 declare(strict_types=1);
 namespace DecodeLabs\Tagged\Html\Plugins;
 
-use DecodeLabs\Veneer\FacadePlugin;
+use DecodeLabs\Veneer\Plugin;
 
 use DecodeLabs\Tagged\Markup;
 use DecodeLabs\Tagged\Buffer;
@@ -19,7 +19,7 @@ use Parsedown;
 use Michelf\Markdown;
 use DecodeLabs\Chirp\Parser as Chirp;
 
-class Parse implements FacadePlugin
+class Parse implements Plugin
 {
     protected $html;
 

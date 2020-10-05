@@ -2,3 +2,6 @@ parameters:
     paths:
         - src
     level: 5
+    ignoreErrors:
+        # Fix these:
+        - '#^Unsafe usage of new static\(\)\.$#'
