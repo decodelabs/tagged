@@ -1,3 +1,7 @@
+## v0.8.7 (2020-10-05)
+* Improved readme
+* Updated PHPStan
+
 ## v0.8.6 (2020-10-05)
 * Updated to Veneer 0.6
 
