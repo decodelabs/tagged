@@ -50,7 +50,10 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpa
     public static function createFile(string $path): Writer
     {
         $dir = dirname($path);
-        Atlas::$fs->createDir($dir);
+
+        if (!is_dir($dir)) {
+            mkdir($dir, 0777, true);
+        }
 
         $document = new XMLWriter();
         $document->openURI($path);
@@ -693,6 +696,12 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpa
      */
     public function toXmlFile(string $path): File
     {
+        if (!class_exists(Atlas::class)) {
+            throw Exceptional::ComponentUnavailable(
+                'Saving XML to file requires DecodeLabs Atlas'
+            );
+        }
+
         $this->finalize();
 
         if ($path === $this->path) {

@@ -46,9 +46,17 @@ class Element implements
             return static::fromDomDocument($xml);
         } elseif ($xml instanceof DOMElement) {
             return static::fromDomElement($xml);
-        } elseif ($xml instanceof File) {
+        } elseif (
+            interface_exists(File::class) &&
+            $xml instanceof File
+        ) {
             return static::fromFile($xml->getPath());
-        } elseif (is_string($xml) || (is_object($xml) && method_exists($xml, '__toString'))) {
+        } elseif (
+            is_string($xml) || (
+                is_object($xml) &&
+                method_exists($xml, '__toString')
+            )
+        ) {
             return static::fromXmlString((string)$xml);
         } else {
             throw Exceptional::UnexpectedValue(
@@ -1466,6 +1474,12 @@ class Element implements
      */
     public function toXmlFile(string $path): File
     {
+        if (!class_exists(Atlas::class)) {
+            throw Exceptional::ComponentUnavailable(
+                'Saving XML to file requires DecodeLabs Atlas'
+            );
+        }
+
         $dir = dirname($path);
         Atlas::$fs->createDir($dir);
 
