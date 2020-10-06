@@ -1,20 +1,20 @@
 <?php
+
 /**
- * This file is part of the Tagged package
+ * @package Tagged
  * @license http://opensource.org/licenses/MIT
  */
+
 declare(strict_types=1);
+
 namespace DecodeLabs\Tagged\Html\Plugins;
 
-use DecodeLabs\Veneer\Plugin;
-
-use DecodeLabs\Tagged\Markup;
-use DecodeLabs\Tagged\Buffer;
+use DecodeLabs\Tagged\Html\Embed\Audio;
+use DecodeLabs\Tagged\Html\Embed\Video;
 use DecodeLabs\Tagged\Html\Factory as HtmlFactory;
 
-use DecodeLabs\Tagged\Html\Embed\Media;
-use DecodeLabs\Tagged\Html\Embed\Video;
-use DecodeLabs\Tagged\Html\Embed\Audio;
+use DecodeLabs\Tagged\Markup;
+use DecodeLabs\Veneer\Plugin;
 
 class Embed implements Plugin
 {
@@ -32,7 +32,7 @@ class Embed implements Plugin
     /**
      * Embed shared video code
      */
-    public function video(?string $embed, int $width=null, int $height=null): ?Markup
+    public function video(?string $embed, int $width = null, int $height = null): ?Markup
     {
         if ($embed === null) {
             return null;
@@ -51,7 +51,7 @@ class Embed implements Plugin
     /**
      * Embed shared audio code
      */
-    public function audio(?string $embed, int $width=null, int $height=null): ?Markup
+    public function audio(?string $embed, int $width = null, int $height = null): ?Markup
     {
         if ($embed === null) {
             return null;

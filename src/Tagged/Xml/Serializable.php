@@ -1,15 +1,13 @@
 <?php
+
 /**
- * This file is part of the Tagged package
+ * @package Tagged
  * @license http://opensource.org/licenses/MIT
  */
-declare(strict_types=1);
-namespace DecodeLabs\Tagged\Xml;
 
-use DecodeLabs\Tagged\Xml\Element;
-use DecodeLabs\Tagged\Xml\Writer;
-use DecodeLabs\Tagged\Xml\Consumer;
-use DecodeLabs\Tagged\Xml\Provider;
+declare(strict_types=1);
+
+namespace DecodeLabs\Tagged\Xml;
 
 interface Serializable extends Consumer, Provider
 {

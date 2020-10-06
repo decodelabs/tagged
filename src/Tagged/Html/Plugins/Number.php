@@ -1,22 +1,19 @@
 <?php
+
 /**
- * This file is part of the Tagged package
+ * @package Tagged
  * @license http://opensource.org/licenses/MIT
  */
+
 declare(strict_types=1);
+
 namespace DecodeLabs\Tagged\Html\Plugins;
 
-use DecodeLabs\Veneer\Plugin;
-
-use DecodeLabs\Tagged\Markup;
-use DecodeLabs\Tagged\Buffer;
-use DecodeLabs\Tagged\Html\Factory as HtmlFactory;
-use DecodeLabs\Tagged\Html\ContentCollection;
-use DecodeLabs\Tagged\Html\Element;
-use DecodeLabs\Tagged\Html\Plugins\SystemicProxyTrait;
-
-use DecodeLabs\Systemic;
 use DecodeLabs\Exceptional;
+use DecodeLabs\Tagged\Html\Element;
+use DecodeLabs\Tagged\Html\Factory as HtmlFactory;
+use DecodeLabs\Tagged\Markup;
+use DecodeLabs\Veneer\Plugin;
 
 use NumberFormatter;
 
@@ -38,7 +35,7 @@ class Number implements Plugin
     /**
      * Format and wrap number
      */
-    public function wrap($value, ?string $unit=null): ?Element
+    public function wrap($value, ?string $unit = null): ?Element
     {
         if ($value === null) {
             return null;
@@ -74,7 +71,7 @@ class Number implements Plugin
     /**
      * Format and wrap currency
      */
-    public function currency($value, ?string $code, ?bool $rounded=null): ?Markup
+    public function currency($value, ?string $code, ?bool $rounded = null): ?Markup
     {
         if ($value === null || $code === null) {
             return null;
@@ -140,7 +137,7 @@ class Number implements Plugin
     /**
      * Format and render a percentage
      */
-    public function percent($value, float $total=100.0, int $decimals=0): ?Element
+    public function percent($value, float $total = 100.0, int $decimals = 0): ?Element
     {
         if ($value === null || $total <= 0) {
             return null;
@@ -182,11 +179,13 @@ class Number implements Plugin
     /**
      * Render difference of number from 0
      */
-    public function diff($diff, ?bool $invert=false, string $tag='sup'): Element
+    public function diff($diff, ?bool $invert = false, string $tag = 'sup'): Element
     {
         if (!is_numeric($diff)) {
             throw Exceptional::InvalidArgument(
-                'Diff value is not a number', null, $diff
+                'Diff value is not a number',
+                null,
+                $diff
             );
         }
 

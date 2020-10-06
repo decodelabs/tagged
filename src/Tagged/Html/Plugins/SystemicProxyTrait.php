@@ -1,19 +1,20 @@
 <?php
+
 /**
- * This file is part of the Tagged package
+ * @package Tagged
  * @license http://opensource.org/licenses/MIT
  */
+
 declare(strict_types=1);
+
 namespace DecodeLabs\Tagged\Html\Plugins;
 
-use DecodeLabs\Systemic;
-
-use Locale as SysLocale;
 use DateTimeZone;
+use DecodeLabs\Systemic;
+use Locale as SysLocale;
 
 trait SystemicProxyTrait
 {
-
     /**
      * Get system locale
      */

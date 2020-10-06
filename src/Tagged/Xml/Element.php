@@ -1,26 +1,25 @@
 <?php
+
 /**
- * This file is part of the Tagged package
+ * @package Tagged
  * @license http://opensource.org/licenses/MIT
  */
+
 declare(strict_types=1);
+
 namespace DecodeLabs\Tagged\Xml;
 
-use DecodeLabs\Tagged\Markup;
-use DecodeLabs\Tagged\Xml\Consumer;
-use DecodeLabs\Tagged\Xml\Provider;
-
-use DecodeLabs\Collections\AttributeContainer;
+use ArrayAccess;
+use Countable;
 
 use DecodeLabs\Atlas;
 use DecodeLabs\Atlas\File;
-
+use DecodeLabs\Collections\AttributeContainer;
 use DecodeLabs\Exceptional;
+use DecodeLabs\Tagged\Markup;
 
 use DOMDocument;
 use DOMElement;
-use Countable;
-use ArrayAccess;
 
 class Element implements
     Markup,
@@ -60,7 +59,9 @@ class Element implements
             return static::fromXmlString((string)$xml);
         } else {
             throw Exceptional::UnexpectedValue(
-                'Unable to convert item to XML Element', null, $xml
+                'Unable to convert item to XML Element',
+                null,
+                $xml
             );
         }
     }
@@ -117,7 +118,7 @@ class Element implements
         $xml = trim($xml);
 
         if (!stristr($xml, '<?xml')) {
-            $xml = '<?xml version="1.0" encoding="UTF-8"?>'."\n".$xml;
+            $xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n" . $xml;
         }
 
         $xml = static::normalizeString($xml);
@@ -229,7 +230,7 @@ class Element implements
         }
 
         foreach ($this->element->attributes as $attrNode) {
-            $child = $this->element->ownerDocument->importNode($attrNode, true);
+            $this->element->ownerDocument->importNode($attrNode, true);
             $newNode->setAttributeNode($attrNode);
         }
 
@@ -484,19 +485,19 @@ class Element implements
                     $value = ltrim($node->nodeValue);
 
                     if ($value != $node->nodeValue) {
-                        $value = ' '.$value;
+                        $value = ' ' . $value;
                     }
 
                     $t = rtrim($value);
 
                     if ($t != $value) {
-                        $value = $t.' ';
+                        $value = $t . ' ';
                     }
 
                     break;
 
                 case \XML_CDATA_SECTION_NODE:
-                    $value = trim($node->nodeValue)."\n";
+                    $value = trim($node->nodeValue) . "\n";
                     break;
             }
 
@@ -755,7 +756,7 @@ class Element implements
     /**
      * Shared child fetcher
      */
-    protected function scanChildList($name=null): \Generator
+    protected function scanChildList($name = null): \Generator
     {
         foreach ($this->element->childNodes as $node) {
             if ($node->nodeType == \XML_ELEMENT_NODE) {
@@ -771,7 +772,7 @@ class Element implements
     /**
      * Get first element in list
      */
-    protected function getFirstChildNode(string $name=null): ?Element
+    protected function getFirstChildNode(string $name = null): ?Element
     {
         foreach ($this->element->childNodes as $node) {
             if ($node->nodeType == \XML_ELEMENT_NODE) {
@@ -789,7 +790,7 @@ class Element implements
     /**
      * Get last element in list
      */
-    protected function getLastChildNode(string $name=null): ?Element
+    protected function getLastChildNode(string $name = null): ?Element
     {
         $lastElement = null;
 
@@ -813,11 +814,11 @@ class Element implements
     /**
      * Get child at index
      */
-    protected function getNthChildNode(int $index, string $name=null): ?Element
+    protected function getNthChildNode(int $index, string $name = null): ?Element
     {
         if ($index < 1) {
             throw Exceptional::InvalidArgument(
-                $index.' is an invalid child index'
+                $index . ' is an invalid child index'
             );
         }
 
@@ -841,7 +842,7 @@ class Element implements
     /**
      * Get children by formula
      */
-    protected function scanNthChildList(string $formula, string $name=null): \Generator
+    protected function scanNthChildList(string $formula, string $name = null): \Generator
     {
         if (is_numeric($formula)) {
             if ($output = $this->getNthChildNode((int)$formula, $name)) {
@@ -860,7 +861,7 @@ class Element implements
 
         if (!preg_match('/^([\-]?)([0-9]*)[n]([+]([0-9]+))?$/i', str_replace(' ', '', $formula), $matches)) {
             throw Exceptional::InvalidArgument(
-                $formula.' is not a valid nth-child formula'
+                $formula . ' is not a valid nth-child formula'
             );
         }
 
@@ -921,7 +922,7 @@ class Element implements
     /**
      * Add child to end of node
      */
-    public function prependChild($newChild, $value=null): Element
+    public function prependChild($newChild, $value = null): Element
     {
         $node = $this->normalizeInputChild($newChild, $value);
         $node = $this->element->insertBefore($node, $this->element->firstChild);
@@ -932,7 +933,7 @@ class Element implements
     /**
      * Add child to start of node
      */
-    public function appendChild($newChild, $value=null): Element
+    public function appendChild($newChild, $value = null): Element
     {
         $node = $this->normalizeInputChild($newChild, $value);
         $this->element->appendChild($node);
@@ -943,7 +944,7 @@ class Element implements
     /**
      * Replace child node in place
      */
-    public function replaceChild(Element $origChild, $newChild, $value=null): Element
+    public function replaceChild(Element $origChild, $newChild, $value = null): Element
     {
         $origChild = $origChild->getDomElement();
         $node = $this->normalizeInputChild($newChild, $value);
@@ -955,7 +956,7 @@ class Element implements
     /**
      * Add child at index
      */
-    public function putChild(int $index, $child, $value=null): Element
+    public function putChild(int $index, $child, $value = null): Element
     {
         $newNode = $this->normalizeInputChild($child, $value);
         $origIndex = $index;
@@ -968,7 +969,7 @@ class Element implements
 
         if ($index < 0) {
             throw Exceptional::OutOfBounds(
-                'Index '.$origIndex.' is out of bounds'
+                'Index ' . $origIndex . ' is out of bounds'
             );
         }
 
@@ -997,7 +998,7 @@ class Element implements
     /**
      * Add child node before chosen node
      */
-    public function insertChildBefore(Element $origChild, $newChild, $value=null): Element
+    public function insertChildBefore(Element $origChild, $newChild, $value = null): Element
     {
         $origChild = $origChild->getDomElement();
         $node = $this->normalizeInputChild($newChild, $value);
@@ -1009,7 +1010,7 @@ class Element implements
     /**
      * Add child node after chosen node
      */
-    public function insertChildAfter(Element $origChild, $newChild, $value=null): Element
+    public function insertChildAfter(Element $origChild, $newChild, $value = null): Element
     {
         $origChild = $origChild->getDomElement();
 
@@ -1174,7 +1175,7 @@ class Element implements
     /**
      * Insert sibling before this node
      */
-    public function insertBefore($sibling, $value=null): Element
+    public function insertBefore($sibling, $value = null): Element
     {
         $node = $this->normalizeInputChild($sibling, $value);
         $node = $this->element->parentNode->insertBefore($node, $this->element);
@@ -1185,7 +1186,7 @@ class Element implements
     /**
      * Insert sibling after this node
      */
-    public function insertAfter($sibling, $value=null): Element
+    public function insertAfter($sibling, $value = null): Element
     {
         $node = $this->normalizeInputChild($sibling, $value);
 
@@ -1207,7 +1208,7 @@ class Element implements
     /**
      * Replace this node with another
      */
-    public function replaceWith($sibling, $value=null): Element
+    public function replaceWith($sibling, $value = null): Element
     {
         $node = $this->normalizeInputChild($sibling, $value);
         $this->element->parentNode->replaceChild($node, $this->element);
@@ -1259,7 +1260,7 @@ class Element implements
      */
     public function getById(string $id): ?Element
     {
-        return $this->firstXPath('//*[@id=\''.$id.'\']');
+        return $this->firstXPath('//*[@id=\'' . $id . '\']');
     }
 
     /**
@@ -1283,12 +1284,12 @@ class Element implements
     /**
      * Scan all nodes by attribute
      */
-    public function scanByAttribute(string $name, $value=null): \Generator
+    public function scanByAttribute(string $name, $value = null): \Generator
     {
         if ($value == '') {
-            $path = '//*[@'.$name.']';
+            $path = '//*[@' . $name . ']';
         } else {
-            $path = '//*[@'.$name.'=\''.$value.'\']';
+            $path = '//*[@' . $name . '=\'' . $value . '\']';
         }
 
         return $this->scanXPath($path);
@@ -1297,7 +1298,7 @@ class Element implements
     /**
      * Get all nodes by attribute
      */
-    public function getByAttribute(string $name, $value=null): array
+    public function getByAttribute(string $name, $value = null): array
     {
         return iterator_to_array($this->scanByAttribute($name, $value));
     }
@@ -1420,7 +1421,7 @@ class Element implements
     /**
      * Ensure input is DomElement
      */
-    protected function normalizeInputChild($child, $value=null): DOMElement
+    protected function normalizeInputChild($child, $value = null): DOMElement
     {
         $node = null;
 
@@ -1458,7 +1459,7 @@ class Element implements
     /**
      * Export to string
      */
-    public function toXmlString(bool $embedded=false): string
+    public function toXmlString(bool $embedded = false): string
     {
         $isRoot = $this->element === $this->element->ownerDocument->documentElement;
 

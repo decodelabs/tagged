@@ -1,9 +1,12 @@
 <?php
+
 /**
- * This file is part of the Tagged package
+ * @package Tagged
  * @license http://opensource.org/licenses/MIT
  */
+
 declare(strict_types=1);
+
 namespace DecodeLabs\Tagged;
 
 use DecodeLabs\Glitch\Dumpable;
@@ -33,7 +36,7 @@ class Buffer implements Markup, Dumpable
      */
     public function prepend(?string $content): Buffer
     {
-        $this->content = $content.$this->content;
+        $this->content = $content . $this->content;
         return $this;
     }
 

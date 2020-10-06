@@ -24,6 +24,7 @@
         "phpstan/phpstan": "^0.12.45",
         "phpstan/extension-installer": "^1.0",
         "decodelabs/phpstan-decodelabs": "^0.3.12",
+        "symplify/easy-coding-standard": "^8.3",
 
         "nesbot/carbon": "^2.25",
         "soundasleep/html2text": "^1.1",
@@ -56,5 +57,10 @@
         "branch-alias": {
             "dev-develop": "0.8.x-dev"
         }
+    },
+    "scripts": {
+        "analyze": "phpstan analyze --no-progress",
+        "psr12": "ecs check --no-progress-bar",
+        "psr12-fix": "ecs check --no-progress-bar --fix"
     }
 }

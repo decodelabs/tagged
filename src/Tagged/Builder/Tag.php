@@ -1,13 +1,16 @@
 <?php
+
 /**
- * This file is part of the Tagged package
+ * @package Tagged
  * @license http://opensource.org/licenses/MIT
  */
+
 declare(strict_types=1);
+
 namespace DecodeLabs\Tagged\Builder;
 
-use DecodeLabs\Tagged\Markup;
 use DecodeLabs\Collections\AttributeContainer;
+use DecodeLabs\Tagged\Markup;
 
 interface Tag extends Markup, AttributeContainer, \ArrayAccess
 {
@@ -27,7 +30,7 @@ interface Tag extends Markup, AttributeContainer, \ArrayAccess
     public function setClosable(bool $closable): Tag;
     public function isClosable(): bool;
 
-    public function renderWith($content=null, bool $pretty=false): ?Markup;
+    public function renderWith($content = null, bool $pretty = false): ?Markup;
 
     public function setRenderEmpty(bool $render): Tag;
     public function willRenderEmpty(): bool;

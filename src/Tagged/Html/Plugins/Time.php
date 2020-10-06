@@ -1,30 +1,28 @@
 <?php
+
 /**
- * This file is part of the Tagged package
+ * @package Tagged
  * @license http://opensource.org/licenses/MIT
  */
+
 declare(strict_types=1);
+
 namespace DecodeLabs\Tagged\Html\Plugins;
 
+use Carbon\Carbon;
+use Carbon\CarbonInterface;
+use Carbon\CarbonInterval;
+
+use DateInterval;
+use DateTime;
+use DateTimeZone;
+
+use DecodeLabs\Exceptional;
+use DecodeLabs\Tagged\Html\Element;
+use DecodeLabs\Tagged\Html\Factory as HtmlFactory;
 use DecodeLabs\Veneer\Plugin;
 
-use DecodeLabs\Tagged\Buffer;
-use DecodeLabs\Tagged\Html\Factory as HtmlFactory;
-use DecodeLabs\Tagged\Html\ContentCollection;
-use DecodeLabs\Tagged\Html\Element;
-use DecodeLabs\Tagged\Html\Plugins\SystemicProxyTrait;
-
-use DecodeLabs\Systemic;
-use DecodeLabs\Exceptional;
-
-use DateTime;
-use DateInterval;
-use DateTimeZone;
 use IntlDateFormatter;
-
-use Carbon\Carbon;
-use Carbon\CarbonInterval;
-use Carbon\CarbonInterface;
 
 class Time implements Plugin
 {
@@ -43,7 +41,7 @@ class Time implements Plugin
     /**
      * Custom format a date and wrap it
      */
-    public function format($date, string $format, $timezone=true): ?Element
+    public function format($date, string $format, $timezone = true): ?Element
     {
         if (!$date = $this->prepare($date, $timezone, true)) {
             return null;
@@ -73,7 +71,7 @@ class Time implements Plugin
     /**
      * Format date according to locale
      */
-    public function locale($date, $dateSize=true, $timeSize=true, $timezone=true): ?Element
+    public function locale($date, $dateSize = true, $timeSize = true, $timezone = true): ?Element
     {
         $dateSize = $this->normalizeLocaleSize($dateSize);
         $timeSize = $this->normalizeLocaleSize($timeSize);
@@ -116,7 +114,7 @@ class Time implements Plugin
     /**
      * Format full date time
      */
-    public function fullDateTime($date, $timezone=true): ?Element
+    public function fullDateTime($date, $timezone = true): ?Element
     {
         return $this->locale($date, 'full', 'full', $timezone);
     }
@@ -124,7 +122,7 @@ class Time implements Plugin
     /**
      * Format full date
      */
-    public function fullDate($date, $timezone=true): ?Element
+    public function fullDate($date, $timezone = true): ?Element
     {
         return $this->locale($date, 'full', false, $timezone);
     }
@@ -132,7 +130,7 @@ class Time implements Plugin
     /**
      * Format full time
      */
-    public function fullTime($date, $timezone=true): ?Element
+    public function fullTime($date, $timezone = true): ?Element
     {
         return $this->locale($date, false, 'full', $timezone);
     }
@@ -141,7 +139,7 @@ class Time implements Plugin
     /**
      * Format long date time
      */
-    public function longDateTime($date, $timezone=true): ?Element
+    public function longDateTime($date, $timezone = true): ?Element
     {
         return $this->locale($date, 'long', 'long', $timezone);
     }
@@ -149,7 +147,7 @@ class Time implements Plugin
     /**
      * Format long date
      */
-    public function longDate($date, $timezone=true): ?Element
+    public function longDate($date, $timezone = true): ?Element
     {
         return $this->locale($date, 'long', false, $timezone);
     }
@@ -157,7 +155,7 @@ class Time implements Plugin
     /**
      * Format long time
      */
-    public function longTime($date, $timezone=true): ?Element
+    public function longTime($date, $timezone = true): ?Element
     {
         return $this->locale($date, false, 'long', $timezone);
     }
@@ -166,7 +164,7 @@ class Time implements Plugin
     /**
      * Format medium date time
      */
-    public function mediumDateTime($date, $timezone=true): ?Element
+    public function mediumDateTime($date, $timezone = true): ?Element
     {
         return $this->locale($date, 'medium', 'medium', $timezone);
     }
@@ -174,7 +172,7 @@ class Time implements Plugin
     /**
      * Format medium date
      */
-    public function mediumDate($date, $timezone=true): ?Element
+    public function mediumDate($date, $timezone = true): ?Element
     {
         return $this->locale($date, 'medium', false, $timezone);
     }
@@ -182,7 +180,7 @@ class Time implements Plugin
     /**
      * Format medium time
      */
-    public function mediumTime($date, $timezone=true): ?Element
+    public function mediumTime($date, $timezone = true): ?Element
     {
         return $this->locale($date, false, 'medium', $timezone);
     }
@@ -191,7 +189,7 @@ class Time implements Plugin
     /**
      * Format short date time
      */
-    public function shortDateTime($date, $timezone=true): ?Element
+    public function shortDateTime($date, $timezone = true): ?Element
     {
         return $this->locale($date, 'short', 'short', $timezone);
     }
@@ -199,7 +197,7 @@ class Time implements Plugin
     /**
      * Format short date
      */
-    public function shortDate($date, $timezone=true): ?Element
+    public function shortDate($date, $timezone = true): ?Element
     {
         return $this->locale($date, 'short', false, $timezone);
     }
@@ -207,7 +205,7 @@ class Time implements Plugin
     /**
      * Format short time
      */
-    public function shortTime($date, $timezone=true): ?Element
+    public function shortTime($date, $timezone = true): ?Element
     {
         return $this->locale($date, false, 'short', $timezone);
     }
@@ -218,7 +216,7 @@ class Time implements Plugin
     /**
      * Format default date time
      */
-    public function dateTime($date, $timezone=true): ?Element
+    public function dateTime($date, $timezone = true): ?Element
     {
         return $this->locale($date, 'medium', 'medium', $timezone);
     }
@@ -226,7 +224,7 @@ class Time implements Plugin
     /**
      * Format default date
      */
-    public function date($date, $timezone=true): ?Element
+    public function date($date, $timezone = true): ?Element
     {
         return $this->locale($date, 'medium', false, $timezone);
     }
@@ -234,7 +232,7 @@ class Time implements Plugin
     /**
      * Format default time
      */
-    public function time($date, $timezone=true): ?Element
+    public function time($date, $timezone = true): ?Element
     {
         return $this->locale($date, false, 'short', $timezone);
     }
@@ -245,7 +243,7 @@ class Time implements Plugin
     /**
      * Format interval since date
      */
-    public function since($date, ?bool $positive=null, ?int $parts=1): ?Element
+    public function since($date, ?bool $positive = null, ?int $parts = 1): ?Element
     {
         return $this->wrapInterval($date, false, $parts, false, false, $positive);
     }
@@ -253,7 +251,7 @@ class Time implements Plugin
     /**
      * Format interval since date
      */
-    public function sinceAbs($date, ?bool $positive=null, ?int $parts=1): ?Element
+    public function sinceAbs($date, ?bool $positive = null, ?int $parts = 1): ?Element
     {
         return $this->wrapInterval($date, false, $parts, false, true, $positive);
     }
@@ -261,7 +259,7 @@ class Time implements Plugin
     /**
      * Format interval since date
      */
-    public function sinceAbbr($date, ?bool $positive=null, ?int $parts=1): ?Element
+    public function sinceAbbr($date, ?bool $positive = null, ?int $parts = 1): ?Element
     {
         return $this->wrapInterval($date, false, $parts, true, true, $positive);
     }
@@ -269,7 +267,7 @@ class Time implements Plugin
     /**
      * Format interval until date
      */
-    public function until($date, ?bool $positive=null, ?int $parts=1): ?Element
+    public function until($date, ?bool $positive = null, ?int $parts = 1): ?Element
     {
         return $this->wrapInterval($date, true, $parts, false, false, $positive);
     }
@@ -277,7 +275,7 @@ class Time implements Plugin
     /**
      * Format interval until date
      */
-    public function untilAbs($date, ?bool $positive=null, ?int $parts=1): ?Element
+    public function untilAbs($date, ?bool $positive = null, ?int $parts = 1): ?Element
     {
         return $this->wrapInterval($date, true, $parts, false, true, $positive);
     }
@@ -285,7 +283,7 @@ class Time implements Plugin
     /**
      * Format interval until date
      */
-    public function untilAbbr($date, ?bool $positive=null, ?int $parts=1): ?Element
+    public function untilAbbr($date, ?bool $positive = null, ?int $parts = 1): ?Element
     {
         return $this->wrapInterval($date, true, $parts, true, true, $positive);
     }
@@ -294,7 +292,7 @@ class Time implements Plugin
     /**
      * Format interval
      */
-    protected function wrapInterval($date, bool $invert, ?int $parts, bool $short=false, bool $absolute=false, ?bool $positive=false): ?Element
+    protected function wrapInterval($date, bool $invert, ?int $parts, bool $short = false, bool $absolute = false, ?bool $positive = false): ?Element
     {
         $this->checkCarbon();
 
@@ -332,7 +330,7 @@ class Time implements Plugin
 
         $output = $this->wrap(
             $date->format(DateTime::W3C),
-            (($inverted && $absolute) ? '-' : '').
+            ($inverted && $absolute ? '-' : '') .
             $interval->forHumans([
                 'short' => $short,
                 'join' => true,
@@ -354,7 +352,7 @@ class Time implements Plugin
             $negativeClass = $positive ? 'negative' : 'positive';
 
             if ($interval->invert) {
-                $output->addClass($invert ? $positiveClass : $negativeClass.' pending');
+                $output->addClass($invert ? $positiveClass : $negativeClass . ' pending');
             } else {
                 $output->addClass($invert ? $negativeClass : $positiveClass);
             }
@@ -369,7 +367,7 @@ class Time implements Plugin
     /**
      * Format interval until date
      */
-    public function between($date1, $date2, ?int $parts=1): ?Element
+    public function between($date1, $date2, ?int $parts = 1): ?Element
     {
         return $this->betweenRaw($date1, $date2, $parts, false);
     }
@@ -377,7 +375,7 @@ class Time implements Plugin
     /**
      * Format interval until date
      */
-    public function betweenAbbr($date1, $date2, ?int $parts=1): ?Element
+    public function betweenAbbr($date1, $date2, ?int $parts = 1): ?Element
     {
         return $this->betweenRaw($date1, $date2, $parts, true);
     }
@@ -385,7 +383,7 @@ class Time implements Plugin
     /**
      * Format interval until date
      */
-    protected function betweenRaw($date1, $date2, ?int $parts=1, bool $short=false): ?Element
+    protected function betweenRaw($date1, $date2, ?int $parts = 1, bool $short = false): ?Element
     {
         $this->checkCarbon();
 
@@ -401,15 +399,9 @@ class Time implements Plugin
             throw Exceptional::UnexpectedValue('Unable to create interval');
         }
 
-        $formatter = new IntlDateFormatter(
-            $this->getLocale(),
-            IntlDateFormatter::LONG,
-            IntlDateFormatter::LONG
-        );
-
         $output = $this->html->el(
             'span.interval',
-            ($interval->invert ? '-' : '').
+            ($interval->invert ? '-' : '') .
             $interval->forHumans([
                 'short' => $short,
                 'join' => true,
@@ -436,7 +428,7 @@ class Time implements Plugin
     /**
      * Prepare date for formatting
      */
-    protected function prepare($date, $timezone=true, bool $includeTime=true): ?DateTime
+    protected function prepare($date, $timezone = true, bool $includeTime = true): ?DateTime
     {
         if (null === ($date = $this->normalizeDate($date))) {
             return null;
@@ -444,7 +436,7 @@ class Time implements Plugin
 
         if ($timezone === false) {
             $timezone = null;
-            $includeTime = false;
+            //$includeTime = false;
         }
 
         if ($timezone !== null) {
@@ -519,7 +511,7 @@ class Time implements Plugin
     /**
      * Wrap date / time in Markup
      */
-    protected function wrap(string $w3c, string $formatted, string $title=null): Element
+    protected function wrap(string $w3c, string $formatted, string $title = null): Element
     {
         $output = $this->html->el('time', $formatted, [
             'datetime' => $w3c
@@ -566,7 +558,7 @@ class Time implements Plugin
 
             default:
                 throw Exceptional::InvalidArgument(
-                    'Invalid locale formatter size: '.$size
+                    'Invalid locale formatter size: ' . $size
                 );
         }
     }

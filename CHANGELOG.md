@@ -1,3 +1,6 @@
+* Applied full PSR12 standards
+* Added PSR12 check to Travis build
+
 ## v0.8.8 (2020-10-06)
 * Removed dependency on Atlas
 * Removed dependency on Systemic

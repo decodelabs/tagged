@@ -1,17 +1,19 @@
 <?php
+
 /**
- * This file is part of the Tagged package
+ * @package Tagged
  * @license http://opensource.org/licenses/MIT
  */
+
 declare(strict_types=1);
+
 namespace DecodeLabs\Tagged\Html\Mail;
 
 use DecodeLabs\Tagged\Builder\StyleBlock;
 use DecodeLabs\Tagged\Builder\StyleList;
-
-use DecodeLabs\Tagged\Markup;
 use DecodeLabs\Tagged\Html;
 use DecodeLabs\Tagged\Html\Element;
+use DecodeLabs\Tagged\Markup;
 
 class Generator
 {
@@ -30,20 +32,20 @@ class Generator
     /**
      * Generate document
      */
-    public function document(string $subject, $content, array $bodyAttributes=null): Markup
+    public function document(string $subject, $content, array $bodyAttributes = null): Markup
     {
         $output =
-            '<!doctype html>'."\n".
-            '<html>'."\n".
-            '<head>'."\n".
-            '    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />'."\n".
-            '    <meta name="viewport" content="width=device-width" />'."\n".
-            '    <meta name="robots" content="noindex, nofollow" />'."\n".
-            '    <meta name="googlebot" content="noindex, nofollow, noarchive" />'."\n".
-            '    '.Html::{'title'}($subject)."\n".
-            '    '.$this->css()."\n".
-            '</head>'."\n".
-            $this->body($content, $bodyAttributes).
+            '<!doctype html>' . "\n" .
+            '<html>' . "\n" .
+            '<head>' . "\n" .
+            '    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />' . "\n" .
+            '    <meta name="viewport" content="width=device-width" />' . "\n" .
+            '    <meta name="robots" content="noindex, nofollow" />' . "\n" .
+            '    <meta name="googlebot" content="noindex, nofollow, noarchive" />' . "\n" .
+            '    ' . Html::{'title'}($subject) . "\n" .
+            '    ' . $this->css() . "\n" .
+            '</head>' . "\n" .
+            $this->body($content, $bodyAttributes) .
             '</html>';
 
         return Html::raw($output);
@@ -55,7 +57,7 @@ class Generator
     public function css(): Element
     {
         $width = $this->styles->get('content')->get('width');
-        $css = "\n".'@media only screen and (max-width: '.$width.') {'."\n    ".$this->mobileStyles->renderStyles()."\n".'}'."\n";
+        $css = "\n" . '@media only screen and (max-width: ' . $width . ') {' . "\n    " . $this->mobileStyles->renderStyles() . "\n" . '}' . "\n";
 
         return Html::style(Html::raw($css), [
             'type' => 'text/css'
@@ -65,7 +67,7 @@ class Generator
     /**
      * Render body tag
      */
-    public function body($content, array $tagStyles=null, array $attributes=null): Element
+    public function body($content, array $tagStyles = null, array $attributes = null): Element
     {
         $styles = $this->getStylesFor('body', 'text');
 
@@ -115,7 +117,7 @@ class Generator
     /**
      * Render content block
      */
-    public function contentArea($content, array $tagStyles=null, array $attributes=null): Element
+    public function contentArea($content, array $tagStyles = null, array $attributes = null): Element
     {
         $styles = $this->getStylesFor('contentArea');
 
@@ -133,7 +135,7 @@ class Generator
     /**
      * Render banner
      */
-    public function banner(string $url, int $width, int $height, ?string $alt=null): Element
+    public function banner(string $url, int $width, int $height, ?string $alt = null): Element
     {
         return $this->container(function ($el) use ($url, $width, $height, $alt) {
             $el->addClass('banner');
@@ -146,7 +148,7 @@ class Generator
     /**
      * Render section block
      */
-    public function section($content, array $tagStyles=null, array $attributes=null): Element
+    public function section($content, array $tagStyles = null, array $attributes = null): Element
     {
         return $this->container(
             function ($el) use ($content) {
@@ -163,7 +165,7 @@ class Generator
     /**
      * Render h1 heading
      */
-    public function h1($content, array $tagStyles=null, array $attributes=null): Element
+    public function h1($content, array $tagStyles = null, array $attributes = null): Element
     {
         return $this->h(1, $content, $tagStyles, $attributes);
     }
@@ -171,7 +173,7 @@ class Generator
     /**
      * Render h2 heading
      */
-    public function h2($content, array $tagStyles=null, array $attributes=null): Element
+    public function h2($content, array $tagStyles = null, array $attributes = null): Element
     {
         return $this->h(2, $content, $tagStyles, $attributes);
     }
@@ -179,7 +181,7 @@ class Generator
     /**
      * Render h3 heading
      */
-    public function h3($content, array $tagStyles=null, array $attributes=null): Element
+    public function h3($content, array $tagStyles = null, array $attributes = null): Element
     {
         return $this->h(3, $content, $tagStyles, $attributes);
     }
@@ -187,7 +189,7 @@ class Generator
     /**
      * Render h4 heading
      */
-    public function h4($content, array $tagStyles=null, array $attributes=null): Element
+    public function h4($content, array $tagStyles = null, array $attributes = null): Element
     {
         return $this->h(4, $content, $tagStyles, $attributes);
     }
@@ -195,7 +197,7 @@ class Generator
     /**
      * Render h5 heading
      */
-    public function h5($content, array $tagStyles=null, array $attributes=null): Element
+    public function h5($content, array $tagStyles = null, array $attributes = null): Element
     {
         return $this->h(5, $content, $tagStyles, $attributes);
     }
@@ -203,7 +205,7 @@ class Generator
     /**
      * Render h6 heading
      */
-    public function h6($content, array $tagStyles=null, array $attributes=null): Element
+    public function h6($content, array $tagStyles = null, array $attributes = null): Element
     {
         return $this->h(6, $content, $tagStyles, $attributes);
     }
@@ -211,10 +213,10 @@ class Generator
     /**
      * Render heading
      */
-    public function h(int $size, $content, array $tagStyles=null, array $attributes=null): Element
+    public function h(int $size, $content, array $tagStyles = null, array $attributes = null): Element
     {
-        return Html::{'h'.$size.'.heading'}($content, $attributes)
-            ->addStyles($this->getStylesFor('h'.$size, 'heading'))
+        return Html::{'h' . $size . '.heading'}($content, $attributes)
+            ->addStyles($this->getStylesFor('h' . $size, 'heading'))
             ->addStyles((array)$tagStyles);
     }
 
@@ -222,7 +224,7 @@ class Generator
     /**
      * Render paragraph
      */
-    public function p($content, array $tagStyles=null, array $attributes=null): Element
+    public function p($content, array $tagStyles = null, array $attributes = null): Element
     {
         return Html::{'p'}($content, $attributes)
             ->addStyles($this->getStylesFor('p'))
@@ -232,7 +234,7 @@ class Generator
     /**
      * Render link
      */
-    public function link(string $url, $content, array $tagStyles=null, array $attributes=null): Element
+    public function link(string $url, $content, array $tagStyles = null, array $attributes = null): Element
     {
         return Html::{'a'}($content, $attributes)
             ->setAttribute('href', $url)
@@ -244,7 +246,7 @@ class Generator
     /**
      * Render image
      */
-    public function image(string $url, int $width, int $height, ?string $alt=null, array $tagStyles=null, array $attributes=null): Element
+    public function image(string $url, int $width, int $height, ?string $alt = null, array $tagStyles = null, array $attributes = null): Element
     {
         return Html::{'img'}(null, [
             'src' => $url,
@@ -264,7 +266,7 @@ class Generator
     /**
      * Render card element
      */
-    public function card($content, array $tagStyles=null, array $attributes=null): Element
+    public function card($content, array $tagStyles = null, array $attributes = null): Element
     {
         $output = $this->container(
             function ($el) use ($content) {
@@ -328,7 +330,7 @@ class Generator
     /**
      * Render container with gutter columns
      */
-    public function gutter(string $width, $content, array $tagStyles=null, array $attributes=null): Element
+    public function gutter(string $width, $content, array $tagStyles = null, array $attributes = null): Element
     {
         return Html::{'table'}([
             Html::{'tbody > tr'}(function () use ($content, $width, $tagStyles, $attributes) {
@@ -355,7 +357,7 @@ class Generator
     /**
      * Render smallprint element
      */
-    public function smallprint($content, array $tagStyles=null, array $attributes=null): Element
+    public function smallprint($content, array $tagStyles = null, array $attributes = null): Element
     {
         $output = $this->container(
             function ($el) use ($content) {
@@ -376,7 +378,7 @@ class Generator
     /**
      * Render foot block
      */
-    public function footer($content, array $tagStyles=null, array $attributes=null): Element
+    public function footer($content, array $tagStyles = null, array $attributes = null): Element
     {
         return Html::{'div.clearContent'}(
             $this->container(
@@ -398,7 +400,7 @@ class Generator
     /**
      * Container table
      */
-    public function container($content, array $tagStyles=null, array $attributes=null): Element
+    public function container($content, array $tagStyles = null, array $attributes = null): Element
     {
         return Html::{'table'}([
             Html::{'tbody > tr'}(function () use ($content, $tagStyles, $attributes) {
@@ -433,7 +435,7 @@ class Generator
     }
 
 
-    const STYLES = [
+    public const STYLES = [
         'text' => [
             'font-size' => '15px',
             'font-family' => '-apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Ubuntu, sans-serif',
@@ -561,7 +563,7 @@ class Generator
         ]
     ];
 
-    const MOBILE_STYLES = [
+    public const MOBILE_STYLES = [
         'table[class=body] .bodyContainer, table[class=body] .content' => [
             'width' => '100% !important'
         ],

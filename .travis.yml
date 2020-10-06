@@ -1,15 +1,25 @@
-language: php
+# TravisCI configuration for decodelabs/tagged
+
+language: 'php'
+os:
+    - 'linux'
+dist: 'bionic'
+
 php:
-    - '7.2'
-    - '7.3'
     - '7.4'
+    - '7.3'
+    - '7.2'
 
 cache:
     directories:
-        - $HOME/.composer/cache/files
+        - '${HOME}/.composer/cache'
+
+before_install:
+    - 'composer validate --strict'
 
 install:
-    - composer install --prefer-dist
+    - 'composer update --no-interaction --prefer-dist'
 
 script:
-    - vendor/bin/phpstan analyse --no-interaction --no-progress
+    - 'composer run-script analyze -- --no-interaction'
+    - 'composer run-script psr12'

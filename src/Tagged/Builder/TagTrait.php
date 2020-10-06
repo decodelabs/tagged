@@ -1,25 +1,26 @@
 <?php
+
 /**
- * This file is part of the Tagged package
+ * @package Tagged
  * @license http://opensource.org/licenses/MIT
  */
+
 declare(strict_types=1);
+
 namespace DecodeLabs\Tagged\Builder;
 
-use DecodeLabs\Tagged\Markup;
-use DecodeLabs\Tagged\Buffer;
 use DecodeLabs\Collections\AttributeContainerTrait;
-
-use DecodeLabs\Glitch\Dumpable;
 use DecodeLabs\Exceptional;
+use DecodeLabs\Tagged\Buffer;
+use DecodeLabs\Tagged\Markup;
 
 trait TagTrait
 {
     use AttributeContainerTrait;
     use ChildRendererTrait;
 
-    // const BOOLEAN_ATTRIBUTES = [];
-    // const INLINE_TAGS = [];
+    // public const BOOLEAN_ATTRIBUTES = [];
+    // public const INLINE_TAGS = [];
 
     protected $name;
     protected $closable = true;
@@ -29,7 +30,7 @@ trait TagTrait
     /**
      * Init with name and attributes
      */
-    public function __construct(string $name, array $attributes=null)
+    public function __construct(string $name, array $attributes = null)
     {
         $this->setName($name);
 
@@ -60,7 +61,9 @@ trait TagTrait
 
                 if (null === ($key = array_shift($parts))) {
                     throw Exceptional::UnexpectedValue(
-                        'Invalid tag attribute definition', null, $res
+                        'Invalid tag attribute definition',
+                        null,
+                        $res
                     );
                 }
 
@@ -90,13 +93,15 @@ trait TagTrait
 
         if (null === ($name = array_shift($parts))) {
             throw Exceptional::UnexpectedValue(
-                'Unable to parse tag class definition', null, $origName
+                'Unable to parse tag class definition',
+                null,
+                $origName
             );
         }
 
         $this->name = $name;
 
-        if (false !== ($pos = strpos($this->name, '?'))) {
+        if (false !== strpos($this->name, '?')) {
             $this->name = str_replace('?', '', $this->name);
             $this->renderEmpty = false;
         }
@@ -147,7 +152,7 @@ trait TagTrait
         }
 
         if (preg_match('/\s/', $id)) {
-            throw Exceptional::InvalidArgument('Invalid tag id: '.$id);
+            throw Exceptional::InvalidArgument('Invalid tag id: ' . $id);
         }
 
         $this->setAttribute('id', $id);
@@ -184,7 +189,7 @@ trait TagTrait
     /**
      * Render tag with inner content
      */
-    public function renderWith($content=null, bool $pretty=false): ?Markup
+    public function renderWith($content = null, bool $pretty = false): ?Markup
     {
         if ($this->closable) {
             if (!$this->renderEmpty && $content === null) {
@@ -199,13 +204,13 @@ trait TagTrait
         $isBlock = $this->isBlock();
 
         if ($pretty && $content !== null && $isBlock && false !== strpos($content, '<')) {
-            $content = "\n  ".str_replace("\n", "\n  ", rtrim($content, "\n"))."\n";
+            $content = "\n  " . str_replace("\n", "\n  ", rtrim($content, "\n")) . "\n";
         }
 
-        $output = $this->open().$content.$this->close();
+        $output = $this->open() . $content . $this->close();
 
         if ($pretty && $isBlock) {
-            $output = $output."\n";
+            $output .= "\n";
         }
 
         return new Buffer($output);
@@ -243,7 +248,7 @@ trait TagTrait
                 $attributes[] = $key;
             } elseif (is_bool($value)) {
                 if (substr($key, 0, 5) == 'data-' || in_array($key, static::BOOLEAN_ATTRIBUTES)) {
-                    $attributes[] = $key.'="'.($value ? 'true' : 'false').'"';
+                    $attributes[] = $key . '="' . ($value ? 'true' : 'false') . '"';
                 } else {
                     if ($value) {
                         $attributes[] = $key;
@@ -252,19 +257,19 @@ trait TagTrait
                     }
                 }
             } elseif (is_array($value) || is_callable($value)) {
-                $attributes[] = $key.'="'.(string)$this->renderChild($value).'"';
+                $attributes[] = $key . '="' . (string)$this->renderChild($value) . '"';
             } elseif ($value instanceof Markup) {
-                $attributes[] = $key.'="'.(string)$value.'"';
+                $attributes[] = $key . '="' . (string)$value . '"';
             } else {
-                $attributes[] = $key.'="'.$this->esc((string)$value).'"';
+                $attributes[] = $key . '="' . $this->esc((string)$value) . '"';
             }
         }
 
         if ($attributes = implode(' ', $attributes)) {
-            $attributes = ' '.$attributes;
+            $attributes = ' ' . $attributes;
         }
 
-        $output = '<'.$this->name.$attributes;
+        $output = '<' . $this->name . $attributes;
 
         if (!$this->closable) {
             $output .= ' /';
@@ -283,7 +288,7 @@ trait TagTrait
             return '';
         }
 
-        return '</'.$this->name.'>';
+        return '</' . $this->name . '>';
     }
 
     /**
@@ -322,7 +327,7 @@ trait TagTrait
         $output = $this->__toString();
 
         if (!$this->renderEmpty) {
-            $output = '<?'.substr($output, 1);
+            $output = '<?' . substr($output, 1);
         }
 
         yield 'className' => $this->name;

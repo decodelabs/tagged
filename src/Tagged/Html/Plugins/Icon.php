@@ -1,21 +1,18 @@
 <?php
+
 /**
- * This file is part of the Tagged package
+ * @package Tagged
  * @license http://opensource.org/licenses/MIT
  */
+
 declare(strict_types=1);
+
 namespace DecodeLabs\Tagged\Html\Plugins;
 
-use DecodeLabs\Veneer\Plugin;
-
-use DecodeLabs\Tagged\Markup;
-use DecodeLabs\Tagged\Buffer;
-use DecodeLabs\Tagged\Html\Factory as HtmlFactory;
-
-use DecodeLabs\Tagged\Html\ContentCollection;
-use DecodeLabs\Tagged\Html\Element;
-
 use DecodeLabs\Exceptional;
+use DecodeLabs\Tagged\Html\Element;
+use DecodeLabs\Tagged\Html\Factory as HtmlFactory;
+use DecodeLabs\Veneer\Plugin;
 
 class Icon implements Plugin
 {
@@ -44,7 +41,7 @@ class Icon implements Plugin
                 break;
 
             default:
-                throw Exceptional::InvalidArgument('Invalid icon format: '.$format);
+                throw Exceptional::InvalidArgument('Invalid icon format: ' . $format);
         }
 
         return $this;
@@ -99,15 +96,15 @@ class Icon implements Plugin
     {
         switch ($this->format) {
             case 'svg':
-                return $this->html->el('svg.'.$this->baseClass.' > /use', null, [
-                    'xlink:href' => $this->svgReference.'#'.$name
+                return $this->html->el('svg.' . $this->baseClass . ' > /use', null, [
+                    'xlink:href' => $this->svgReference . '#' . $name
                 ]);
 
             case 'font':
-                return $this->html->el('i.'.$this->baseClass.'.icon-'.$name);
+                return $this->html->el('i.' . $this->baseClass . '.icon-' . $name);
 
             default:
-                throw Exceptional::UnexpectedValue('Unsupported icon format: '.$this->format);
+                throw Exceptional::UnexpectedValue('Unsupported icon format: ' . $this->format);
         }
     }
 
@@ -134,7 +131,7 @@ class Icon implements Plugin
     /**
      * Yes / no icon
      */
-    public function yesNo(?bool $value, bool $allowNull=true): ?Element
+    public function yesNo(?bool $value, bool $allowNull = true): ?Element
     {
         if ($value === null && $allowNull) {
             return null;

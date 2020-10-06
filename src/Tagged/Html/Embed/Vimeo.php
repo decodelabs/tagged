@@ -1,24 +1,18 @@
 <?php
+
 /**
- * This file is part of the Tagged package
+ * @package Tagged
  * @license http://opensource.org/licenses/MIT
  */
+
 declare(strict_types=1);
+
 namespace DecodeLabs\Tagged\Html\Embed;
 
-use DecodeLabs\Tagged\Markup;
-use DecodeLabs\Tagged\Buffer;
-
-use DecodeLabs\Tagged\Html\ContentCollection;
-use DecodeLabs\Tagged\Html\Tag;
-use DecodeLabs\Tagged\Html\Element;
-
-use DecodeLabs\Tagged\Html\Embed\Media;
-use DecodeLabs\Tagged\Html\Embed\Video;
-
 use DecodeLabs\Collections\Tree\NativeMutable as Tree;
-
 use DecodeLabs\Exceptional;
+use DecodeLabs\Tagged\Html\Tag;
+use DecodeLabs\Tagged\Markup;
 
 class Vimeo extends Video
 {
@@ -61,7 +55,7 @@ class Vimeo extends Video
      */
     public function getPreparedUrl(): ?string
     {
-        $url = 'https://player.vimeo.com/video/'.$this->vimeoId;
+        $url = 'https://player.vimeo.com/video/' . $this->vimeoId;
         $queryVars = $this->options;
 
         if ($this->autoPlay) {
@@ -83,7 +77,7 @@ class Vimeo extends Video
         */
 
         if (!empty($queryVars)) {
-            $url .= '?'.http_build_query($queryVars);
+            $url .= '?' . http_build_query($queryVars);
         }
 
         return $url;
@@ -109,7 +103,7 @@ class Vimeo extends Video
     /**
      * Lookup thumbnail URL
      */
-    public function lookupThumbnail(?array $options=null): ?string
+    public function lookupThumbnail(?array $options = null): ?string
     {
         return $this->lookupMeta($options)['thumbnailUrl'] ?? null;
     }
@@ -117,16 +111,16 @@ class Vimeo extends Video
     /**
      * Lookup media meta information
      */
-    public function lookupMeta(?array $options=null): ?array
+    public function lookupMeta(?array $options = null): ?array
     {
-        $url = 'https://vimeo.com/api/oembed.json?url='.urlencode($this->url);
+        $url = 'https://vimeo.com/api/oembed.json?url=' . urlencode($this->url);
         $referrer = $options['referrer'] ?? $options['referer'] ?? $_SERVER['SERVER_NAME'];
 
         try {
             if (false !== ($json = file_get_contents($url, false, stream_context_create([
                 'http' => [
                     'method' => 'GET',
-                    'header' => 'Referer: '.$referrer
+                    'header' => 'Referer: ' . $referrer
                 ]
             ])))) {
                 $json = new Tree(json_decode($json, true));

@@ -1,30 +1,30 @@
 <?php
+
 /**
- * This file is part of the Tagged package
+ * @package Tagged
  * @license http://opensource.org/licenses/MIT
  */
+
 declare(strict_types=1);
+
 namespace DecodeLabs\Tagged\Html;
 
-use DecodeLabs\Tagged\Markup;
+use DecodeLabs\Collections\Native\SequenceTrait;
+use DecodeLabs\Glitch\Proxy as Glitch;
 use DecodeLabs\Tagged\Buffer;
 use DecodeLabs\Tagged\Builder\Element as ElementInterface;
-
-use DecodeLabs\Collections\Sequence;
-use DecodeLabs\Collections\Native\SequenceTrait;
-
-use DecodeLabs\Glitch\Proxy as Glitch;
+use DecodeLabs\Tagged\Markup;
 
 class Element extends Tag implements \IteratorAggregate, ElementInterface
 {
-    const MUTABLE = true;
+    public const MUTABLE = true;
 
     use SequenceTrait;
 
     /**
      * Apply nested by string name
      */
-    public static function create(string $name, $content=null, array $attributes=null): Element
+    public static function create(string $name, $content = null, array $attributes = null): Element
     {
         if (false !== strpos($name, '>')) {
             $parts = explode('>', $name);
@@ -43,7 +43,7 @@ class Element extends Tag implements \IteratorAggregate, ElementInterface
     /**
      * Init with name, content and attributes
      */
-    public function __construct(string $name, $content, array $attributes=null)
+    public function __construct(string $name, $content, array $attributes = null)
     {
         parent::__construct($name, $attributes);
 
@@ -63,23 +63,23 @@ class Element extends Tag implements \IteratorAggregate, ElementInterface
             return (string)$this->renderWith($this->renderContent());
         } catch (\Throwable $e) {
             Glitch::logException($e);
-            $message = '<strong>'.$e->getMessage().'</strong>';
+            $message = '<strong>' . $e->getMessage() . '</strong>';
 
             if (!Glitch::isProduction()) {
-                $message .= '<br /><samp>'.Glitch::normalizePath($e->getFile()).'</samp> : <samp>'.$e->getLine().'</samp>';
+                $message .= '<br /><samp>' . Glitch::normalizePath($e->getFile()) . '</samp> : <samp>' . $e->getLine() . '</samp>';
                 $title = $this->esc((string)$e);
             } else {
                 $title = 'HTML Error';
             }
 
-            return '<div class="error" style="color: red; background: white; padding: 0.5rem;" title="'.$title.'">'.$message.'</div>';
+            return '<div class="error" style="color: red; background: white; padding: 0.5rem;" title="' . $title . '">' . $message . '</div>';
         }
     }
 
     /**
      * Render to more readable string (for dump)
      */
-    public function render(bool $pretty=false): ?Buffer
+    public function render(bool $pretty = false): ?Buffer
     {
         if (null === ($output = $this->renderWith($this->renderContent($pretty), $pretty))) {
             return null;
@@ -91,7 +91,7 @@ class Element extends Tag implements \IteratorAggregate, ElementInterface
     /**
      * Render inner content
      */
-    public function renderContent(bool $pretty=false): ?Buffer
+    public function renderContent(bool $pretty = false): ?Buffer
     {
         $output = '';
 
@@ -132,7 +132,7 @@ class Element extends Tag implements \IteratorAggregate, ElementInterface
         $this->renderEmpty = $renderEmpty;
 
         if (!$renderEmpty) {
-            $def = '<?'.substr($def, 1);
+            $def = '<?' . substr($def, 1);
         }
 
         yield 'className' => $this->name;

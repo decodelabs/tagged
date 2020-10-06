@@ -1,13 +1,16 @@
 <?php
+
 /**
- * This file is part of the Tagged package
+ * @package Tagged
  * @license http://opensource.org/licenses/MIT
  */
+
 declare(strict_types=1);
+
 namespace DecodeLabs\Tagged\Builder;
 
-use DecodeLabs\Collections\HashMap;
 use DecodeLabs\Collections\ArrayProvider;
+use DecodeLabs\Collections\HashMap;
 use DecodeLabs\Collections\Native\HashMapTrait;
 
 use DecodeLabs\Exceptional;
@@ -16,7 +19,7 @@ class StyleList implements \IteratorAggregate, HashMap
 {
     use HashMapTrait;
 
-    const MUTABLE = true;
+    public const MUTABLE = true;
 
     /**
      * Init with styles
@@ -101,7 +104,7 @@ class StyleList implements \IteratorAggregate, HashMap
         $output = [];
 
         foreach ($this->items as $key => $value) {
-            $output[] = $key.': '.$value.';';
+            $output[] = $key . ': ' . $value . ';';
         }
 
         return implode(' ', $output);
