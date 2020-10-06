@@ -1,3 +1,7 @@
+## v0.8.8 (2020-10-06)
+* Removed dependency on Atlas
+* Removed dependency on Systemic
+
 ## v0.8.7 (2020-10-05)
 * Improved readme
 * Updated PHPStan

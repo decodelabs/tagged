@@ -10,9 +10,9 @@ use DecodeLabs\Veneer\Plugin;
 
 use DecodeLabs\Tagged\Buffer;
 use DecodeLabs\Tagged\Html\Factory as HtmlFactory;
-
 use DecodeLabs\Tagged\Html\ContentCollection;
 use DecodeLabs\Tagged\Html\Element;
+use DecodeLabs\Tagged\Html\Plugins\SystemicProxyTrait;
 
 use DecodeLabs\Systemic;
 use DecodeLabs\Exceptional;
@@ -28,6 +28,8 @@ use Carbon\CarbonInterface;
 
 class Time implements Plugin
 {
+    use SystemicProxyTrait;
+
     protected $html;
 
     /**
@@ -98,7 +100,7 @@ class Time implements Plugin
         }
 
         $formatter = new IntlDateFormatter(
-            Systemic::$locale->get(),
+            $this->getLocale(),
             $dateSize,
             $timeSize
         );
@@ -309,7 +311,7 @@ class Time implements Plugin
         }
 
         $formatter = new IntlDateFormatter(
-            Systemic::$locale->get(),
+            $this->getLocale(),
             IntlDateFormatter::LONG,
             IntlDateFormatter::LONG
         );
@@ -400,7 +402,7 @@ class Time implements Plugin
         }
 
         $formatter = new IntlDateFormatter(
-            Systemic::$locale->get(),
+            $this->getLocale(),
             IntlDateFormatter::LONG,
             IntlDateFormatter::LONG
         );
@@ -503,7 +505,7 @@ class Time implements Plugin
         }
 
         if ($timezone === true) {
-            $timezone = Systemic::$timezone->get();
+            $timezone = $this->getTimezone();
         }
 
         if ($timezone instanceof DateTimeZone) {

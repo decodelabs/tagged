@@ -11,9 +11,9 @@ use DecodeLabs\Veneer\Plugin;
 use DecodeLabs\Tagged\Markup;
 use DecodeLabs\Tagged\Buffer;
 use DecodeLabs\Tagged\Html\Factory as HtmlFactory;
-
 use DecodeLabs\Tagged\Html\ContentCollection;
 use DecodeLabs\Tagged\Html\Element;
+use DecodeLabs\Tagged\Html\Plugins\SystemicProxyTrait;
 
 use DecodeLabs\Systemic;
 use DecodeLabs\Exceptional;
@@ -22,6 +22,8 @@ use NumberFormatter;
 
 class Number implements Plugin
 {
+    use SystemicProxyTrait;
+
     protected $html;
 
     /**
@@ -55,7 +57,7 @@ class Number implements Plugin
                     is_numeric($value)
                 )
             ) {
-                $formatter = new NumberFormatter(Systemic::$locale->get(), NumberFormatter::DECIMAL);
+                $formatter = new NumberFormatter($this->getLocale(), NumberFormatter::DECIMAL);
                 $value = $formatter->format($value);
             } else {
                 throw Exceptional::InvalidArgument('Value is not a number', null, $value);
@@ -85,7 +87,8 @@ class Number implements Plugin
         }
 
         $code = strtoupper($code);
-        $formatter = new NumberFormatter(Systemic::$locale->get(),  NumberFormatter::CURRENCY);
+
+        $formatter = new NumberFormatter($this->getLocale(), NumberFormatter::CURRENCY);
         $formatter->setTextAttribute(NumberFormatter::CURRENCY_CODE, $code);
 
         if (
@@ -152,7 +155,7 @@ class Number implements Plugin
                     is_numeric($value)
                 )
             ) {
-                $formatter = new NumberFormatter(Systemic::$locale->get(), NumberFormatter::PERCENT);
+                $formatter = new NumberFormatter($this->getLocale(), NumberFormatter::PERCENT);
                 $formatter->setAttribute(NumberFormatter::MAX_FRACTION_DIGITS, $decimals);
                 $value = $formatter->format($value / $total);
             } else {
