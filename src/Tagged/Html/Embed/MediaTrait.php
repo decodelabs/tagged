@@ -104,6 +104,15 @@ trait MediaTrait
 
             if (preg_match('/^[0-9a-zA-Z]+$/', $url)) {
                 $url = self::defaultUrlFromId($url);
+            } elseif (
+                preg_match('|^http(s?)\://|', $url) &&
+                !preg_match('/\s/', $url)
+            ) {
+                // Url direct
+            } else {
+                throw Exceptional::UnexpectedValue(
+                    'Don\'t know how to parse this video embed'
+                );
             }
 
             $class = self::getClassForUrl($url);
