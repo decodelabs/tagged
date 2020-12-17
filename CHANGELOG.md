@@ -1,3 +1,5 @@
+## v0.8.9 (2020-12-17)
+* Added URL check to Media embed loader
 * Applied full PSR12 standards
 * Added PSR12 check to Travis build
 
