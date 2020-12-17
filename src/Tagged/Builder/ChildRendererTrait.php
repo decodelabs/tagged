@@ -1,9 +1,12 @@
 <?php
+
 /**
- * This file is part of the Tagged package
+ * @package Tagged
  * @license http://opensource.org/licenses/MIT
  */
+
 declare(strict_types=1);
+
 namespace DecodeLabs\Tagged\Builder;
 
 use DecodeLabs\Tagged\Markup;
@@ -14,7 +17,7 @@ trait ChildRendererTrait
     /**
      * Convert child element to string
      */
-    protected function renderChild($value, bool $pretty=false): string
+    protected function renderChild($value, bool $pretty = false): string
     {
         if (is_callable($value) && is_object($value)) {
             return $this->renderChild($value($this), $pretty);

@@ -1,21 +1,23 @@
 <?php
+
 /**
- * This file is part of the Tagged package
+ * @package Tagged
  * @license http://opensource.org/licenses/MIT
  */
+
 declare(strict_types=1);
+
 namespace DecodeLabs\Tagged\Html;
 
-use DecodeLabs\Tagged\Markup;
+use DecodeLabs\Collections\Native\SequenceTrait;
+use DecodeLabs\Collections\Sequence;
 use DecodeLabs\Tagged\Buffer;
 use DecodeLabs\Tagged\Builder\ChildRendererTrait;
-
-use DecodeLabs\Collections\Sequence;
-use DecodeLabs\Collections\Native\SequenceTrait;
+use DecodeLabs\Tagged\Markup;
 
 class ContentCollection implements Markup, \IteratorAggregate, Sequence
 {
-    const MUTABLE = true;
+    public const MUTABLE = true;
 
     use SequenceTrait;
     use ChildRendererTrait;
@@ -23,7 +25,7 @@ class ContentCollection implements Markup, \IteratorAggregate, Sequence
     /**
      * Normalize abitrary content
      */
-    public static function normalize($content, bool $pretty=false): Buffer
+    public static function normalize($content, bool $pretty = false): Buffer
     {
         if (!is_array($content)) {
             $content = [$content];
@@ -43,7 +45,7 @@ class ContentCollection implements Markup, \IteratorAggregate, Sequence
     /**
      * Render contents
      */
-    public function render(bool $pretty=false): Buffer
+    public function render(bool $pretty = false): Buffer
     {
         $output = '';
 

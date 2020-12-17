@@ -1,9 +1,12 @@
 <?php
+
 /**
- * This file is part of the Tagged package
+ * @package Tagged
  * @license http://opensource.org/licenses/MIT
  */
+
 declare(strict_types=1);
+
 namespace DecodeLabs\Tagged\Html\Embed;
 
 use DecodeLabs\Tagged\Markup;
@@ -29,7 +32,7 @@ interface Media extends Markup
     public function getWidth(): ?int;
     public function setHeight(?int $height): Media;
     public function getHeight(): ?int;
-    public function setDimensions(?int $width, ?int $height=null);
+    public function setDimensions(?int $width, ?int $height = null);
 
     public function setAllowFullScreen(bool $flag);
     public function shouldAllowFullScreen(): bool;
@@ -44,8 +47,8 @@ interface Media extends Markup
     public function setDuration(?int $seconds): Media;
     public function getDuration(): ?int;
 
-    public function lookupThumbnail(?array $options=null): ?string;
-    public function lookupMeta(?array $options=null): ?array;
+    public function lookupThumbnail(?array $options = null): ?string;
+    public function lookupMeta(?array $options = null): ?array;
 
     public function render(): ?Markup;
     public function __toString(): string;

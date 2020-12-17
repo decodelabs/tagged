@@ -1,15 +1,13 @@
 <?php
+
 /**
- * This file is part of the Tagged package
+ * @package Tagged
  * @license http://opensource.org/licenses/MIT
  */
-declare(strict_types=1);
-namespace DecodeLabs\Tagged\Xml;
 
-use DecodeLabs\Tagged\Xml\Element;
-use DecodeLabs\Tagged\Xml\Consumer;
-use DecodeLabs\Tagged\Xml\Provider;
-use DecodeLabs\Tagged\Xml\Serializable;
+declare(strict_types=1);
+
+namespace DecodeLabs\Tagged\Xml;
 
 use DecodeLabs\Atlas\File;
 use DecodeLabs\Exceptional;
@@ -35,7 +33,9 @@ trait SerializableTrait
             return static::fromXmlString((string)$xml);
         } else {
             throw Exceptional::UnexpectedValue(
-                'Unable to convert item to XML Element', null, $xml
+                'Unable to convert item to XML Element',
+                null,
+                $xml
             );
         }
     }
@@ -66,14 +66,17 @@ trait SerializableTrait
 
         if (!$ref->isInstantiable()) {
             throw Exceptional::Logic(
-                'XML consumer cannot be instantiated', null, $class
+                'XML consumer cannot be instantiated',
+                null,
+                $class
             );
         }
 
         if (!$ref->implementsInterface(Serializable::class)) {
             throw Exceptional::Logic(
                 'XML consumer does not implement DecodeLabs\\Tagged\\Xml\\Serializable',
-                null, $class
+                null,
+                $class
             );
         }
 
@@ -87,7 +90,7 @@ trait SerializableTrait
     /**
      * Convert object to xml string
      */
-    public function toXmlString(bool $embedded=false): string
+    public function toXmlString(bool $embedded = false): string
     {
         $writer = Writer::create();
 

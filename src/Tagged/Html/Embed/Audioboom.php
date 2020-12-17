@@ -1,23 +1,19 @@
 <?php
+
 /**
- * This file is part of the Tagged package
+ * @package Tagged
  * @license http://opensource.org/licenses/MIT
  */
+
 declare(strict_types=1);
+
 namespace DecodeLabs\Tagged\Html\Embed;
-
-use DecodeLabs\Tagged\Markup;
-use DecodeLabs\Tagged\Buffer;
-
-use DecodeLabs\Tagged\Html\ContentCollection;
-use DecodeLabs\Tagged\Html\Tag;
-use DecodeLabs\Tagged\Html\Element;
-
-use DecodeLabs\Tagged\Html\Embed\Media;
-use DecodeLabs\Tagged\Html\Embed\Audio;
 
 use DecodeLabs\Collections\Tree\NativeMutable as Tree;
 use DecodeLabs\Exceptional;
+
+use DecodeLabs\Tagged\Html\Tag;
+use DecodeLabs\Tagged\Markup;
 
 class Audioboom extends Audio
 {
@@ -74,12 +70,12 @@ class Audioboom extends Audio
     public function getPreparedUrl(): ?string
     {
         if ($this->type === 'playlist') {
-            $url = 'https://embeds.audioboom.com/publishing/playlist/v4?boo_content_type=playlist&data_for_content_type='.$this->audioboomId;
+            $url = 'https://embeds.audioboom.com/publishing/playlist/v4?boo_content_type=playlist&data_for_content_type=' . $this->audioboomId;
         } elseif ($this->type === 'embed') {
-            $url = '//embeds.audioboom.com/boos/'.$this->audioboomId.'/embed/v4';
+            $url = '//embeds.audioboom.com/boos/' . $this->audioboomId . '/embed/v4';
 
             if (!empty($this->options)) {
-                $url .= '?'.http_build_query($this->options);
+                $url .= '?' . http_build_query($this->options);
             }
         } else {
             throw Exceptional::UnexpectedValue('Unexpected Audioboom type', null, $this->type);
@@ -116,11 +112,11 @@ class Audioboom extends Audio
     /**
      * Lookup thumbnail URL
      */
-    public function lookupThumbnail(?array $options=null): ?string
+    public function lookupThumbnail(?array $options = null): ?string
     {
         switch ($this->type) {
             case 'embed':
-                $url = 'https://audioboom.com/publishing/oembed.json?url=https://audioboom.com/posts/'.$this->audioboomId;
+                $url = 'https://audioboom.com/publishing/oembed.json?url=https://audioboom.com/posts/' . $this->audioboomId;
                 break;
 
             case 'playlist':
@@ -144,7 +140,7 @@ class Audioboom extends Audio
     /**
      * Lookup media meta information
      */
-    public function lookupMeta(?array $options=null): ?array
+    public function lookupMeta(?array $options = null): ?array
     {
         switch ($this->type) {
             case 'embed':
@@ -154,16 +150,16 @@ class Audioboom extends Audio
                 return $this->lookupPlaylistMeta($options);
 
             default:
-                throw Exceptional::UnexpectedValue('Unsupported Audioboom type: '.$this->type);
+                throw Exceptional::UnexpectedValue('Unsupported Audioboom type: ' . $this->type);
         }
     }
 
     /**
      * Lookup meta for embed
      */
-    protected function lookupEmbedMeta(?array $options=null): ?array
+    protected function lookupEmbedMeta(?array $options = null): ?array
     {
-        $url = 'https://audioboom.com/publishing/oembed.json?url=https://audioboom.com/posts/'.$this->audioboomId;
+        $url = 'https://audioboom.com/publishing/oembed.json?url=https://audioboom.com/posts/' . $this->audioboomId;
 
         try {
             if (false !== ($json = file_get_contents($url))) {
@@ -195,9 +191,9 @@ class Audioboom extends Audio
     /**
      * Lookup meta for embed
      */
-    protected function lookupPlaylistMeta(?array $options=null): ?array
+    protected function lookupPlaylistMeta(?array $options = null): ?array
     {
-        $url = 'https://api.audioboom.com/playlists/'.$this->audioboomId;
+        $url = 'https://api.audioboom.com/playlists/' . $this->audioboomId;
 
         try {
             if (false !== ($json = file_get_contents($url))) {

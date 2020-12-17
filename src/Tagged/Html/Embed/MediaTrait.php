@@ -1,18 +1,19 @@
 <?php
+
 /**
- * This file is part of the Tagged package
+ * @package Tagged
  * @license http://opensource.org/licenses/MIT
  */
-declare(strict_types=1);
-namespace DecodeLabs\Tagged\Html\Embed;
 
-use DecodeLabs\Tagged\Html\Embed\Media;
+declare(strict_types=1);
+
+namespace DecodeLabs\Tagged\Html\Embed;
 
 use DecodeLabs\Exceptional;
 
 trait MediaTrait
 {
-    //const URL_MAP = [];
+    //public const URL_MAP = [];
 
     protected $url;
     protected $provider;
@@ -43,7 +44,7 @@ trait MediaTrait
         $parts = explode('<', $stripEmbed, 2);
 
         if (count($parts) == 2) {
-            $embed = '<'.array_pop($parts);
+            $embed = '<' . array_pop($parts);
 
             if (!preg_match('/^\<([a-zA-Z0-9\-]+) /i', $embed, $matches)) {
                 throw Exceptional::UnexpectedValue(
@@ -72,7 +73,7 @@ trait MediaTrait
                         if (preg_match('/height\=\"([^\"]+)\"/i', $embed, $matches)) {
                             $height = $matches[1];
                         } else {
-                            $height = round(($width / $output->width) * $output->height);
+                            $height = round($width / $output->width * $output->height);
                         }
 
                         if (false !== strpos($width, '%')) {
@@ -103,6 +104,15 @@ trait MediaTrait
 
             if (preg_match('/^[0-9a-zA-Z]+$/', $url)) {
                 $url = self::defaultUrlFromId($url);
+            } elseif (
+                preg_match('|^http(s?)\://|', $url) &&
+                !preg_match('/\s/', $url)
+            ) {
+                // Url direct
+            } else {
+                throw Exceptional::UnexpectedValue(
+                    'Don\'t know how to parse this video embed'
+                );
             }
 
             $class = self::getClassForUrl($url);
@@ -135,7 +145,7 @@ trait MediaTrait
         $class = get_called_class();
 
         if ($provider = self::extractProviderName($url)) {
-            $customClass = '\\DecodeLabs\\Tagged\\Html\\Embed\\'.ucfirst($provider);
+            $customClass = '\\DecodeLabs\\Tagged\\Html\\Embed\\' . ucfirst($provider);
 
             if (class_exists($customClass)) {
                 $class = $customClass;
@@ -148,7 +158,7 @@ trait MediaTrait
     /**
      * Init with main iframe details
      */
-    public function __construct(?string $url, int $width=null, int $height=null, string $mediaSource=null)
+    public function __construct(?string $url, int $width = null, int $height = null, string $mediaSource = null)
     {
         $this->setUrl($url);
 
@@ -262,7 +272,7 @@ trait MediaTrait
      */
     public function scaleWidth(int $width): Media
     {
-        $this->height = round(($width / $this->width) * $this->height);
+        $this->height = round($width / $this->width * $this->height);
         $this->width = $width;
 
         return $this;
@@ -296,7 +306,7 @@ trait MediaTrait
     /**
      * Set width and height and scale accordingly
      */
-    public function setDimensions(?int $width, ?int $height=null)
+    public function setDimensions(?int $width, ?int $height = null)
     {
         $width = $width;
         $height = $height;
@@ -310,7 +320,7 @@ trait MediaTrait
         }
 
         if (!$width) {
-            $width = round(($height / $this->height) * $this->width);
+            $width = round($height / $this->height * $this->width);
         }
 
         $this->width = $width;
@@ -421,7 +431,7 @@ trait MediaTrait
     /**
      * Lookup thumbnail URL
      */
-    public function lookupThumbnail(?array $options=null): ?string
+    public function lookupThumbnail(?array $options = null): ?string
     {
         return null;
     }
@@ -429,7 +439,7 @@ trait MediaTrait
     /**
      * Lookup media meta information
      */
-    public function lookupMeta(?array $options=null): ?array
+    public function lookupMeta(?array $options = null): ?array
     {
         return null;
     }

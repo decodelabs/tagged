@@ -1,33 +1,31 @@
 <?php
+
 /**
- * This file is part of the Tagged package
+ * @package Tagged
  * @license http://opensource.org/licenses/MIT
  */
+
 declare(strict_types=1);
+
 namespace DecodeLabs\Tagged\Html;
 
-use DecodeLabs\Tagged\Markup;
+use DecodeLabs\Exceptional;
+use DecodeLabs\Glitch\Proxy as Glitch;
 use DecodeLabs\Tagged\Buffer;
 use DecodeLabs\Tagged\Builder\Tag as TagInterface;
-use DecodeLabs\Tagged\Html\ContentCollection;
-use DecodeLabs\Tagged\Html\Tag;
-use DecodeLabs\Tagged\Html\Element;
-
+use DecodeLabs\Tagged\Markup;
+use DecodeLabs\Veneer\Plugin\AccessTarget as VeneerPluginAccessTarget;
+use DecodeLabs\Veneer\Plugin\AccessTargetTrait as VeneerPluginAccessTargetTrait;
 use DecodeLabs\Veneer\Plugin as VeneerPlugin;
 use DecodeLabs\Veneer\Plugin\Provider as VeneerPluginProvider;
 use DecodeLabs\Veneer\Plugin\ProviderTrait as VeneerPluginProviderTrait;
-use DecodeLabs\Veneer\Plugin\AccessTarget as VeneerPluginAccessTarget;
-use DecodeLabs\Veneer\Plugin\AccessTargetTrait as VeneerPluginAccessTargetTrait;
-
-use DecodeLabs\Glitch\Proxy as Glitch;
-use DecodeLabs\Exceptional;
 
 class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
 {
     use VeneerPluginProviderTrait;
     use VeneerPluginAccessTargetTrait;
 
-    const PLUGINS = [
+    public const PLUGINS = [
         'parse',
         'toText',
         'icon',
@@ -40,7 +38,7 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
     /**
      * Instance shortcut to el
      */
-    public function __invoke(string $name, $content, array $attributes=null): Element
+    public function __invoke(string $name, $content, array $attributes = null): Element
     {
         return $this->el($name, $content, $attributes);
     }
@@ -77,10 +75,10 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
     public function loadVeneerPlugin(string $name): VeneerPlugin
     {
         if (!in_array($name, self::PLUGINS)) {
-            throw Exceptional::InvalidArgument($name.' is not a recognised Veneer plugin');
+            throw Exceptional::InvalidArgument($name . ' is not a recognised Veneer plugin');
         }
 
-        $class = '\\DecodeLabs\\Tagged\\Html\\Plugins\\'.ucfirst($name);
+        $class = '\\DecodeLabs\\Tagged\\Html\\Plugins\\' . ucfirst($name);
         return new $class($this);
     }
 
@@ -92,7 +90,7 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
     /**
      * Create a standalone tag
      */
-    public function tag(string $name, array $attributes=null): TagInterface
+    public function tag(string $name, array $attributes = null): TagInterface
     {
         return new Tag($name, $attributes);
     }
@@ -100,7 +98,7 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
     /**
      * Create a standalone element
      */
-    public function el(string $name, $content=null, array $attributes=null): Element
+    public function el(string $name, $content = null, array $attributes = null): Element
     {
         return Element::create($name, $content, $attributes);
     }
@@ -135,7 +133,7 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
     /**
      * Generate nested list
      */
-    public function list(?iterable $list, string $container, ?string $name, callable $callback=null, array $attributes=[]): Element
+    public function list(?iterable $list, string $container, ?string $name, callable $callback = null, array $attributes = []): Element
     {
         $output = Element::create($container, function () use ($list, $name, $callback) {
             if (!$list) {
@@ -175,7 +173,7 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
     /**
      * Generate naked list
      */
-    public function elements(?iterable $list, ?string $name, callable $callback=null, array $attributes=[]): Buffer
+    public function elements(?iterable $list, ?string $name, callable $callback = null, array $attributes = []): Buffer
     {
         return ContentCollection::normalize(function () use ($list, $name, $callback, $attributes) {
             if (!$list) {
@@ -212,7 +210,7 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
     /**
      * Generate unwrapped naked list
      */
-    public function loop(?iterable $list, callable $callback=null): Buffer
+    public function loop(?iterable $list, callable $callback = null): Buffer
     {
         return ContentCollection::normalize(function () use ($list, $callback) {
             if (!$list) {
@@ -237,7 +235,7 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
     /**
      * Create a standard ul > li structure
      */
-    public function uList(?iterable $list, callable $renderer=null, array $attributes=[]): Element
+    public function uList(?iterable $list, callable $renderer = null, array $attributes = []): Element
     {
         return $this->list($list, 'ul', '?li', $renderer ?? function ($value) {
             return $value;
@@ -247,7 +245,7 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
     /**
      * Create a standard ol > li structure
      */
-    public function oList(?iterable $list, callable $renderer=null, array $attributes=[]): Element
+    public function oList(?iterable $list, callable $renderer = null, array $attributes = []): Element
     {
         return $this->list($list, 'ol', '?li', $renderer ?? function ($value) {
             return $value;
@@ -257,7 +255,7 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
     /**
      * Create a standard dl > dt + dd structure
      */
-    public function dList(?iterable $list, callable $renderer=null, array $attributes=[]): Element
+    public function dList(?iterable $list, callable $renderer = null, array $attributes = []): Element
     {
         $renderer = $renderer ?? function ($value) {
             return $value;
@@ -292,7 +290,7 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
     /**
      * Create an inline comma separated list with optional item limit
      */
-    public function iList(?iterable $list, callable $renderer=null, string $delimiter=null, string $finalDelimiter=null, int $limit=null): Element
+    public function iList(?iterable $list, callable $renderer = null, string $delimiter = null, string $finalDelimiter = null, int $limit = null): Element
     {
         if ($delimiter === null) {
             $delimiter = ', ';
@@ -360,7 +358,7 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
             }
 
             if ($more) {
-                yield Element::create('em.more', '… +'.$more);
+                yield Element::create('em.more', '… +' . $more);
             }
         });
     }
@@ -371,7 +369,7 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
     /**
      * Create image tag
      */
-    public function image($url, string $alt=null, $width=null, $height=null): Element
+    public function image($url, string $alt = null, $width = null, $height = null): Element
     {
         $output = $this->el('img', null, [
             'src' => $url,

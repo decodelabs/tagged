@@ -1,24 +1,18 @@
 <?php
+
 /**
- * This file is part of the Tagged package
+ * @package Tagged
  * @license http://opensource.org/licenses/MIT
  */
+
 declare(strict_types=1);
+
 namespace DecodeLabs\Tagged\Html\Embed;
 
-use DecodeLabs\Tagged\Markup;
-use DecodeLabs\Tagged\Buffer;
-
-use DecodeLabs\Tagged\Html\ContentCollection;
-use DecodeLabs\Tagged\Html\Tag;
-use DecodeLabs\Tagged\Html\Element;
-
-use DecodeLabs\Tagged\Html\Embed\Media;
-use DecodeLabs\Tagged\Html\Embed\Video;
-
 use DecodeLabs\Collections\Tree\NativeMutable as Tree;
-
 use DecodeLabs\Exceptional;
+use DecodeLabs\Tagged\Html\Tag;
+use DecodeLabs\Tagged\Markup;
 
 class Youtube extends Video
 {
@@ -79,7 +73,7 @@ class Youtube extends Video
      */
     public function getPreparedUrl(): ?string
     {
-        $url = 'https://www.youtube.com/embed/'.$this->youtubeId;
+        $url = 'https://www.youtube.com/embed/' . $this->youtubeId;
         $queryVars = $this->options;
 
         if ($this->startTime !== null) {
@@ -107,7 +101,7 @@ class Youtube extends Video
         }
 
         if (!empty($queryVars)) {
-            $url .= '?'.http_build_query($queryVars);
+            $url .= '?' . http_build_query($queryVars);
         }
 
         return $url;
@@ -133,18 +127,18 @@ class Youtube extends Video
     /**
      * Lookup thumbnail URL
      */
-    public function lookupThumbnail(?array $options=null): ?string
+    public function lookupThumbnail(?array $options = null): ?string
     {
-        return 'https://img.youtube.com/vi/'.$this->youtubeId.'/hqdefault.jpg';
+        return 'https://img.youtube.com/vi/' . $this->youtubeId . '/hqdefault.jpg';
     }
 
     /**
      * Lookup media meta information
      */
-    public function lookupMeta(?array $options=null): ?array
+    public function lookupMeta(?array $options = null): ?array
     {
-        $url = 'https://www.youtube.com/oembed?url='.urlencode('https://www.youtube.com/watch?v='.$this->youtubeId).'&format=json';
-        $infoUrl = 'https://www.youtube.com/get_video_info?video_id='.$this->youtubeId;
+        $url = 'https://www.youtube.com/oembed?url=' . urlencode('https://www.youtube.com/watch?v=' . $this->youtubeId) . '&format=json';
+        $infoUrl = 'https://www.youtube.com/get_video_info?video_id=' . $this->youtubeId;
 
         try {
             if (false !== ($json = file_get_contents($url))) {

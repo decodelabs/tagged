@@ -1,23 +1,24 @@
 <?php
+
 /**
- * This file is part of the Tagged package
+ * @package Tagged
  * @license http://opensource.org/licenses/MIT
  */
+
 declare(strict_types=1);
+
 namespace DecodeLabs\Tagged\Html\Plugins;
 
-use DecodeLabs\Veneer\Plugin;
-
-use DecodeLabs\Tagged\Markup;
+use DecodeLabs\Chirp\Parser as Chirp;
+use DecodeLabs\Exceptional;
+use DecodeLabs\Glitch\Proxy as Glitch;
 use DecodeLabs\Tagged\Buffer;
 use DecodeLabs\Tagged\Html\Factory as HtmlFactory;
+use DecodeLabs\Tagged\Markup;
+use DecodeLabs\Veneer\Plugin;
 
-use DecodeLabs\Glitch\Proxy as Glitch;
-use DecodeLabs\Exceptional;
-
-use Parsedown;
 use Michelf\Markdown;
-use DecodeLabs\Chirp\Parser as Chirp;
+use Parsedown;
 
 class Parse implements Plugin
 {
@@ -41,7 +42,7 @@ class Parse implements Plugin
         }
 
         $text = $this->html->esc($text);
-        $text = str_replace("\n", '<br />'."\n", $text);
+        $text = str_replace("\n", '<br />' . "\n", $text);
 
         return new Buffer($text);
     }
@@ -51,7 +52,7 @@ class Parse implements Plugin
     /**
      * Parse and render markdown
      */
-    public function markdown(?string $text, ?callable $prep=null): ?Markup
+    public function markdown(?string $text, ?callable $prep = null): ?Markup
     {
         return $this->parseMarkdown($text, false, false, $prep);
     }
@@ -59,7 +60,7 @@ class Parse implements Plugin
     /**
      * Parse and render unsafe markdown
      */
-    public function userMarkdown(?string $text, ?callable $prep=null): ?Markup
+    public function userMarkdown(?string $text, ?callable $prep = null): ?Markup
     {
         return $this->parseMarkdown($text, false, true, $prep);
     }
@@ -67,7 +68,7 @@ class Parse implements Plugin
     /**
      * Parse and render inline markdown
      */
-    public function inlineMarkdown(?string $text, ?callable $prep=null): ?Markup
+    public function inlineMarkdown(?string $text, ?callable $prep = null): ?Markup
     {
         return $this->parseMarkdown($text, true, false, $prep);
     }
@@ -75,7 +76,7 @@ class Parse implements Plugin
     /**
      * Parse and render unsafe inline markdown
      */
-    public function userInlineMarkdown(?string $text, ?callable $prep=null): ?Markup
+    public function userInlineMarkdown(?string $text, ?callable $prep = null): ?Markup
     {
         return $this->parseMarkdown($text, true, true, $prep);
     }
@@ -83,7 +84,7 @@ class Parse implements Plugin
     /**
      * Load markdown processor and parse the content
      */
-    protected function parseMarkdown(?string $text, bool $inline=false, bool $unsafe=true, ?callable $prep=null): ?Markup
+    protected function parseMarkdown(?string $text, bool $inline = false, bool $unsafe = true, ?callable $prep = null): ?Markup
     {
         if (!strlen($text ?? '')) {
             return null;
@@ -130,7 +131,7 @@ class Parse implements Plugin
     /**
      * Parse and render simpleTags
      */
-    public function simpleTags(?string $text, ?callable $prep=null): ?Markup
+    public function simpleTags(?string $text, ?callable $prep = null): ?Markup
     {
         return $this->parseSimpleTags($text, false, false, $prep);
     }
@@ -138,7 +139,7 @@ class Parse implements Plugin
     /**
      * Parse and render unsafe simpleTags
      */
-    public function userSimpleTags(?string $text, ?callable $prep=null): ?Markup
+    public function userSimpleTags(?string $text, ?callable $prep = null): ?Markup
     {
         return $this->parseSimpleTags($text, false, true, $prep);
     }
@@ -146,7 +147,7 @@ class Parse implements Plugin
     /**
      * Parse and render inline simpleTags
      */
-    public function inlineSimpleTags(?string $text, ?callable $prep=null): ?Markup
+    public function inlineSimpleTags(?string $text, ?callable $prep = null): ?Markup
     {
         return $this->parseSimpleTags($text, true, false, $prep);
     }
@@ -154,7 +155,7 @@ class Parse implements Plugin
     /**
      * Parse and render unsafe inline simpleTags
      */
-    public function inlineUserSimpleTags(?string $text, ?callable $prep=null): ?Markup
+    public function inlineUserSimpleTags(?string $text, ?callable $prep = null): ?Markup
     {
         return $this->parseSimpleTags($text, true, true, $prep);
     }
@@ -162,7 +163,7 @@ class Parse implements Plugin
     /**
      * Load markdown processor and parse the content
      */
-    protected function parseSimpleTags(?string $text, bool $inline=false, bool $unsafe=true, ?callable $prep=null): ?Markup
+    protected function parseSimpleTags(?string $text, bool $inline = false, bool $unsafe = true, ?callable $prep = null): ?Markup
     {
         if (!strlen($text ?? '')) {
             return null;

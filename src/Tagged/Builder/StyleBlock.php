@@ -1,21 +1,23 @@
 <?php
+
 /**
- * This file is part of the Tagged package
+ * @package Tagged
  * @license http://opensource.org/licenses/MIT
  */
+
 declare(strict_types=1);
+
 namespace DecodeLabs\Tagged\Builder;
-
-use DecodeLabs\Collections\ArrayProvider;
-
-use DecodeLabs\Exceptional;
-use DecodeLabs\Glitch\Dumpable;
 
 use ArrayIterator;
 
+use DecodeLabs\Collections\ArrayProvider;
+use DecodeLabs\Exceptional;
+use DecodeLabs\Glitch\Dumpable;
+
 class StyleBlock implements \IteratorAggregate, Dumpable
 {
-    const MUTABLE = true;
+    public const MUTABLE = true;
 
     protected $styles = [];
 
@@ -124,7 +126,7 @@ class StyleBlock implements \IteratorAggregate, Dumpable
             return null;
         }
 
-        return '<style type="text/css">'."\n    ".$styles."\n".'</style>';
+        return '<style type="text/css">' . "\n    " . $styles . "\n" . '</style>';
     }
 
     /**
@@ -139,10 +141,10 @@ class StyleBlock implements \IteratorAggregate, Dumpable
         $output = [];
 
         foreach ($this->styles as $selector => $styles) {
-            $output[] = $selector.' { '.$styles.' }';
+            $output[] = $selector . ' { ' . $styles . ' }';
         }
 
-        return implode("\n".'    ', $output);
+        return implode("\n" . '    ', $output);
     }
 
     /**

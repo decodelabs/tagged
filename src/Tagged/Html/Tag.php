@@ -1,22 +1,22 @@
 <?php
+
 /**
- * This file is part of the Tagged package
+ * @package Tagged
  * @license http://opensource.org/licenses/MIT
  */
+
 declare(strict_types=1);
+
 namespace DecodeLabs\Tagged\Html;
 
-use DecodeLabs\Tagged\Markup;
-use DecodeLabs\Tagged\Builder\Tag as TagInterface;
-use DecodeLabs\Tagged\Builder\TagTrait;
-use DecodeLabs\Tagged\Builder\ChildRendererTrait;
+use DecodeLabs\Collections\AttributeContainer;
+use DecodeLabs\Glitch\Dumpable;
 use DecodeLabs\Tagged\Builder\ClassListContainer;
 use DecodeLabs\Tagged\Builder\ClassListContainerTrait;
 use DecodeLabs\Tagged\Builder\StyleListContainer;
 use DecodeLabs\Tagged\Builder\StyleListContainerTrait;
-
-use DecodeLabs\Collections\AttributeContainer;
-use DecodeLabs\Glitch\Dumpable;
+use DecodeLabs\Tagged\Builder\Tag as TagInterface;
+use DecodeLabs\Tagged\Builder\TagTrait;
 
 class Tag implements TagInterface, ClassListContainer, StyleListContainer, Dumpable
 {
@@ -24,13 +24,13 @@ class Tag implements TagInterface, ClassListContainer, StyleListContainer, Dumpa
     use ClassListContainerTrait;
     use StyleListContainerTrait;
 
-    const CLOSED_TAGS = [
+    public const CLOSED_TAGS = [
         'area', 'base', 'br', 'col', 'command', 'embed',
         'hr', 'img', 'input', 'keygen', 'link', 'meta',
         'param', 'source', 'wbr'
     ];
 
-    const INLINE_TAGS = [
+    public const INLINE_TAGS = [
         'a', 'br', 'bdo', 'abbr', 'blink', 'nextid', 'acronym', 'basefont',
         'b', 'em', 'big', 'cite', 'input', 'spacer', 'listing',
         'i', 'rp', 'del', 'code', 'label', 'strike', 'marquee',
@@ -42,7 +42,7 @@ class Tag implements TagInterface, ClassListContainer, StyleListContainer, Dumpa
                           'time',
     ];
 
-    const BOOLEAN_ATTRIBUTES = [
+    public const BOOLEAN_ATTRIBUTES = [
         'spellcheck'
     ];
 
@@ -152,7 +152,7 @@ class Tag implements TagInterface, ClassListContainer, StyleListContainer, Dumpa
      */
     public function setDataAttribute(string $key, $value): AttributeContainer
     {
-        return $this->setAttribute('data-'.$key, $value);
+        return $this->setAttribute('data-' . $key, $value);
     }
 
     /**
@@ -160,7 +160,7 @@ class Tag implements TagInterface, ClassListContainer, StyleListContainer, Dumpa
      */
     public function getDataAttribute(string $key)
     {
-        return $this->getAttribute('data-'.$key);
+        return $this->getAttribute('data-' . $key);
     }
 
     /**
@@ -169,7 +169,7 @@ class Tag implements TagInterface, ClassListContainer, StyleListContainer, Dumpa
     public function removeDataAttribute(string ...$keys): AttributeContainer
     {
         $keys = array_map(function ($key) {
-            return 'data-'.$key;
+            return 'data-' . $key;
         }, $keys);
 
         return $this->removeAttribute(...$keys);
@@ -181,7 +181,7 @@ class Tag implements TagInterface, ClassListContainer, StyleListContainer, Dumpa
     public function hasDataAttribute(string ...$keys): bool
     {
         $keys = array_map(function ($key) {
-            return 'data-'.$key;
+            return 'data-' . $key;
         }, $keys);
 
         return $this->hasAttribute(...$keys);
@@ -193,7 +193,7 @@ class Tag implements TagInterface, ClassListContainer, StyleListContainer, Dumpa
     public function hasDataAttributes(string ...$keys): bool
     {
         $keys = array_map(function ($key) {
-            return 'data-'.$key;
+            return 'data-' . $key;
         }, $keys);
 
         return $this->hasAttributes(...$keys);
@@ -204,7 +204,7 @@ class Tag implements TagInterface, ClassListContainer, StyleListContainer, Dumpa
      */
     public function clearDataAttributes(): AttributeContainer
     {
-        foreach ($this->attributes as $key => $value) {
+        foreach (array_keys($this->attributes) as $key) {
             if (preg_match('/^data\-/i', $key)) {
                 $this->removeAttribute($key);
             }
@@ -220,7 +220,7 @@ class Tag implements TagInterface, ClassListContainer, StyleListContainer, Dumpa
     {
         $output = 0;
 
-        foreach ($this->attributes as $key => $value) {
+        foreach (array_keys($this->attributes) as $key) {
             if (preg_match('/^data\-/i', $key)) {
                 $output++;
             }

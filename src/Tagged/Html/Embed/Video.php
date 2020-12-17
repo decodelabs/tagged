@@ -1,26 +1,23 @@
 <?php
+
 /**
- * This file is part of the Tagged package
+ * @package Tagged
  * @license http://opensource.org/licenses/MIT
  */
+
 declare(strict_types=1);
+
 namespace DecodeLabs\Tagged\Html\Embed;
 
-use DecodeLabs\Tagged\Markup;
 use DecodeLabs\Tagged\Buffer;
-
-use DecodeLabs\Tagged\Html\ContentCollection;
-use DecodeLabs\Tagged\Html\Tag;
 use DecodeLabs\Tagged\Html\Element;
-
-use DecodeLabs\Tagged\Html\Embed\Media;
-use DecodeLabs\Tagged\Html\Embed\MediaTrait;
+use DecodeLabs\Tagged\Markup;
 
 class Video implements Media
 {
     use MediaTrait;
 
-    const URL_MAP = [
+    public const URL_MAP = [
         'youtube' => 'youtube',
         'youtu.be' => 'youtube',
         'vimeo' => 'vimeo'
@@ -34,7 +31,7 @@ class Video implements Media
      */
     public static function defaultUrlFromId(string $id): string
     {
-        return '//www.youtube.com/embed/'.$id;
+        return '//www.youtube.com/embed/' . $id;
     }
 
     /**

@@ -1,34 +1,31 @@
 <?php
+
 /**
- * This file is part of the Tagged package
+ * @package Tagged
  * @license http://opensource.org/licenses/MIT
  */
+
 declare(strict_types=1);
+
 namespace DecodeLabs\Tagged\Xml;
 
-use DecodeLabs\Tagged\Markup;
-use DecodeLabs\Tagged\Xml\Provider;
-use DecodeLabs\Tagged\Xml\Element;
-
-use DecodeLabs\Collections\AttributeContainer;
-use DecodeLabs\Collections\AttributeContainerTrait;
-
+use ArrayAccess;
 use DecodeLabs\Atlas;
 use DecodeLabs\Atlas\File;
-
+use DecodeLabs\Collections\AttributeContainer;
+use DecodeLabs\Collections\AttributeContainerTrait;
 use DecodeLabs\Exceptional;
 use DecodeLabs\Glitch\Dumpable;
-
+use DecodeLabs\Tagged\Markup;
 use XMLWriter;
-use ArrayAccess;
 
 class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpable
 {
-    const ELEMENT = 1;
-    const CDATA = 2;
-    const CDATA_ELEMENT = 3;
-    const COMMENT = 4;
-    const PI = 5;
+    public const ELEMENT = 1;
+    public const CDATA = 2;
+    public const CDATA_ELEMENT = 3;
+    public const COMMENT = 4;
+    public const PI = 5;
 
     use AttributeContainerTrait;
 
@@ -72,7 +69,7 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpa
     /**
      * Init with optional file path
      */
-    protected function __construct(XMLWriter $document=null, ?string $path=null)
+    protected function __construct(XMLWriter $document = null, ?string $path = null)
     {
         if ($document === null) {
             $document = new XMLWriter();
@@ -114,7 +111,7 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpa
     /**
      * Write initial XML header
      */
-    public function writeHeader(string $version='1.0', string $encoding='UTF-8', bool $standalone=false): Writer
+    public function writeHeader(string $version = '1.0', string $encoding = 'UTF-8', bool $standalone = false): Writer
     {
         if ($this->headerWritten) {
             throw Exceptional::Logic('XML header has already been written');
@@ -139,7 +136,7 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpa
     /**
      * Write full DTD
      */
-    public function writeDtd(string $name, string $publicId=null, string $systemId=null, string $subset=null): Writer
+    public function writeDtd(string $name, string $publicId = null, string $systemId = null, string $subset = null): Writer
     {
         if ($this->rootWritten) {
             throw Exceptional::Logic('XML DTD cannot be written once the document is open');
@@ -249,7 +246,7 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpa
     /**
      * Write full element in one go
      */
-    public function writeElement(string $name, $content=null, array $attributes=null): Writer
+    public function writeElement(string $name, $content = null, array $attributes = null): Writer
     {
         $this->startElement($name, $attributes);
 
@@ -263,7 +260,7 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpa
     /**
      * Open element to write into
      */
-    public function startElement(string $name, array $attributes=null): Writer
+    public function startElement(string $name, array $attributes = null): Writer
     {
         $this->completeCurrentNode();
 
@@ -277,7 +274,7 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpa
             $name = preg_replace_callback('/\[([^\]]*)\]/', function ($res) use (&$attributes) {
                 $parts = explode('=', $res[1], 2);
 
-                if (null === ($key = array_shift($parts))) {
+                if (empty($key = array_shift($parts))) {
                     throw Exceptional::UnexpectedValue('Invalid tag attribute definition', null, $res);
                 }
 
@@ -305,9 +302,11 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpa
 
         $parts = explode('.', $name);
 
-        if (null === ($name = array_shift($parts))) {
+        if (empty($name = array_shift($parts))) {
             throw Exceptional::UnexpectedValue(
-                'Unable to parse tag class definition', null, $origName
+                'Unable to parse tag class definition',
+                null,
+                $origName
             );
         }
 
@@ -420,7 +419,7 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpa
     /**
      * Write new element with CDATA section
      */
-    public function writeCDataElement(string $name, ?string $content, array $attributes=null): Writer
+    public function writeCDataElement(string $name, ?string $content, array $attributes = null): Writer
     {
         $this->startElement($name, $attributes);
         $this->writeCData($content);
@@ -678,7 +677,7 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpa
     /**
      * Convert to string
      */
-    public function toXmlString(bool $embedded=false): string
+    public function toXmlString(bool $embedded = false): string
     {
         $this->finalize();
         $string = $this->__toString();
@@ -735,7 +734,7 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpa
     public function importXmlElement(Element $element)
     {
         $this->completeCurrentNode();
-        $this->document->writeRaw("\n".$element->__toString()."\n");
+        $this->document->writeRaw("\n" . $element->__toString() . "\n");
         return $this;
     }
 
@@ -757,7 +756,9 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpa
 
             if (false === ($output = file_get_contents($this->path))) {
                 throw Exceptional::UnexpectedValue(
-                    'Unable to read contents of file', null, $this->path
+                    'Unable to read contents of file',
+                    null,
+                    $this->path
                 );
             }
 

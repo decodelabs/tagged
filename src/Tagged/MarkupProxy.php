@@ -1,12 +1,13 @@
 <?php
+
 /**
- * This file is part of the Tagged package
+ * @package Tagged
  * @license http://opensource.org/licenses/MIT
  */
-declare(strict_types=1);
-namespace DecodeLabs\Tagged;
 
-use DecodeLabs\Tagged\Markup;
+declare(strict_types=1);
+
+namespace DecodeLabs\Tagged;
 
 interface MarkupProxy
 {

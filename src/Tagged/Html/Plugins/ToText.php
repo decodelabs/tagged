@@ -1,19 +1,20 @@
 <?php
+
 /**
- * This file is part of the Tagged package
+ * @package Tagged
  * @license http://opensource.org/licenses/MIT
  */
+
 declare(strict_types=1);
+
 namespace DecodeLabs\Tagged\Html\Plugins;
 
-use DecodeLabs\Veneer\Plugin;
-
-use DecodeLabs\Tagged\Markup;
 use DecodeLabs\Tagged\Buffer;
-use DecodeLabs\Tagged\Html\Factory as HtmlFactory;
-
 use DecodeLabs\Tagged\Html\ContentCollection;
 use DecodeLabs\Tagged\Html\Element;
+use DecodeLabs\Tagged\Html\Factory as HtmlFactory;
+use DecodeLabs\Tagged\Markup;
+use DecodeLabs\Veneer\Plugin;
 
 use Soundasleep\Html2Text;
 
@@ -60,8 +61,7 @@ class ToText implements Plugin
             ]);
         } else {
             $output = html_entity_decode(strip_tags($html), ENT_QUOTES | ENT_HTML5);
-            $output = str_replace("\r\n", "\n", $output);
-            return $output;
+            return str_replace("\r\n", "\n", $output);
         }
     }
 
@@ -70,7 +70,7 @@ class ToText implements Plugin
     /**
      * Convert HTML to text and shorten if needed
      */
-    public function previewText($html, int $maxLength=null): ?string
+    public function previewText($html, int $maxLength = null): ?string
     {
         if (null === ($output = $this->convert($html))) {
             return null;
@@ -80,7 +80,7 @@ class ToText implements Plugin
             $length = mb_strlen($output);
 
             if ($length > $maxLength) {
-                $output = mb_substr($output, 0, $maxLength).'…';
+                $output = mb_substr($output, 0, $maxLength) . '…';
             }
         }
 
@@ -90,7 +90,7 @@ class ToText implements Plugin
     /**
      * Convert HTML to text and shorten if needed, wrapping in Markup
      */
-    public function preview($html, int $maxLength=null): ?Markup
+    public function preview($html, int $maxLength = null): ?Markup
     {
         if (null === ($output = $this->convert($html))) {
             return null;
