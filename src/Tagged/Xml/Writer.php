@@ -274,7 +274,7 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpa
             $name = preg_replace_callback('/\[([^\]]*)\]/', function ($res) use (&$attributes) {
                 $parts = explode('=', $res[1], 2);
 
-                if (null === ($key = array_shift($parts))) {
+                if (empty($key = array_shift($parts))) {
                     throw Exceptional::UnexpectedValue('Invalid tag attribute definition', null, $res);
                 }
 
@@ -302,7 +302,7 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpa
 
         $parts = explode('.', $name);
 
-        if (null === ($name = array_shift($parts))) {
+        if (empty($name = array_shift($parts))) {
             throw Exceptional::UnexpectedValue(
                 'Unable to parse tag class definition',
                 null,
