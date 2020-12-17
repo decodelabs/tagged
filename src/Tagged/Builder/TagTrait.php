@@ -59,7 +59,7 @@ trait TagTrait
             $name = preg_replace_callback('/\[([^\]]*)\]/', function ($res) {
                 $parts = explode('=', $res[1], 2);
 
-                if (null === ($key = array_shift($parts))) {
+                if (empty($key = array_shift($parts))) {
                     throw Exceptional::UnexpectedValue(
                         'Invalid tag attribute definition',
                         null,
@@ -91,7 +91,7 @@ trait TagTrait
 
         $parts = explode('.', $name);
 
-        if (null === ($name = array_shift($parts))) {
+        if (empty($name = array_shift($parts))) {
             throw Exceptional::UnexpectedValue(
                 'Unable to parse tag class definition',
                 null,
