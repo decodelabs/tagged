@@ -1,3 +1,6 @@
+## v0.9.0 (2021-03-18)
+* Enabled PHP8 testing
+
 ## v0.8.10 (2020-12-17)
 * Improved Media embed URL check
 
