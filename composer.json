@@ -31,8 +31,8 @@
         "erusev/parsedown": "^1.7",
         "michelf/php-markdown": "^1.9",
 
-        "decodelabs/atlas": "^0.7.9",
-        "decodelabs/systemic": "^0.6.11",
+        "decodelabs/atlas": "^0.8",
+        "decodelabs/systemic": "^0.7",
         "decodelabs/chirp": "^0.6"
     },
     "suggest": {
