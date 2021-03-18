@@ -9,10 +9,11 @@ declare(strict_types=1);
 
 namespace DecodeLabs\Tagged\Builder;
 
+use ArrayAccess;
 use DecodeLabs\Collections\AttributeContainer;
 use DecodeLabs\Tagged\Markup;
 
-interface Tag extends Markup, AttributeContainer, \ArrayAccess
+interface Tag extends Markup, AttributeContainer, ArrayAccess
 {
     public function setName(string $name): Tag;
     public function getName(): string;

@@ -9,10 +9,14 @@ declare(strict_types=1);
 
 namespace DecodeLabs\Tagged\Html\Embed;
 
+use DateTime;
+
 use DecodeLabs\Collections\Tree\NativeMutable as Tree;
 use DecodeLabs\Exceptional;
 use DecodeLabs\Tagged\Html\Tag;
 use DecodeLabs\Tagged\Markup;
+
+use ErrorException;
 
 class Youtube extends Video
 {
@@ -152,7 +156,7 @@ class Youtube extends Video
             } else {
                 $info = new Tree();
             }
-        } catch (\ErrorException $e) {
+        } catch (ErrorException $e) {
             return null;
         }
 
@@ -163,7 +167,7 @@ class Youtube extends Video
             'width' => $json['width'],
             'height' => $json['height'],
             'duration' => $info['length_seconds'],
-            'uploadDate' => isset($info['timestamp']) ? (new \DateTime())->setTimestamp((int)$info['timestamp']) : null,
+            'uploadDate' => isset($info['timestamp']) ? (new DateTime())->setTimestamp((int)$info['timestamp']) : null,
             'description' => $json['description'],
             'authorName' => $json['author_name'],
             'authorUrl' => $json['author_url'],

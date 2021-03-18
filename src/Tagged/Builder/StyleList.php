@@ -12,10 +12,11 @@ namespace DecodeLabs\Tagged\Builder;
 use DecodeLabs\Collections\ArrayProvider;
 use DecodeLabs\Collections\HashMap;
 use DecodeLabs\Collections\Native\HashMapTrait;
-
 use DecodeLabs\Exceptional;
 
-class StyleList implements \IteratorAggregate, HashMap
+use IteratorAggregate;
+
+class StyleList implements IteratorAggregate, HashMap
 {
     use HashMapTrait;
 

@@ -15,7 +15,10 @@ use DecodeLabs\Collections\ArrayProvider;
 use DecodeLabs\Exceptional;
 use DecodeLabs\Glitch\Dumpable;
 
-class StyleBlock implements \IteratorAggregate, Dumpable
+use IteratorAggregate;
+use Throwable;
+
+class StyleBlock implements IteratorAggregate, Dumpable
 {
     public const MUTABLE = true;
 
@@ -154,7 +157,7 @@ class StyleBlock implements \IteratorAggregate, Dumpable
     {
         try {
             return (string)$this->render();
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             return '';
         }
     }

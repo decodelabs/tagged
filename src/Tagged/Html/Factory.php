@@ -20,6 +20,8 @@ use DecodeLabs\Veneer\Plugin as VeneerPlugin;
 use DecodeLabs\Veneer\Plugin\Provider as VeneerPluginProvider;
 use DecodeLabs\Veneer\Plugin\ProviderTrait as VeneerPluginProviderTrait;
 
+use Throwable;
+
 class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
 {
     use VeneerPluginProviderTrait;
@@ -400,7 +402,7 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
 
         try {
             return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             Glitch::logException($e);
             return (string)$value;
         }

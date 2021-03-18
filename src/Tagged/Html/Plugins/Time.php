@@ -48,7 +48,7 @@ class Time implements Plugin
         }
 
         return $this->wrap(
-            $date->format($timezone === false ? 'Y-m-d' : \DateTime::W3C),
+            $date->format($timezone === false ? 'Y-m-d' : DateTime::W3C),
             $date->format($format)
         );
     }

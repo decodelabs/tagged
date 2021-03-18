@@ -12,6 +12,8 @@ namespace DecodeLabs\Tagged\Xml;
 use DecodeLabs\Atlas\File;
 use DecodeLabs\Exceptional;
 
+use ReflectionClass;
+
 trait SerializableTrait
 {
     /**
@@ -62,7 +64,7 @@ trait SerializableTrait
     public static function fromXmlElement(Element $element)
     {
         $class = get_called_class();
-        $ref = new \ReflectionClass($class);
+        $ref = new ReflectionClass($class);
 
         if (!$ref->isInstantiable()) {
             throw Exceptional::Logic(

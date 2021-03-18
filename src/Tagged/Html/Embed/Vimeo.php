@@ -9,10 +9,14 @@ declare(strict_types=1);
 
 namespace DecodeLabs\Tagged\Html\Embed;
 
+use DateTime;
+
 use DecodeLabs\Collections\Tree\NativeMutable as Tree;
 use DecodeLabs\Exceptional;
 use DecodeLabs\Tagged\Html\Tag;
 use DecodeLabs\Tagged\Markup;
+
+use ErrorException;
 
 class Vimeo extends Video
 {
@@ -127,7 +131,7 @@ class Vimeo extends Video
             } else {
                 $json = new Tree();
             }
-        } catch (\ErrorException $e) {
+        } catch (ErrorException $e) {
             return null;
         }
 
@@ -138,7 +142,7 @@ class Vimeo extends Video
             'width' => $json['width'],
             'height' => $json['height'],
             'duration' => $json['duration'] ?? $json['length_seconds'],
-            'uploadDate' => isset($json['upload_date']) ? (new \DateTime())->setTimestamp((int)$json['upload_date']) : null,
+            'uploadDate' => isset($json['upload_date']) ? (new DateTime())->setTimestamp((int)$json['upload_date']) : null,
             'description' => $json['description'],
             'authorName' => $json['author_name'],
             'authorUrl' => $json['author_url'],

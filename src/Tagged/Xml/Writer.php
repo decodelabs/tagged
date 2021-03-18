@@ -17,6 +17,8 @@ use DecodeLabs\Collections\AttributeContainerTrait;
 use DecodeLabs\Exceptional;
 use DecodeLabs\Glitch\Dumpable;
 use DecodeLabs\Tagged\Markup;
+use ErrorException;
+use Throwable;
 use XMLWriter;
 
 class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpable
@@ -80,7 +82,7 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpa
 
         try {
             $document->outputMemory(false);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $document->openMemory();
         }
 
@@ -123,7 +125,7 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpa
 
         try {
             $this->document->startDocument($version, $encoding, $standalone ? true : null);
-        } catch (\ErrorException $e) {
+        } catch (ErrorException $e) {
             throw Exceptional::InvalidArguement($e->getMessage(), [
                 'previous' => $e
             ]);
@@ -148,7 +150,7 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpa
 
         try {
             $this->document->writeDtd($name, $publicId, $systemId, $subset);
-        } catch (\ErrorException $e) {
+        } catch (ErrorException $e) {
             throw Exceptional::InvalidArguement($e->getMessage(), [
                 'previous' => $e
             ]);
@@ -173,7 +175,7 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpa
 
         try {
             $this->document->writeDtdAttlist($name, $content);
-        } catch (\ErrorException $e) {
+        } catch (ErrorException $e) {
             throw Exceptional::InvalidArguement($e->getMessage(), [
                 'previous' => $e
             ]);
@@ -198,7 +200,7 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpa
 
         try {
             $this->document->writeDtdElement($name, $content);
-        } catch (\ErrorException $e) {
+        } catch (ErrorException $e) {
             throw Exceptional::InvalidArguement($e->getMessage(), [
                 'previous' => $e
             ]);
@@ -223,7 +225,7 @@ class Writer implements Markup, Provider, AttributeContainer, ArrayAccess, Dumpa
 
         try {
             $this->document->writeDtdEntity($name, $content, $pe, $publicId, $systemId, $nDataId);
-        } catch (\ErrorException $e) {
+        } catch (ErrorException $e) {
             throw Exceptional::InvalidArguement($e->getMessage(), [
                 'previous' => $e
             ]);
