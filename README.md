@@ -11,8 +11,9 @@ PHP markup generation without the fuss.
 
 
 ## Installation
+
 ```bash
-composer install decodelabs/tagged
+composer require decodelabs/tagged
 ```
 
 ### Importing
