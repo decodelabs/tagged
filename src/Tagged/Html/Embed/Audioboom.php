@@ -9,11 +9,15 @@ declare(strict_types=1);
 
 namespace DecodeLabs\Tagged\Html\Embed;
 
+use DateTime;
+
 use DecodeLabs\Collections\Tree\NativeMutable as Tree;
 use DecodeLabs\Exceptional;
 
 use DecodeLabs\Tagged\Html\Tag;
 use DecodeLabs\Tagged\Markup;
+
+use ErrorException;
 
 class Audioboom extends Audio
 {
@@ -130,7 +134,7 @@ class Audioboom extends Audio
             }
 
             $json = json_decode($json, true);
-        } catch (\ErrorException $e) {
+        } catch (ErrorException $e) {
             return null;
         }
 
@@ -167,7 +171,7 @@ class Audioboom extends Audio
             } else {
                 $json = new Tree();
             }
-        } catch (\ErrorException $e) {
+        } catch (ErrorException $e) {
             return null;
         }
 
@@ -178,7 +182,7 @@ class Audioboom extends Audio
             'width' => $json['width'],
             'height' => $json['height'],
             'duration' => $json['duration'],
-            'uploadDate' => isset($json['upload_date']) ? (new \DateTime())->setTimestamp((int)$json['upload_date']) : null,
+            'uploadDate' => isset($json['upload_date']) ? (new DateTime())->setTimestamp((int)$json['upload_date']) : null,
             'description' => $json['description'],
             'authorName' => $json['author_name'],
             'authorUrl' => $json['author_url'],
@@ -201,7 +205,7 @@ class Audioboom extends Audio
             } else {
                 $json = new Tree();
             }
-        } catch (\ErrorException $e) {
+        } catch (ErrorException $e) {
             return null;
         }
 
@@ -211,7 +215,7 @@ class Audioboom extends Audio
 
         foreach ($playlist->memberships as $item) {
             $duration += $item->audio_clip['duration'];
-            $currentDate = new \DateTime($item->audio_clip['uploaded_at']);
+            $currentDate = new DateTime($item->audio_clip['uploaded_at']);
             $ts = $currentDate->getTimestamp();
 
             if ($ts > $uploadTs) {

@@ -15,7 +15,10 @@ use DecodeLabs\Tagged\Buffer;
 use DecodeLabs\Tagged\Builder\Element as ElementInterface;
 use DecodeLabs\Tagged\Markup;
 
-class Element extends Tag implements \IteratorAggregate, ElementInterface
+use IteratorAggregate;
+use Throwable;
+
+class Element extends Tag implements IteratorAggregate, ElementInterface
 {
     public const MUTABLE = true;
 
@@ -61,7 +64,7 @@ class Element extends Tag implements \IteratorAggregate, ElementInterface
     {
         try {
             return (string)$this->renderWith($this->renderContent());
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             Glitch::logException($e);
             $message = '<strong>' . $e->getMessage() . '</strong>';
 

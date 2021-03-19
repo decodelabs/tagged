@@ -20,6 +20,9 @@ use DecodeLabs\Tagged\Markup;
 
 use DOMDocument;
 use DOMElement;
+use DOMXPath;
+use Generator;
+use Throwable;
 
 class Element implements
     Markup,
@@ -89,7 +92,7 @@ class Element implements
         try {
             $document = static::newDomDocument();
             $document->load($path);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             throw Exceptional::Io('Unable to load XML file', [
                 'previous' => $e
             ]);
@@ -126,7 +129,7 @@ class Element implements
         try {
             $document = static::newDOMDocument();
             $document->loadXML($xml);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             throw Exceptional::Io('Unable to load XML string', [
                 'previous' => $e
             ]);
@@ -143,7 +146,7 @@ class Element implements
         try {
             $document = static::newDomDocument();
             $document->loadHtmlFile($path);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             throw Exceptional::Io('Unable to load HTML file', [
                 'previous' => $e
             ]);
@@ -160,7 +163,7 @@ class Element implements
         try {
             $document = static::newDomDocument();
             $document->loadHTML($xml);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             throw Exceptional::Io('Unable to load HTML string', [
                 'previous' => $e
             ]);
@@ -562,7 +565,7 @@ class Element implements
     /**
      * Scan all CDATA sections within node
      */
-    public function scanAllCDataSections(): \Generator
+    public function scanAllCDataSections(): Generator
     {
         foreach ($this->element->childNodes as $node) {
             if ($node->nodeType == \XML_CDATA_SECTION_NODE) {
@@ -643,7 +646,7 @@ class Element implements
     /**
      * Scan all child elements
      */
-    public function scanChildren(): \Generator
+    public function scanChildren(): Generator
     {
         return $this->scanChildList();
     }
@@ -683,7 +686,7 @@ class Element implements
     /**
      * Scan list of children by formula
      */
-    public function scanNthChildren(string $formula): \Generator
+    public function scanNthChildren(string $formula): Generator
     {
         return $this->scanNthChildList($formula);
     }
@@ -699,7 +702,7 @@ class Element implements
     /**
      * Scan all children of type
      */
-    public function scanChildrenOfType(string $name): \Generator
+    public function scanChildrenOfType(string $name): Generator
     {
         return $this->scanChildList($name);
     }
@@ -739,7 +742,7 @@ class Element implements
     /**
      * Scan child of type by formula
      */
-    public function scanNthChildrenOfType(string $name, string $formula): \Generator
+    public function scanNthChildrenOfType(string $name, string $formula): Generator
     {
         return $this->scanNthChildList($formula, $name);
     }
@@ -756,7 +759,7 @@ class Element implements
     /**
      * Shared child fetcher
      */
-    protected function scanChildList($name = null): \Generator
+    protected function scanChildList($name = null): Generator
     {
         foreach ($this->element->childNodes as $node) {
             if ($node->nodeType == \XML_ELEMENT_NODE) {
@@ -842,7 +845,7 @@ class Element implements
     /**
      * Get children by formula
      */
-    protected function scanNthChildList(string $formula, string $name = null): \Generator
+    protected function scanNthChildList(string $formula, string $name = null): Generator
     {
         if (is_numeric($formula)) {
             if ($output = $this->getNthChildNode((int)$formula, $name)) {
@@ -1236,7 +1239,7 @@ class Element implements
     /**
      * Scan all comments in node
      */
-    public function scanAllComments(): \Generator
+    public function scanAllComments(): Generator
     {
         foreach ($this->element->childNodes as $node) {
             if ($node->nodeType == \XML_COMMENT_NODE) {
@@ -1266,7 +1269,7 @@ class Element implements
     /**
      * Scan all nodes of type
      */
-    public function scanByType(string $type): \Generator
+    public function scanByType(string $type): Generator
     {
         foreach ($this->element->ownerDocument->getElementsByTagName($type) as $node) {
             yield new static($node);
@@ -1284,7 +1287,7 @@ class Element implements
     /**
      * Scan all nodes by attribute
      */
-    public function scanByAttribute(string $name, $value = null): \Generator
+    public function scanByAttribute(string $name, $value = null): Generator
     {
         if ($value == '') {
             $path = '//*[@' . $name . ']';
@@ -1307,9 +1310,9 @@ class Element implements
     /**
      * Scan nodes matching xPath
      */
-    public function scanXPath(string $path): \Generator
+    public function scanXPath(string $path): Generator
     {
-        $xpath = new \DOMXPath($this->element->ownerDocument);
+        $xpath = new DOMXPath($this->element->ownerDocument);
 
         foreach ($xpath->query($path, $this->element) as $node) {
             yield new static($node);
@@ -1329,7 +1332,7 @@ class Element implements
      */
     public function firstXPath(string $path): ?Element
     {
-        $xpath = new \DOMXPath($this->element->ownerDocument);
+        $xpath = new DOMXPath($this->element->ownerDocument);
         $output = $xpath->query($path, $this->element)->item(0);
 
         if (!$output) {

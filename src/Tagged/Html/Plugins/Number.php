@@ -46,13 +46,18 @@ class Number implements Plugin
         }
 
         return $this->html->el('span.number', function () use ($value, $unit) {
+            // Normalize string value
+            if (
+                is_string($value) &&
+                is_numeric($value)
+            ) {
+                $value = $value == (int)$value ?
+                    (int)$value : (float)$value;
+            }
+
             if (
                 is_int($value) ||
-                is_float($value) ||
-                (
-                    is_string($value) &&
-                    is_numeric($value)
-                )
+                is_float($value)
             ) {
                 $formatter = new NumberFormatter($this->getLocale(), NumberFormatter::DECIMAL);
                 $value = $formatter->format($value);
@@ -144,13 +149,18 @@ class Number implements Plugin
         }
 
         return $this->html->el('span.number.percent', function () use ($value, $total, $decimals) {
+            // Normalize string value
+            if (
+                is_string($value) &&
+                is_numeric($value)
+            ) {
+                $value = $value == (int)$value ?
+                    (int)$value : (float)$value;
+            }
+
             if (
                 is_int($value) ||
-                is_float($value) ||
-                (
-                    is_string($value) &&
-                    is_numeric($value)
-                )
+                is_float($value)
             ) {
                 $formatter = new NumberFormatter($this->getLocale(), NumberFormatter::PERCENT);
                 $formatter->setAttribute(NumberFormatter::MAX_FRACTION_DIGITS, $decimals);

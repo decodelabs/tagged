@@ -1,3 +1,7 @@
+## v0.9.1 (2021-03-19)
+* Fixed number formatter input type handling
+* Updated root use refs
+
 ## v0.9.0 (2021-03-18)
 * Enabled PHP8 testing
 
