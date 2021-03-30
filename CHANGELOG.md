@@ -1,6 +1,7 @@
 ## v0.10.1 (2021-03-30)
 * Switched Element to use ElementTrait
 * Fixed Element interface on PHP7.2/3
+* Fixed MarkupProxy for PHP7.2/3
 
 ## v0.10.0 (2021-03-30)
 * Moved Builder library over to Elementary package
