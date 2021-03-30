@@ -9,7 +9,9 @@ declare(strict_types=1);
 
 namespace DecodeLabs\Tagged;
 
-interface Markup
+use DecodeLabs\Elementary\Markup as RootMarkup;
+
+interface Markup extends RootMarkup
 {
     public function __toString(): string;
 }

@@ -10,19 +10,27 @@ declare(strict_types=1);
 namespace DecodeLabs\Tagged\Html;
 
 use DecodeLabs\Collections\AttributeContainer;
+use DecodeLabs\Elementary\Attribute\ClassList\Container as ClassListContainer;
+use DecodeLabs\Elementary\Attribute\ClassList\ContainerTrait as ClassListContainerTrait;
+use DecodeLabs\Elementary\Buffer as BufferInterface;
+use DecodeLabs\Elementary\Style\Container as StyleContainer;
+use DecodeLabs\Elementary\Style\ContainerTrait as StyleContainerTrait;
+use DecodeLabs\Elementary\Tag as TagInterface;
+use DecodeLabs\Elementary\TagTrait;
 use DecodeLabs\Glitch\Dumpable;
-use DecodeLabs\Tagged\Builder\ClassListContainer;
-use DecodeLabs\Tagged\Builder\ClassListContainerTrait;
-use DecodeLabs\Tagged\Builder\StyleListContainer;
-use DecodeLabs\Tagged\Builder\StyleListContainerTrait;
-use DecodeLabs\Tagged\Builder\Tag as TagInterface;
-use DecodeLabs\Tagged\Builder\TagTrait;
+use DecodeLabs\Tagged\Buffer;
+use DecodeLabs\Tagged\Markup;
 
-class Tag implements TagInterface, ClassListContainer, StyleListContainer, Dumpable
+class Tag implements
+    Markup,
+    TagInterface,
+    ClassListContainer,
+    StyleContainer,
+    Dumpable
 {
     use TagTrait;
     use ClassListContainerTrait;
-    use StyleListContainerTrait;
+    use StyleContainerTrait;
 
     public const CLOSED_TAGS = [
         'area', 'base', 'br', 'col', 'command', 'embed',
@@ -284,35 +292,12 @@ class Tag implements TagInterface, ClassListContainer, StyleListContainer, Dumpa
         return $this->getAttribute('title');
     }
 
-    /**
-     * Shortcut to set attribute
-     */
-    public function offsetSet($key, $value)
-    {
-        $this->setAttribute($key, $value);
-    }
 
     /**
-     * Shortcut to get attribute
+     * Create new buffer
      */
-    public function offsetGet($key)
+    protected function newBuffer(?string $content): BufferInterface
     {
-        return $this->getAttribute($key);
-    }
-
-    /**
-     * Shortcut to test for attribute
-     */
-    public function offsetExists($key)
-    {
-        return $this->hasAttribute($key);
-    }
-
-    /**
-     * Shortcut to remove attribute
-     */
-    public function offsetUnset($key)
-    {
-        $this->removeAttribute($key);
+        return new Buffer($content);
     }
 }

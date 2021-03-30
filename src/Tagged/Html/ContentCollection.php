@@ -11,8 +11,8 @@ namespace DecodeLabs\Tagged\Html;
 
 use DecodeLabs\Collections\Native\SequenceTrait;
 use DecodeLabs\Collections\Sequence;
+use DecodeLabs\Elementary\Markup\ChildRendererTrait;
 use DecodeLabs\Tagged\Buffer;
-use DecodeLabs\Tagged\Builder\ChildRendererTrait;
 use DecodeLabs\Tagged\Markup;
 
 class ContentCollection implements Markup, \IteratorAggregate, Sequence

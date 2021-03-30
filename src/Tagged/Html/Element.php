@@ -10,9 +10,9 @@ declare(strict_types=1);
 namespace DecodeLabs\Tagged\Html;
 
 use DecodeLabs\Collections\Native\SequenceTrait;
+use DecodeLabs\Elementary\Element as ElementInterface;
 use DecodeLabs\Glitch\Proxy as Glitch;
 use DecodeLabs\Tagged\Buffer;
-use DecodeLabs\Tagged\Builder\Element as ElementInterface;
 use DecodeLabs\Tagged\Markup;
 
 use IteratorAggregate;
@@ -20,8 +20,6 @@ use Throwable;
 
 class Element extends Tag implements IteratorAggregate, ElementInterface
 {
-    public const MUTABLE = true;
-
     use SequenceTrait;
 
     /**

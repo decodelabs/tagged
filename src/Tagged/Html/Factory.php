@@ -9,10 +9,10 @@ declare(strict_types=1);
 
 namespace DecodeLabs\Tagged\Html;
 
+use DecodeLabs\Elementary\Tag as TagInterface;
 use DecodeLabs\Exceptional;
 use DecodeLabs\Glitch\Proxy as Glitch;
 use DecodeLabs\Tagged\Buffer;
-use DecodeLabs\Tagged\Builder\Tag as TagInterface;
 use DecodeLabs\Tagged\Markup;
 use DecodeLabs\Veneer\Plugin\AccessTarget as VeneerPluginAccessTarget;
 use DecodeLabs\Veneer\Plugin\AccessTargetTrait as VeneerPluginAccessTargetTrait;

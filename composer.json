@@ -14,6 +14,7 @@
         "symfony/polyfill-mbstring": "^1.7",
 
         "decodelabs/veneer": "^0.7",
+        "decodelabs/elementary": "^0.1",
         "decodelabs/exceptional": "^0.3",
         "decodelabs/glitch-support": "^0.3",
         "decodelabs/collections": "^0.6",
