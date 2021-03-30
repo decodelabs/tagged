@@ -1,4 +1,5 @@
-* Move Builder library over to Elementary package
+## v0.10.0 (2021-03-30)
+* Moved Builder library over to Elementary package
 * Fixed new static() PHPStan issues
 * Moved HTML Veneer binding to DecodeLabs\Tagged
 
