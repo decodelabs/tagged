@@ -1,3 +1,8 @@
+## v0.10.0 (2021-03-30)
+* Moved Builder library over to Elementary package
+* Fixed new static() PHPStan issues
+* Moved HTML Veneer binding to DecodeLabs\Tagged
+
 ## v0.9.1 (2021-03-19)
 * Fixed number formatter input type handling
 * Updated root use refs

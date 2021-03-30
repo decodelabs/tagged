@@ -211,7 +211,7 @@ class Element implements
     /**
      * Init with DOMElement
      */
-    public function __construct(DOMElement $element)
+    final public function __construct(DOMElement $element)
     {
         $this->element = $element;
     }
@@ -1335,7 +1335,7 @@ class Element implements
         $xpath = new DOMXPath($this->element->ownerDocument);
         $output = $xpath->query($path, $this->element)->item(0);
 
-        if (!$output) {
+        if (!$output || !$output instanceof DOMElement) {
             return null;
         }
 
