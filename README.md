@@ -200,66 +200,9 @@ Html::$toText->preview('<h1>My html</h1>', 5); // My ht...
 
 ## XML handling
 
-### Reading & manipulating
+Looking for the XML stuff that was here?
 
-Access and manipulate XML files with a consolidated interface wrapping the DOM functionality available in PHP:
-
-```php
-use DecodeLabs\Tagged\Xml\Element as XmlElement;
-
-$element = XmlElement::fromFile('/path/to/my/file.xml');
-
-if($element->hasAttribute('old')) {
-    $element->removeAttribute('old');
-}
-
-$element->setAttribute('new', 'value');
-
-foreach($element->scanChildrenOfType('section') as $sectTag) {
-    $inner = $sectTag->getFirstChildOfType('title');
-    $sectTag->removeChild($inner);
-
-    // Flatten to plain text
-    echo $sectTag->getComposedTextContent();
-}
-
-file_put_contents('newfile.xml', (string)$element);
-```
-
-See [Element.php](./src/Tagged/Xml/Element.php) for the full interface.
-
-
-### Writing
-
-Programatically generate XML output with a full-featured wrapper around PHP's XML Writer:
-
-```php
-use DecodeLabs\Tagged\Xml\Writer as XmlWriter;
-
-$writer = new XmlWriter();
-$writer->writeHeader();
-
-$writer->{'ns:section[ns:attr1=value].test'}(function ($writer) {
-    $writer->{'title#main'}('This is a title');
-
-    $writer->{'@body'}('This is an element with content wrapped in CDATA tags.');
-    $writer->writeCData('This is plain CDATA');
-});
-
-echo $writer;
-```
-
-This creates:
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<ns:section ns:attr1="value" class="test">
-    <title id="main">This is a title</title>
-    <body><![CDATA[This is an element with content wrapped in CDATA tags.]]></body>
-<![CDATA[This is plain CDATA]]></ns:section>
-```
-
-See [Writer.php](./src/Tagged/Xml/Writer.php) for the full interface.
+The XML manipulation functionality of Tagged has been moved to its own project, [Exemplar](https://github.com/decodelabs/exemplar/).
 
 
 ## Licensing

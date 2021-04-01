@@ -1,3 +1,6 @@
+## v0.11.0 (2021-04-01)
+* Moved XML codebase to Exemplar
+
 ## v0.10.1 (2021-03-30)
 * Switched Element to use ElementTrait
 * Fixed Element interface on PHP7.2/3
