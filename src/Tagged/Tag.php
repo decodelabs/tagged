@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace DecodeLabs\Tagged\Html;
+namespace DecodeLabs\Tagged;
 
 use DecodeLabs\Collections\AttributeContainer;
 use DecodeLabs\Elementary\Attribute\ClassList\Container as ClassListContainer;
@@ -18,8 +18,6 @@ use DecodeLabs\Elementary\Style\ContainerTrait as StyleContainerTrait;
 use DecodeLabs\Elementary\Tag as TagInterface;
 use DecodeLabs\Elementary\TagTrait;
 use DecodeLabs\Glitch\Dumpable;
-use DecodeLabs\Tagged\Buffer;
-use DecodeLabs\Tagged\Markup;
 
 class Tag implements
     Markup,
@@ -75,6 +73,8 @@ class Tag implements
 
     /**
      * Set attribute value
+     *
+     * @param mixed $value
      */
     public function setAttribute(string $key, $value): AttributeContainer
     {
@@ -103,6 +103,8 @@ class Tag implements
 
     /**
      * Get attribute value
+     *
+     * @return mixed
      */
     public function getAttribute(string $key)
     {
@@ -120,6 +122,8 @@ class Tag implements
 
     /**
      * Add data attributes with map
+     *
+     * @param array<string, mixed> $attributes
      */
     public function setDataAttributes(array $attributes): AttributeContainer
     {
@@ -132,6 +136,8 @@ class Tag implements
 
     /**
      * Replace all data attributes with new map
+     *
+     * @param array<string, mixed> $attributes
      */
     public function replaceDataAttributes(array $attributes): AttributeContainer
     {
@@ -141,6 +147,8 @@ class Tag implements
 
     /**
      * Get map of current data attributes
+     *
+     * @return array<string, mixed>
      */
     public function getDataAttributes(): array
     {
@@ -148,7 +156,7 @@ class Tag implements
 
         foreach ($this->attributes as $key => $value) {
             if (preg_match('/^data\-/i', $key)) {
-                $output[$key] = $value;
+                $output[(string)$key] = $value;
             }
         }
 
@@ -157,6 +165,8 @@ class Tag implements
 
     /**
      * Replace single data value
+     *
+     * @param mixed $value
      */
     public function setDataAttribute(string $key, $value): AttributeContainer
     {
@@ -165,6 +175,8 @@ class Tag implements
 
     /**
      * Retrieve data attribute value if set
+     *
+     * @return mixed
      */
     public function getDataAttribute(string $key)
     {
@@ -213,8 +225,8 @@ class Tag implements
     public function clearDataAttributes(): AttributeContainer
     {
         foreach (array_keys($this->attributes) as $key) {
-            if (preg_match('/^data\-/i', $key)) {
-                $this->removeAttribute($key);
+            if (preg_match('/^data\-/i', (string)$key)) {
+                $this->removeAttribute((string)$key);
             }
         }
 
@@ -229,7 +241,7 @@ class Tag implements
         $output = 0;
 
         foreach (array_keys($this->attributes) as $key) {
-            if (preg_match('/^data\-/i', $key)) {
+            if (preg_match('/^data\-/i', (string)$key)) {
                 $output++;
             }
         }

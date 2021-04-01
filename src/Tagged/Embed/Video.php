@@ -7,10 +7,10 @@
 
 declare(strict_types=1);
 
-namespace DecodeLabs\Tagged\Html\Embed;
+namespace DecodeLabs\Tagged\Embed;
 
 use DecodeLabs\Tagged\Buffer;
-use DecodeLabs\Tagged\Html\Element;
+use DecodeLabs\Tagged\Element;
 use DecodeLabs\Tagged\Markup;
 
 class Video implements Media
@@ -23,6 +23,9 @@ class Video implements Media
         'vimeo' => 'vimeo'
     ];
 
+    /**
+     * @var bool
+     */
     protected $useApi = false;
 
 
@@ -68,7 +71,7 @@ class Video implements Media
     /**
      * Prepare iframe element
      */
-    protected function prepareIframeElement(string $url): Element
+    protected function prepareIframeElement(?string $url): Element
     {
         $tag = Element::create('iframe.embed.video', null, [
             'id' => $this->id,

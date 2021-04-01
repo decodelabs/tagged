@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace DecodeLabs\Tagged\Html;
+namespace DecodeLabs\Tagged;
 
 use DecodeLabs\Elementary\Element as ElementInterface;
 use DecodeLabs\Elementary\ElementTrait as ElementTrait;
@@ -16,12 +16,18 @@ use DecodeLabs\Glitch\Proxy as Glitch;
 use IteratorAggregate;
 use Throwable;
 
+/**
+ * @implements IteratorAggregate<mixed>
+ */
 class Element extends Tag implements IteratorAggregate, ElementInterface
 {
     use ElementTrait;
 
     /**
      * Apply nested by string name
+     *
+     * @param mixed $content
+     * @param array<string, mixed>|null $attributes
      */
     public static function create(string $name, $content = null, array $attributes = null): Element
     {

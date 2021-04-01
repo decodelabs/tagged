@@ -7,24 +7,40 @@
 
 declare(strict_types=1);
 
-namespace DecodeLabs\Tagged\Html\Plugins;
+namespace DecodeLabs\Tagged\Plugins;
 
 use DecodeLabs\Exceptional;
-use DecodeLabs\Tagged\Html\Element;
-use DecodeLabs\Tagged\Html\Factory as HtmlFactory;
+use DecodeLabs\Tagged\Element;
+use DecodeLabs\Tagged\Factory;
 use DecodeLabs\Veneer\Plugin;
 
 class Icon implements Plugin
 {
+    /**
+     * @var Factory
+     */
     protected $html;
+
+    /**
+     * @var string
+     */
     protected $format = 'svg';
+
+    /**
+     * @var string|null
+     */
     protected $svgReference = null;
+
+    /**
+     * @var string
+     */
     protected $baseClass = 'icon';
+
 
     /**
      * Init with parent factory
      */
-    public function __construct(HtmlFactory $html)
+    public function __construct(Factory $html)
     {
         $this->html = $html;
     }
@@ -110,6 +126,8 @@ class Icon implements Plugin
 
     /**
      * Create icon with args
+     *
+     * @param array<string> $args
      */
     public function __call(string $name, array $args): Element
     {

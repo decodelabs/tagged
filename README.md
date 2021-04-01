@@ -16,9 +16,16 @@ PHP markup generation without the fuss.
 composer require decodelabs/tagged
 ```
 
-### Importing
+### PHP version
 
-Tagged uses [Veneer](https://github.com/decodelabs/veneer) to provide a unified frontage under <code>DecodeLabs\Tagged\Html</code>.
+_Please note, the final v1 releases of all Decode Labs libraries will target **PHP8** or above._
+
+Current support for earlier versions of PHP will be phased out in the coming months.
+
+
+## Usage
+
+Tagged uses [Veneer](https://github.com/decodelabs/veneer) to provide a unified frontage under <code>DecodeLabs\Tagged</code>.
 You can access all the primary HTML functionality via this static frontage without compromising testing and dependency injection.
 
 
@@ -27,7 +34,7 @@ You can access all the primary HTML functionality via this static frontage witho
 Generate markup using a simple, flexible interface.
 
 ```php
-use DecodeLabs\Tagged\Html;
+use DecodeLabs\Tagged as Html;
 
 echo Html::{'div.my-class#my-id'}('This is element content', [
     'title' => 'This is a title'
@@ -43,7 +50,7 @@ echo Html::{'div.my-class#my-id'}('This is element content', [
 Create individual tags without content:
 
 ```php
-use DecodeLabs\Tagged\Html;
+use DecodeLabs\Tagged as Html;
 
 $tag = Html::tag('div.my-class');
 
@@ -55,7 +62,7 @@ echo $tag->close();
 Wrap HTML strings to be used where an instance of <code>Markup</code> is needed:
 
 ```php
-use DecodeLabs\Tagged\Html;
+use DecodeLabs\Tagged as Html;
 
 $buffer = Html::raw('<span class="test">My span</span>');
 ```
@@ -63,7 +70,7 @@ $buffer = Html::raw('<span class="test">My span</span>');
 Prepare arbitrary input for Markup output:
 
 ```php
-use DecodeLabs\Tagged\Html;
+use DecodeLabs\Tagged as Html;
 
 $markup = Html::wrap(
     function() {
@@ -79,7 +86,7 @@ $markup = Html::wrap(
 You can nest elements in multiple ways:
 
 ```php
-use DecodeLabs\Tagged\Html;
+use DecodeLabs\Tagged as Html;
 
 // Pass in nested elements via array
 echo Html::div([
@@ -108,7 +115,7 @@ echo Html::div(function($el) {
 Parse various formats and convert to HTML:
 
 ```php
-use DecodeLabs\Tagged\Html;
+use DecodeLabs\Tagged as Html;
 
 // Plain text
 echo Html::$parse->plainText($plainText); // Replace \n with <br />
@@ -128,7 +135,7 @@ echo Html::$parse->tweet($plainTweet); // Convert tweet source to HTML
 Format and wrap dates and intervals
 
 ```php
-use DecodeLabs\Tagged\Html;
+use DecodeLabs\Tagged as Html;
 
 // Custom format
 Html::$time->format('now', 'd/m/Y', 'Europe/London');
@@ -157,7 +164,7 @@ Html::$time->between('yesterday', 'tomorrow'); // 1 day
 Create the markup needed for font or SVG icons:
 
 ```php
-use DecodeLabs\Tagged\Html;
+use DecodeLabs\Tagged as Html;
 
 Html::$icon->setFormat('font');
 echo Html::$icon->aubergine; // <i class="icon icon-aubergine"></i>
@@ -174,7 +181,7 @@ echo Html::$icon->aubergine; // <svg><use xlink:href="path/to/my/file.svg#auberg
 Normalize embed codes shared from media sites:
 
 ```php
-use DecodeLabs\Tagged\Html;
+use DecodeLabs\Tagged as Html;
 
 echo Html::$embed->video('https://www.youtube.com/watch?v=RG9TMn1FJzc');
 ```
@@ -184,7 +191,7 @@ echo Html::$embed->video('https://www.youtube.com/watch?v=RG9TMn1FJzc');
 Convert and normalize html to plain text:
 
 ```php
-use DecodeLabs\Tagged\Html;
+use DecodeLabs\Tagged as Html;
 
 Html::$toText->convert('<h1>My html</h1>'); // My html
 Html::$toText->preview('<h1>My html</h1>', 5); // My ht...
@@ -193,66 +200,9 @@ Html::$toText->preview('<h1>My html</h1>', 5); // My ht...
 
 ## XML handling
 
-### Reading & manipulating
+Looking for the XML stuff that was here?
 
-Access and manipulate XML files with a consolidated interface wrapping the DOM functionality available in PHP:
-
-```php
-use DecodeLabs\Tagged\Xml\Element as XmlElement;
-
-$element = XmlElement::fromFile('/path/to/my/file.xml');
-
-if($element->hasAttribute('old')) {
-    $element->removeAttribute('old');
-}
-
-$element->setAttribute('new', 'value');
-
-foreach($element->scanChildrenOfType('section') as $sectTag) {
-    $inner = $sectTag->getFirstChildOfType('title');
-    $sectTag->removeChild($inner);
-
-    // Flatten to plain text
-    echo $sectTag->getComposedTextContent();
-}
-
-file_put_contents('newfile.xml', (string)$element);
-```
-
-See [Element.php](./src/Tagged/Xml/Element.php) for the full interface.
-
-
-### Writing
-
-Programatically generate XML output with a full-featured wrapper around PHP's XML Writer:
-
-```php
-use DecodeLabs\Tagged\Xml\Writer as XmlWriter;
-
-$writer = new XmlWriter();
-$writer->writeHeader();
-
-$writer->{'ns:section[ns:attr1=value].test'}(function ($writer) {
-    $writer->{'title#main'}('This is a title');
-
-    $writer->{'@body'}('This is an element with content wrapped in CDATA tags.');
-    $writer->writeCData('This is plain CDATA');
-});
-
-echo $writer;
-```
-
-This creates:
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<ns:section ns:attr1="value" class="test">
-    <title id="main">This is a title</title>
-    <body><![CDATA[This is an element with content wrapped in CDATA tags.]]></body>
-<![CDATA[This is plain CDATA]]></ns:section>
-```
-
-See [Writer.php](./src/Tagged/Xml/Writer.php) for the full interface.
+The XML manipulation functionality of Tagged has been moved to its own project, [Exemplar](https://github.com/decodelabs/exemplar/).
 
 
 ## Licensing

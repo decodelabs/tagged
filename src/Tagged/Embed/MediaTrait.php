@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace DecodeLabs\Tagged\Html\Embed;
+namespace DecodeLabs\Tagged\Embed;
 
 use DecodeLabs\Exceptional;
 
@@ -15,22 +15,68 @@ trait MediaTrait
 {
     //public const URL_MAP = [];
 
+    /**
+     * @var string|null
+     */
     protected $url;
+
+    /**
+     * @var string|null
+     */
     protected $provider;
 
+    /**
+     * @var string|null
+     */
     protected $id;
+
+    /**
+     * @var string|null
+     */
     protected $origin;
 
+
+    /**
+     * @var int|null
+     */
     protected $width = 640;
+
+    /**
+     * @var int|null
+     */
     protected $height = 360;
 
+
+    /**
+     * @var bool
+     */
     protected $allowFullScreen = true;
+
+    /**
+     * @var bool
+     */
     protected $autoPlay = false;
 
+
+    /**
+     * @var int|null
+     */
     protected $startTime;
+
+    /**
+     * @var int|null
+     */
     protected $endTime;
+
+    /**
+     * @var int|null
+     */
     protected $duration;
 
+
+    /**
+     * @var string|null
+     */
     protected $source;
 
 
@@ -158,7 +204,7 @@ trait MediaTrait
     /**
      * Init with main iframe details
      */
-    public function __construct(?string $url, int $width = null, int $height = null, string $mediaSource = null)
+    public function __construct(?string $url, int $width = null, int $height = null, ?string $mediaSource = null)
     {
         $this->setUrl($url);
 
@@ -272,7 +318,7 @@ trait MediaTrait
      */
     public function scaleWidth(int $width): Media
     {
-        $this->height = round($width / $this->width * $this->height);
+        $this->height = (int)round($width / $this->width * $this->height);
         $this->width = $width;
 
         return $this;
@@ -306,7 +352,7 @@ trait MediaTrait
     /**
      * Set width and height and scale accordingly
      */
-    public function setDimensions(?int $width, ?int $height = null)
+    public function setDimensions(?int $width, ?int $height = null): Media
     {
         $width = $width;
         $height = $height;
@@ -320,7 +366,7 @@ trait MediaTrait
         }
 
         if (!$width) {
-            $width = round($height / $this->height * $this->width);
+            $width = (int)round($height / $this->height * $this->width);
         }
 
         $this->width = $width;
@@ -333,7 +379,7 @@ trait MediaTrait
     /**
      * Set whether Media element can go full screen
      */
-    public function setAllowFullScreen(bool $flag)
+    public function setAllowFullScreen(bool $flag): Media
     {
         $this->allowFullScreen = $flag;
         return $this;
@@ -351,7 +397,7 @@ trait MediaTrait
     /**
      * Set whether media can autoplay
      */
-    public function setAutoPlay(bool $autoplay)
+    public function setAutoPlay(bool $autoplay): Media
     {
         $this->autoPlay = $autoplay;
         return $this;

@@ -7,12 +7,12 @@
 
 declare(strict_types=1);
 
-namespace DecodeLabs\Tagged\Html\Plugins;
+namespace DecodeLabs\Tagged\Plugins;
 
 use DecodeLabs\Tagged\Buffer;
-use DecodeLabs\Tagged\Html\ContentCollection;
-use DecodeLabs\Tagged\Html\Element;
-use DecodeLabs\Tagged\Html\Factory as HtmlFactory;
+use DecodeLabs\Tagged\ContentCollection;
+use DecodeLabs\Tagged\Element;
+use DecodeLabs\Tagged\Factory;
 use DecodeLabs\Tagged\Markup;
 use DecodeLabs\Veneer\Plugin;
 
@@ -20,12 +20,15 @@ use Soundasleep\Html2Text;
 
 class ToText implements Plugin
 {
+    /**
+     * @var Factory
+     */
     protected $html;
 
     /**
      * Init with parent factory
      */
-    public function __construct(HtmlFactory $html)
+    public function __construct(Factory $html)
     {
         $this->html = $html;
     }
@@ -70,7 +73,7 @@ class ToText implements Plugin
     /**
      * Convert HTML to text and shorten if needed
      */
-    public function previewText($html, int $maxLength = null): ?string
+    public function previewText(?string $html, int $maxLength = null): ?string
     {
         if (null === ($output = $this->convert($html))) {
             return null;
@@ -90,7 +93,7 @@ class ToText implements Plugin
     /**
      * Convert HTML to text and shorten if needed, wrapping in Markup
      */
-    public function preview($html, int $maxLength = null): ?Markup
+    public function preview(?string $html, int $maxLength = null): ?Markup
     {
         if (null === ($output = $this->convert($html))) {
             return null;

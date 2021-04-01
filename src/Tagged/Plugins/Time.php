@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace DecodeLabs\Tagged\Html\Plugins;
+namespace DecodeLabs\Tagged\Plugins;
 
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
@@ -18,8 +18,8 @@ use DateTime;
 use DateTimeZone;
 
 use DecodeLabs\Exceptional;
-use DecodeLabs\Tagged\Html\Element;
-use DecodeLabs\Tagged\Html\Factory as HtmlFactory;
+use DecodeLabs\Tagged\Element;
+use DecodeLabs\Tagged\Factory;
 use DecodeLabs\Veneer\Plugin;
 
 use IntlDateFormatter;
@@ -28,18 +28,24 @@ class Time implements Plugin
 {
     use SystemicProxyTrait;
 
+    /**
+     * @var Factory
+     */
     protected $html;
 
     /**
      * Init with parent factory
      */
-    public function __construct(HtmlFactory $html)
+    public function __construct(Factory $html)
     {
         $this->html = $html;
     }
 
     /**
      * Custom format a date and wrap it
+     *
+     * @param mixed $date
+     * @param DateTimeZone|string|bool|null $timezone
      */
     public function format($date, string $format, $timezone = true): ?Element
     {
@@ -55,6 +61,8 @@ class Time implements Plugin
 
     /**
      * Custom format a date and wrap it
+     *
+     * @param mixed $date
      */
     public function formatDate($date, string $format): ?Element
     {
@@ -70,6 +78,11 @@ class Time implements Plugin
 
     /**
      * Format date according to locale
+     *
+     * @param mixed $date
+     * @param string|int|bool|null $dateSize
+     * @param string|int|bool|null $timeSize
+     * @param DateTimeZone|string|bool|null $timezone
      */
     public function locale($date, $dateSize = true, $timeSize = true, $timezone = true): ?Element
     {
@@ -113,6 +126,9 @@ class Time implements Plugin
 
     /**
      * Format full date time
+     *
+     * @param mixed $date
+     * @param DateTimeZone|string|bool|null $timezone
      */
     public function fullDateTime($date, $timezone = true): ?Element
     {
@@ -121,6 +137,9 @@ class Time implements Plugin
 
     /**
      * Format full date
+     *
+     * @param mixed $date
+     * @param DateTimeZone|string|bool|null $timezone
      */
     public function fullDate($date, $timezone = true): ?Element
     {
@@ -129,6 +148,9 @@ class Time implements Plugin
 
     /**
      * Format full time
+     *
+     * @param mixed $date
+     * @param DateTimeZone|string|bool|null $timezone
      */
     public function fullTime($date, $timezone = true): ?Element
     {
@@ -138,6 +160,9 @@ class Time implements Plugin
 
     /**
      * Format long date time
+     *
+     * @param mixed $date
+     * @param DateTimeZone|string|bool|null $timezone
      */
     public function longDateTime($date, $timezone = true): ?Element
     {
@@ -146,6 +171,9 @@ class Time implements Plugin
 
     /**
      * Format long date
+     *
+     * @param mixed $date
+     * @param DateTimeZone|string|bool|null $timezone
      */
     public function longDate($date, $timezone = true): ?Element
     {
@@ -154,6 +182,9 @@ class Time implements Plugin
 
     /**
      * Format long time
+     *
+     * @param mixed $date
+     * @param DateTimeZone|string|bool|null $timezone
      */
     public function longTime($date, $timezone = true): ?Element
     {
@@ -163,6 +194,9 @@ class Time implements Plugin
 
     /**
      * Format medium date time
+     *
+     * @param mixed $date
+     * @param DateTimeZone|string|bool|null $timezone
      */
     public function mediumDateTime($date, $timezone = true): ?Element
     {
@@ -171,6 +205,9 @@ class Time implements Plugin
 
     /**
      * Format medium date
+     *
+     * @param mixed $date
+     * @param DateTimeZone|string|bool|null $timezone
      */
     public function mediumDate($date, $timezone = true): ?Element
     {
@@ -179,6 +216,9 @@ class Time implements Plugin
 
     /**
      * Format medium time
+     *
+     * @param mixed $date
+     * @param DateTimeZone|string|bool|null $timezone
      */
     public function mediumTime($date, $timezone = true): ?Element
     {
@@ -188,6 +228,9 @@ class Time implements Plugin
 
     /**
      * Format short date time
+     *
+     * @param mixed $date
+     * @param DateTimeZone|string|bool|null $timezone
      */
     public function shortDateTime($date, $timezone = true): ?Element
     {
@@ -196,6 +239,9 @@ class Time implements Plugin
 
     /**
      * Format short date
+     *
+     * @param mixed $date
+     * @param DateTimeZone|string|bool|null $timezone
      */
     public function shortDate($date, $timezone = true): ?Element
     {
@@ -204,6 +250,9 @@ class Time implements Plugin
 
     /**
      * Format short time
+     *
+     * @param mixed $date
+     * @param DateTimeZone|string|bool|null $timezone
      */
     public function shortTime($date, $timezone = true): ?Element
     {
@@ -215,6 +264,9 @@ class Time implements Plugin
 
     /**
      * Format default date time
+     *
+     * @param mixed $date
+     * @param DateTimeZone|string|bool|null $timezone
      */
     public function dateTime($date, $timezone = true): ?Element
     {
@@ -223,6 +275,9 @@ class Time implements Plugin
 
     /**
      * Format default date
+     *
+     * @param mixed $date
+     * @param DateTimeZone|string|bool|null $timezone
      */
     public function date($date, $timezone = true): ?Element
     {
@@ -231,6 +286,9 @@ class Time implements Plugin
 
     /**
      * Format default time
+     *
+     * @param mixed $date
+     * @param DateTimeZone|string|bool|null $timezone
      */
     public function time($date, $timezone = true): ?Element
     {
@@ -242,6 +300,8 @@ class Time implements Plugin
 
     /**
      * Format interval since date
+     *
+     * @param mixed $date
      */
     public function since($date, ?bool $positive = null, ?int $parts = 1): ?Element
     {
@@ -250,6 +310,8 @@ class Time implements Plugin
 
     /**
      * Format interval since date
+     *
+     * @param mixed $date
      */
     public function sinceAbs($date, ?bool $positive = null, ?int $parts = 1): ?Element
     {
@@ -258,6 +320,8 @@ class Time implements Plugin
 
     /**
      * Format interval since date
+     *
+     * @param mixed $date
      */
     public function sinceAbbr($date, ?bool $positive = null, ?int $parts = 1): ?Element
     {
@@ -266,6 +330,8 @@ class Time implements Plugin
 
     /**
      * Format interval until date
+     *
+     * @param mixed $date
      */
     public function until($date, ?bool $positive = null, ?int $parts = 1): ?Element
     {
@@ -274,6 +340,8 @@ class Time implements Plugin
 
     /**
      * Format interval until date
+     *
+     * @param mixed $date
      */
     public function untilAbs($date, ?bool $positive = null, ?int $parts = 1): ?Element
     {
@@ -282,6 +350,8 @@ class Time implements Plugin
 
     /**
      * Format interval until date
+     *
+     * @param mixed $date
      */
     public function untilAbbr($date, ?bool $positive = null, ?int $parts = 1): ?Element
     {
@@ -291,6 +361,8 @@ class Time implements Plugin
 
     /**
      * Format interval
+     *
+     * @param mixed $date
      */
     protected function wrapInterval($date, bool $invert, ?int $parts, bool $short = false, bool $absolute = false, ?bool $positive = false): ?Element
     {
@@ -366,6 +438,9 @@ class Time implements Plugin
 
     /**
      * Format interval until date
+     *
+     * @param mixed $date1
+     * @param mixed $date2
      */
     public function between($date1, $date2, ?int $parts = 1): ?Element
     {
@@ -374,6 +449,9 @@ class Time implements Plugin
 
     /**
      * Format interval until date
+     *
+     * @param mixed $date1
+     * @param mixed $date2
      */
     public function betweenAbbr($date1, $date2, ?int $parts = 1): ?Element
     {
@@ -382,6 +460,9 @@ class Time implements Plugin
 
     /**
      * Format interval until date
+     *
+     * @param mixed $date1
+     * @param mixed $date2
      */
     protected function betweenRaw($date1, $date2, ?int $parts = 1, bool $short = false): ?Element
     {
@@ -427,6 +508,9 @@ class Time implements Plugin
 
     /**
      * Prepare date for formatting
+     *
+     * @param mixed $date
+     * @param DateTimeZone|string|bool|null $timezone
      */
     protected function prepare($date, $timezone = true, bool $includeTime = true): ?DateTime
     {
@@ -452,6 +536,8 @@ class Time implements Plugin
 
     /**
      * Normalize a date input
+     *
+     * @param mixed $date
      */
     protected function normalizeDate($date): ?DateTime
     {
@@ -489,6 +575,8 @@ class Time implements Plugin
 
     /**
      * Normalize timezone
+     *
+     * @param DateTimeZone|string|bool|null $timezone
      */
     protected function normalizeTimezone($timezone): ?DateTimeZone
     {
@@ -511,7 +599,7 @@ class Time implements Plugin
     /**
      * Wrap date / time in Markup
      */
-    protected function wrap(string $w3c, string $formatted, string $title = null): Element
+    protected function wrap(string $w3c, string $formatted, ?string $title = null): Element
     {
         $output = $this->html->el('time', $formatted, [
             'datetime' => $w3c
@@ -526,6 +614,8 @@ class Time implements Plugin
 
     /**
      * Normalize locale format size
+     *
+     * @param string|int|bool|null $size
      */
     protected function normalizeLocaleSize($size): int
     {
@@ -554,7 +644,7 @@ class Time implements Plugin
             case IntlDateFormatter::LONG:
             case IntlDateFormatter::MEDIUM:
             case IntlDateFormatter::SHORT:
-                return $size;
+                return (int)$size;
 
             default:
                 throw Exceptional::InvalidArgument(

@@ -7,20 +7,27 @@
 
 declare(strict_types=1);
 
-namespace DecodeLabs\Tagged\Html\Embed;
+namespace DecodeLabs\Tagged\Embed;
 
 use DateTime;
 
 use DecodeLabs\Collections\Tree\NativeMutable as Tree;
 use DecodeLabs\Exceptional;
-use DecodeLabs\Tagged\Html\Tag;
 use DecodeLabs\Tagged\Markup;
+use DecodeLabs\Tagged\Tag;
 
 use ErrorException;
 
 class Vimeo extends Video
 {
+    /**
+     * @var string
+     */
     protected $vimeoId;
+
+    /**
+     * @var array<string, mixed>
+     */
     protected $options = [];
 
     /**
@@ -117,6 +124,10 @@ class Vimeo extends Video
      */
     public function lookupMeta(?array $options = null): ?array
     {
+        if ($this->url === null) {
+            return null;
+        }
+
         $url = 'https://vimeo.com/api/oembed.json?url=' . urlencode($this->url);
         $referrer = $options['referrer'] ?? $options['referer'] ?? $_SERVER['SERVER_NAME'];
 

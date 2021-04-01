@@ -7,13 +7,13 @@
 
 declare(strict_types=1);
 
-namespace DecodeLabs\Tagged\Html\Plugins;
+namespace DecodeLabs\Tagged\Plugins;
 
 use DecodeLabs\Chirp\Parser as Chirp;
 use DecodeLabs\Exceptional;
 use DecodeLabs\Glitch\Proxy as Glitch;
 use DecodeLabs\Tagged\Buffer;
-use DecodeLabs\Tagged\Html\Factory as HtmlFactory;
+use DecodeLabs\Tagged\Factory;
 use DecodeLabs\Tagged\Markup;
 use DecodeLabs\Veneer\Plugin;
 
@@ -22,12 +22,15 @@ use Parsedown;
 
 class Parse implements Plugin
 {
+    /**
+     * @var Factory
+     */
     protected $html;
 
     /**
      * Init with parent factory
      */
-    public function __construct(HtmlFactory $html)
+    public function __construct(Factory $html)
     {
         $this->html = $html;
     }
@@ -42,7 +45,7 @@ class Parse implements Plugin
         }
 
         $text = $this->html->esc($text);
-        $text = str_replace("\n", '<br />' . "\n", $text);
+        $text = str_replace("\n", '<br />' . "\n", (string)$text);
 
         return new Buffer($text);
     }

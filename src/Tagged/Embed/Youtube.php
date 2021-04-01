@@ -7,20 +7,27 @@
 
 declare(strict_types=1);
 
-namespace DecodeLabs\Tagged\Html\Embed;
+namespace DecodeLabs\Tagged\Embed;
 
 use DateTime;
 
 use DecodeLabs\Collections\Tree\NativeMutable as Tree;
 use DecodeLabs\Exceptional;
-use DecodeLabs\Tagged\Html\Tag;
 use DecodeLabs\Tagged\Markup;
+use DecodeLabs\Tagged\Tag;
 
 use ErrorException;
 
 class Youtube extends Video
 {
+    /**
+     * @var string
+     */
     protected $youtubeId;
+
+    /**
+     * @var array<string, mixed>
+     */
     protected $options = [];
 
     /**
@@ -65,7 +72,7 @@ class Youtube extends Video
 
         foreach ((array)$query as $key => $value) {
             if (in_array(strtolower($key), $vars)) {
-                $this->options[$key] = $value;
+                $this->options[(string)$key] = $value;
             }
         }
 
