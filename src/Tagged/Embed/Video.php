@@ -23,6 +23,9 @@ class Video implements Media
         'vimeo' => 'vimeo'
     ];
 
+    /**
+     * @var bool
+     */
     protected $useApi = false;
 
 
@@ -68,7 +71,7 @@ class Video implements Media
     /**
      * Prepare iframe element
      */
-    protected function prepareIframeElement(string $url): Element
+    protected function prepareIframeElement(?string $url): Element
     {
         $tag = Element::create('iframe.embed.video', null, [
             'id' => $this->id,

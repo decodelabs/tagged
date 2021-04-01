@@ -20,7 +20,14 @@ use ErrorException;
 
 class Youtube extends Video
 {
+    /**
+     * @var string
+     */
     protected $youtubeId;
+
+    /**
+     * @var array<string, mixed>
+     */
     protected $options = [];
 
     /**
@@ -65,7 +72,7 @@ class Youtube extends Video
 
         foreach ((array)$query as $key => $value) {
             if (in_array(strtolower($key), $vars)) {
-                $this->options[$key] = $value;
+                $this->options[(string)$key] = $value;
             }
         }
 

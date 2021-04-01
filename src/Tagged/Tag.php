@@ -73,6 +73,8 @@ class Tag implements
 
     /**
      * Set attribute value
+     *
+     * @param mixed $value
      */
     public function setAttribute(string $key, $value): AttributeContainer
     {
@@ -101,6 +103,8 @@ class Tag implements
 
     /**
      * Get attribute value
+     *
+     * @return mixed
      */
     public function getAttribute(string $key)
     {
@@ -118,6 +122,8 @@ class Tag implements
 
     /**
      * Add data attributes with map
+     *
+     * @param array<string, mixed> $attributes
      */
     public function setDataAttributes(array $attributes): AttributeContainer
     {
@@ -130,6 +136,8 @@ class Tag implements
 
     /**
      * Replace all data attributes with new map
+     *
+     * @param array<string, mixed> $attributes
      */
     public function replaceDataAttributes(array $attributes): AttributeContainer
     {
@@ -139,6 +147,8 @@ class Tag implements
 
     /**
      * Get map of current data attributes
+     *
+     * @return array<string, mixed>
      */
     public function getDataAttributes(): array
     {
@@ -146,7 +156,7 @@ class Tag implements
 
         foreach ($this->attributes as $key => $value) {
             if (preg_match('/^data\-/i', $key)) {
-                $output[$key] = $value;
+                $output[(string)$key] = $value;
             }
         }
 
@@ -155,6 +165,8 @@ class Tag implements
 
     /**
      * Replace single data value
+     *
+     * @param mixed $value
      */
     public function setDataAttribute(string $key, $value): AttributeContainer
     {
@@ -163,6 +175,8 @@ class Tag implements
 
     /**
      * Retrieve data attribute value if set
+     *
+     * @return mixed
      */
     public function getDataAttribute(string $key)
     {
@@ -211,8 +225,8 @@ class Tag implements
     public function clearDataAttributes(): AttributeContainer
     {
         foreach (array_keys($this->attributes) as $key) {
-            if (preg_match('/^data\-/i', $key)) {
-                $this->removeAttribute($key);
+            if (preg_match('/^data\-/i', (string)$key)) {
+                $this->removeAttribute((string)$key);
             }
         }
 
@@ -227,7 +241,7 @@ class Tag implements
         $output = 0;
 
         foreach (array_keys($this->attributes) as $key) {
-            if (preg_match('/^data\-/i', $key)) {
+            if (preg_match('/^data\-/i', (string)$key)) {
                 $output++;
             }
         }

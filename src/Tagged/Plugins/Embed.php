@@ -18,6 +18,9 @@ use DecodeLabs\Veneer\Plugin;
 
 class Embed implements Plugin
 {
+    /**
+     * @var Factory
+     */
     protected $html;
 
     /**

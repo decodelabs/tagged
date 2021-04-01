@@ -18,6 +18,7 @@ use DecodeLabs\Veneer\Plugin as VeneerPlugin;
 use DecodeLabs\Veneer\Plugin\Provider as VeneerPluginProvider;
 use DecodeLabs\Veneer\Plugin\ProviderTrait as VeneerPluginProviderTrait;
 
+use Stringable;
 use Throwable;
 
 class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
@@ -37,6 +38,9 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
 
     /**
      * Instance shortcut to el
+     *
+     * @param mixed $content
+     * @param array<string, mixed>|null $attributes
      */
     public function __invoke(string $name, $content, array $attributes = null): Element
     {
@@ -45,6 +49,8 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
 
     /**
      * Call named widget from instance
+     *
+     * @param array<mixed> $args
      */
     public function __call(string $name, array $args): Element
     {
@@ -63,6 +69,8 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
 
     /**
      * Stub to get empty plugin list to avoid broken targets
+     *
+     * @return array<string>
      */
     public function getVeneerPluginNames(): array
     {
@@ -89,6 +97,8 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
 
     /**
      * Create a standalone tag
+     *
+     * @param array<string, mixed>|null $attributes
      */
     public function tag(string $name, array $attributes = null): TagInterface
     {
@@ -97,6 +107,9 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
 
     /**
      * Create a standalone element
+     *
+     * @param mixed $content
+     * @param array<string, mixed>|null $attributes
      */
     public function el(string $name, $content = null, array $attributes = null): Element
     {
@@ -105,6 +118,8 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
 
     /**
      * Wrap raw html string
+     *
+     * @param mixed $html
      */
     public function raw($html): Buffer
     {
@@ -113,6 +128,8 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
 
     /**
      * Normalize arbitrary content
+     *
+     * @param mixed ...$content
      */
     public function wrap(...$content): Markup
     {
@@ -121,6 +138,8 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
 
     /**
      * Wrap arbitrary content as collection
+     *
+     * @param mixed ...$content
      */
     public function content(...$content): Markup
     {
@@ -132,8 +151,11 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
 
     /**
      * Generate nested list
+     *
+     * @param iterable<mixed>|null $list
+     * @param array<string, mixed>|null $attributes
      */
-    public function list(?iterable $list, string $container, ?string $name, callable $callback = null, array $attributes = []): Element
+    public function list(?iterable $list, string $container, ?string $name, ?callable $callback = null, ?array $attributes = null): Element
     {
         $output = Element::create($container, function () use ($list, $name, $callback) {
             if (!$list) {
@@ -172,8 +194,11 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
 
     /**
      * Generate naked list
+     *
+     * @param iterable<mixed>|null $list
+     * @param array<string, mixed>|null $attributes
      */
-    public function elements(?iterable $list, ?string $name, callable $callback = null, array $attributes = []): Buffer
+    public function elements(?iterable $list, ?string $name, ?callable $callback = null, ?array $attributes = null): Buffer
     {
         return ContentCollection::normalize(function () use ($list, $name, $callback, $attributes) {
             if (!$list) {
@@ -209,8 +234,10 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
 
     /**
      * Generate unwrapped naked list
+     *
+     * @param iterable<mixed>|null $list
      */
-    public function loop(?iterable $list, callable $callback = null): Buffer
+    public function loop(?iterable $list, ?callable $callback = null): Buffer
     {
         return ContentCollection::normalize(function () use ($list, $callback) {
             if (!$list) {
@@ -234,8 +261,11 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
 
     /**
      * Create a standard ul > li structure
+     *
+     * @param iterable<mixed>|null $list
+     * @param array<string, mixed>|null $attributes
      */
-    public function uList(?iterable $list, callable $renderer = null, array $attributes = []): Element
+    public function uList(?iterable $list, ?callable $renderer = null, ?array $attributes = null): Element
     {
         return $this->list($list, 'ul', '?li', $renderer ?? function ($value) {
             return $value;
@@ -244,8 +274,11 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
 
     /**
      * Create a standard ol > li structure
+     *
+     * @param iterable<mixed>|null $list
+     * @param array<string, mixed>|null $attributes
      */
-    public function oList(?iterable $list, callable $renderer = null, array $attributes = []): Element
+    public function oList(?iterable $list, ?callable $renderer = null, ?array $attributes = null): Element
     {
         return $this->list($list, 'ol', '?li', $renderer ?? function ($value) {
             return $value;
@@ -254,8 +287,11 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
 
     /**
      * Create a standard dl > dt + dd structure
+     *
+     * @param iterable<mixed>|null $list
+     * @param array<string, mixed>|null $attributes
      */
-    public function dList(?iterable $list, callable $renderer = null, array $attributes = []): Element
+    public function dList(?iterable $list, ?callable $renderer = null, ?array $attributes = null): Element
     {
         $renderer = $renderer ?? function ($value) {
             return $value;
@@ -289,8 +325,10 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
 
     /**
      * Create an inline comma separated list with optional item limit
+     *
+     * @param iterable<mixed>|null $list
      */
-    public function iList(?iterable $list, callable $renderer = null, string $delimiter = null, string $finalDelimiter = null, int $limit = null): Element
+    public function iList(?iterable $list, ?callable $renderer = null, ?string $delimiter = null, ?string $finalDelimiter = null, ?int $limit = null): Element
     {
         if ($delimiter === null) {
             $delimiter = ', ';
@@ -368,11 +406,15 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
 
     /**
      * Create image tag
+     *
+     * @param string|Stringable|null $url
+     * @param string|int|null $width
+     * @param string|int|null $height
      */
-    public function image($url, string $alt = null, $width = null, $height = null): Element
+    public function image($url, ?string $alt = null, $width = null, $height = null): Element
     {
         $output = $this->el('img', null, [
-            'src' => $url,
+            'src' => (string)$url,
             'alt' => $alt
         ]);
 
@@ -391,6 +433,8 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
 
     /**
      * Escape HTML
+     *
+     * @param mixed $value
      */
     public function esc($value): ?string
     {

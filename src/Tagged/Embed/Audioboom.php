@@ -21,8 +21,19 @@ use ErrorException;
 
 class Audioboom extends Audio
 {
+    /**
+     * @var string
+     */
     protected $audioboomId;
+
+    /**
+     * @var string
+     */
     protected $type = 'embed';
+
+    /**
+     * @var array<string, string>
+     */
     protected $options = [];
 
     /**
@@ -52,7 +63,7 @@ class Audioboom extends Audio
             $this->audioboomId = $query['data_for_content_type'];
         } else {
             $this->type = 'embed';
-            $this->audioboomId = $booId;
+            $this->audioboomId = (string)$booId;
 
             static $vars = [
                 'eid', 'player_type'
@@ -60,7 +71,7 @@ class Audioboom extends Audio
 
             foreach ((array)$query as $key => $value) {
                 if (in_array(strtolower($key), $vars)) {
-                    $this->options[$key] = $value;
+                    $this->options[(string)$key] = (string)$value;
                 }
             }
         }
@@ -115,6 +126,8 @@ class Audioboom extends Audio
 
     /**
      * Lookup thumbnail URL
+     *
+     * @param array<string, mixed> $options
      */
     public function lookupThumbnail(?array $options = null): ?string
     {
@@ -143,6 +156,9 @@ class Audioboom extends Audio
 
     /**
      * Lookup media meta information
+     *
+     * @param array<string, mixed> $options
+     * @return array<string, mixed>
      */
     public function lookupMeta(?array $options = null): ?array
     {
@@ -160,6 +176,9 @@ class Audioboom extends Audio
 
     /**
      * Lookup meta for embed
+     *
+     * @param array<string, mixed> $options
+     * @return array<string, mixed>
      */
     protected function lookupEmbedMeta(?array $options = null): ?array
     {
@@ -194,6 +213,9 @@ class Audioboom extends Audio
 
     /**
      * Lookup meta for embed
+     *
+     * @param array<string, mixed> $options
+     * @return array<string, mixed>
      */
     protected function lookupPlaylistMeta(?array $options = null): ?array
     {

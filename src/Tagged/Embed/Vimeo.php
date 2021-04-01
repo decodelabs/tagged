@@ -20,7 +20,14 @@ use ErrorException;
 
 class Vimeo extends Video
 {
+    /**
+     * @var string
+     */
     protected $vimeoId;
+
+    /**
+     * @var array<string, mixed>
+     */
     protected $options = [];
 
     /**
@@ -117,6 +124,10 @@ class Vimeo extends Video
      */
     public function lookupMeta(?array $options = null): ?array
     {
+        if ($this->url === null) {
+            return null;
+        }
+
         $url = 'https://vimeo.com/api/oembed.json?url=' . urlencode($this->url);
         $referrer = $options['referrer'] ?? $options['referer'] ?? $_SERVER['SERVER_NAME'];
 

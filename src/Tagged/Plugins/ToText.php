@@ -20,6 +20,9 @@ use Soundasleep\Html2Text;
 
 class ToText implements Plugin
 {
+    /**
+     * @var Factory
+     */
     protected $html;
 
     /**
@@ -70,7 +73,7 @@ class ToText implements Plugin
     /**
      * Convert HTML to text and shorten if needed
      */
-    public function previewText($html, int $maxLength = null): ?string
+    public function previewText(?string $html, int $maxLength = null): ?string
     {
         if (null === ($output = $this->convert($html))) {
             return null;
@@ -90,7 +93,7 @@ class ToText implements Plugin
     /**
      * Convert HTML to text and shorten if needed, wrapping in Markup
      */
-    public function preview($html, int $maxLength = null): ?Markup
+    public function preview(?string $html, int $maxLength = null): ?Markup
     {
         if (null === ($output = $this->convert($html))) {
             return null;

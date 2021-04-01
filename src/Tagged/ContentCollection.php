@@ -13,7 +13,12 @@ use DecodeLabs\Collections\Native\SequenceTrait;
 use DecodeLabs\Collections\Sequence;
 use DecodeLabs\Elementary\Markup\ChildRendererTrait;
 
-class ContentCollection implements Markup, \IteratorAggregate, Sequence
+use IteratorAggregate;
+
+/**
+ * @implements IteratorAggregate<mixed>
+ */
+class ContentCollection implements Markup, IteratorAggregate, Sequence
 {
     public const MUTABLE = true;
 
@@ -22,6 +27,8 @@ class ContentCollection implements Markup, \IteratorAggregate, Sequence
 
     /**
      * Normalize abitrary content
+     *
+     * @param mixed $content
      */
     public static function normalize($content, bool $pretty = false): Buffer
     {

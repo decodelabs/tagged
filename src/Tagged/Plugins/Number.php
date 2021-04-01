@@ -21,6 +21,9 @@ class Number implements Plugin
 {
     use SystemicProxyTrait;
 
+    /**
+     * @var Factory
+     */
     protected $html;
 
     /**
@@ -34,6 +37,8 @@ class Number implements Plugin
 
     /**
      * Format and wrap number
+     *
+     * @param int|float|string|null $value
      */
     public function wrap($value, ?string $unit = null): ?Element
     {
@@ -75,6 +80,8 @@ class Number implements Plugin
 
     /**
      * Format and wrap currency
+     *
+     * @param int|float|string|null $value
      */
     public function currency($value, ?string $code, ?bool $rounded = null): ?Markup
     {
@@ -141,6 +148,8 @@ class Number implements Plugin
 
     /**
      * Format and render a percentage
+     *
+     * @param int|float|string|null $value
      */
     public function percent($value, float $total = 100.0, int $decimals = 0): ?Element
     {
@@ -188,6 +197,8 @@ class Number implements Plugin
 
     /**
      * Render difference of number from 0
+     *
+     * @param int|float|string|null $diff
      */
     public function diff($diff, ?bool $invert = false, string $tag = 'sup'): Element
     {

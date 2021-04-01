@@ -16,10 +16,26 @@ use DecodeLabs\Veneer\Plugin;
 
 class Icon implements Plugin
 {
+    /**
+     * @var Factory
+     */
     protected $html;
+
+    /**
+     * @var string
+     */
     protected $format = 'svg';
+
+    /**
+     * @var string|null
+     */
     protected $svgReference = null;
+
+    /**
+     * @var string
+     */
     protected $baseClass = 'icon';
+
 
     /**
      * Init with parent factory
@@ -110,6 +126,8 @@ class Icon implements Plugin
 
     /**
      * Create icon with args
+     *
+     * @param array<string> $args
      */
     public function __call(string $name, array $args): Element
     {

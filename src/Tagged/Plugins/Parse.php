@@ -22,6 +22,9 @@ use Parsedown;
 
 class Parse implements Plugin
 {
+    /**
+     * @var Factory
+     */
     protected $html;
 
     /**
@@ -42,7 +45,7 @@ class Parse implements Plugin
         }
 
         $text = $this->html->esc($text);
-        $text = str_replace("\n", '<br />' . "\n", $text);
+        $text = str_replace("\n", '<br />' . "\n", (string)$text);
 
         return new Buffer($text);
     }

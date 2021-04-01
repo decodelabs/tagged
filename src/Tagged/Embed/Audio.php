@@ -49,7 +49,7 @@ class Audio implements Media
     /**
      * Prepare iframe element
      */
-    protected function prepareIframeElement(string $url): Element
+    protected function prepareIframeElement(?string $url): Element
     {
         $tag = Element::create('iframe.embed.audio', null, [
             'id' => $this->id,
