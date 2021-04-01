@@ -25,7 +25,7 @@
         "phpunit/phpunit": "^8",
         "phpstan/phpstan": "^0.12.45",
         "phpstan/extension-installer": "^1.0",
-        "decodelabs/phpstan-decodelabs": "^0.4|^0.5",
+        "decodelabs/phpstan-decodelabs": "^0.5",
         "symplify/easy-coding-standard": "^8.3",
 
         "nesbot/carbon": "^2.25",
