@@ -191,7 +191,7 @@ trait MediaTrait
         $class = get_called_class();
 
         if ($provider = self::extractProviderName($url)) {
-            $customClass = '\\DecodeLabs\\Tagged\\Html\\Embed\\' . ucfirst($provider);
+            $customClass = '\\DecodeLabs\\Tagged\\Embed\\' . ucfirst($provider);
 
             if (class_exists($customClass)) {
                 $class = $customClass;
