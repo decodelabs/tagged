@@ -25,7 +25,7 @@ Current support for earlier versions of PHP will be phased out in the coming mon
 
 ## Usage
 
-Tagged uses [Veneer](https://github.com/decodelabs/veneer) to provide a unified frontage under <code>DecodeLabs\Tagged\Html</code>.
+Tagged uses [Veneer](https://github.com/decodelabs/veneer) to provide a unified frontage under <code>DecodeLabs\Tagged</code>.
 You can access all the primary HTML functionality via this static frontage without compromising testing and dependency injection.
 
 
@@ -34,7 +34,7 @@ You can access all the primary HTML functionality via this static frontage witho
 Generate markup using a simple, flexible interface.
 
 ```php
-use DecodeLabs\Tagged\Html;
+use DecodeLabs\Tagged as Html;
 
 echo Html::{'div.my-class#my-id'}('This is element content', [
     'title' => 'This is a title'
@@ -50,7 +50,7 @@ echo Html::{'div.my-class#my-id'}('This is element content', [
 Create individual tags without content:
 
 ```php
-use DecodeLabs\Tagged\Html;
+use DecodeLabs\Tagged as Html;
 
 $tag = Html::tag('div.my-class');
 
@@ -62,7 +62,7 @@ echo $tag->close();
 Wrap HTML strings to be used where an instance of <code>Markup</code> is needed:
 
 ```php
-use DecodeLabs\Tagged\Html;
+use DecodeLabs\Tagged as Html;
 
 $buffer = Html::raw('<span class="test">My span</span>');
 ```
@@ -70,7 +70,7 @@ $buffer = Html::raw('<span class="test">My span</span>');
 Prepare arbitrary input for Markup output:
 
 ```php
-use DecodeLabs\Tagged\Html;
+use DecodeLabs\Tagged as Html;
 
 $markup = Html::wrap(
     function() {
@@ -86,7 +86,7 @@ $markup = Html::wrap(
 You can nest elements in multiple ways:
 
 ```php
-use DecodeLabs\Tagged\Html;
+use DecodeLabs\Tagged as Html;
 
 // Pass in nested elements via array
 echo Html::div([
@@ -115,7 +115,7 @@ echo Html::div(function($el) {
 Parse various formats and convert to HTML:
 
 ```php
-use DecodeLabs\Tagged\Html;
+use DecodeLabs\Tagged as Html;
 
 // Plain text
 echo Html::$parse->plainText($plainText); // Replace \n with <br />
@@ -135,7 +135,7 @@ echo Html::$parse->tweet($plainTweet); // Convert tweet source to HTML
 Format and wrap dates and intervals
 
 ```php
-use DecodeLabs\Tagged\Html;
+use DecodeLabs\Tagged as Html;
 
 // Custom format
 Html::$time->format('now', 'd/m/Y', 'Europe/London');
@@ -164,7 +164,7 @@ Html::$time->between('yesterday', 'tomorrow'); // 1 day
 Create the markup needed for font or SVG icons:
 
 ```php
-use DecodeLabs\Tagged\Html;
+use DecodeLabs\Tagged as Html;
 
 Html::$icon->setFormat('font');
 echo Html::$icon->aubergine; // <i class="icon icon-aubergine"></i>
@@ -181,7 +181,7 @@ echo Html::$icon->aubergine; // <svg><use xlink:href="path/to/my/file.svg#auberg
 Normalize embed codes shared from media sites:
 
 ```php
-use DecodeLabs\Tagged\Html;
+use DecodeLabs\Tagged as Html;
 
 echo Html::$embed->video('https://www.youtube.com/watch?v=RG9TMn1FJzc');
 ```
@@ -191,7 +191,7 @@ echo Html::$embed->video('https://www.youtube.com/watch?v=RG9TMn1FJzc');
 Convert and normalize html to plain text:
 
 ```php
-use DecodeLabs\Tagged\Html;
+use DecodeLabs\Tagged as Html;
 
 Html::$toText->convert('<h1>My html</h1>'); // My html
 Html::$toText->preview('<h1>My html</h1>', 5); // My ht...

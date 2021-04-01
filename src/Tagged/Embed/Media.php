@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace DecodeLabs\Tagged\Html\Embed;
+namespace DecodeLabs\Tagged\Embed;
 
 use DecodeLabs\Tagged\Markup;
 

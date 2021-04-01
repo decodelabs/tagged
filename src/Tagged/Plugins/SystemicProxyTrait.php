@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace DecodeLabs\Tagged\Html\Plugins;
+namespace DecodeLabs\Tagged\Plugins;
 
 use DateTimeZone;
 use DecodeLabs\Systemic;

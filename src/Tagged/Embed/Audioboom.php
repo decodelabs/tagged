@@ -7,15 +7,15 @@
 
 declare(strict_types=1);
 
-namespace DecodeLabs\Tagged\Html\Embed;
+namespace DecodeLabs\Tagged\Embed;
 
 use DateTime;
 
 use DecodeLabs\Collections\Tree\NativeMutable as Tree;
 use DecodeLabs\Exceptional;
 
-use DecodeLabs\Tagged\Html\Tag;
 use DecodeLabs\Tagged\Markup;
+use DecodeLabs\Tagged\Tag;
 
 use ErrorException;
 

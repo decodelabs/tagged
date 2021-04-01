@@ -13,9 +13,8 @@ declare(strict_types=1);
 namespace DecodeLabs\Tagged
 {
     use DecodeLabs\Tagged;
-    use DecodeLabs\Tagged\Html\Factory as HtmlFactory;
     use DecodeLabs\Veneer;
 
     // Register the Veneer proxy
-    Veneer::register(HtmlFactory::class, Tagged::class, Html::class);
+    Veneer::register(Factory::class, Tagged::class);
 }

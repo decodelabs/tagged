@@ -7,11 +7,11 @@
 
 declare(strict_types=1);
 
-namespace DecodeLabs\Tagged\Html\Plugins;
+namespace DecodeLabs\Tagged\Plugins;
 
-use DecodeLabs\Tagged\Html\Embed\Audio;
-use DecodeLabs\Tagged\Html\Embed\Video;
-use DecodeLabs\Tagged\Html\Factory as HtmlFactory;
+use DecodeLabs\Tagged\Embed\Audio;
+use DecodeLabs\Tagged\Embed\Video;
+use DecodeLabs\Tagged\Factory;
 
 use DecodeLabs\Tagged\Markup;
 use DecodeLabs\Veneer\Plugin;
@@ -23,7 +23,7 @@ class Embed implements Plugin
     /**
      * Init with parent factory
      */
-    public function __construct(HtmlFactory $html)
+    public function __construct(Factory $html)
     {
         $this->html = $html;
     }

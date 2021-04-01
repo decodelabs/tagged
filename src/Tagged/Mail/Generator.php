@@ -7,12 +7,12 @@
 
 declare(strict_types=1);
 
-namespace DecodeLabs\Tagged\Html\Mail;
+namespace DecodeLabs\Tagged\Mail;
 
 use DecodeLabs\Elementary\Style\Collection as StyleList;
 use DecodeLabs\Elementary\Style\Sheet as StyleSheet;
-use DecodeLabs\Tagged\Html;
-use DecodeLabs\Tagged\Html\Element;
+use DecodeLabs\Tagged as Html;
+use DecodeLabs\Tagged\Element;
 use DecodeLabs\Tagged\Markup;
 
 class Generator
@@ -59,7 +59,7 @@ class Generator
         $width = $this->styles->get('content')->get('width');
         $css = "\n" . '@media only screen and (max-width: ' . $width . ') {' . "\n    " . $this->mobileStyles->renderBlocks() . "\n" . '}' . "\n";
 
-        return Html::style(Html::raw($css), [
+        return Html::{'style'}(Html::raw($css), [
             'type' => 'text/css'
         ]);
     }

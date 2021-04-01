@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace DecodeLabs\Tagged\Html\Plugins;
+namespace DecodeLabs\Tagged\Plugins;
 
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
@@ -18,8 +18,8 @@ use DateTime;
 use DateTimeZone;
 
 use DecodeLabs\Exceptional;
-use DecodeLabs\Tagged\Html\Element;
-use DecodeLabs\Tagged\Html\Factory as HtmlFactory;
+use DecodeLabs\Tagged\Element;
+use DecodeLabs\Tagged\Factory;
 use DecodeLabs\Veneer\Plugin;
 
 use IntlDateFormatter;
@@ -33,7 +33,7 @@ class Time implements Plugin
     /**
      * Init with parent factory
      */
-    public function __construct(HtmlFactory $html)
+    public function __construct(Factory $html)
     {
         $this->html = $html;
     }

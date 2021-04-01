@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace DecodeLabs\Tagged\Html;
+namespace DecodeLabs\Tagged;
 
 use DecodeLabs\Collections\AttributeContainer;
 use DecodeLabs\Elementary\Attribute\ClassList\Container as ClassListContainer;
@@ -18,8 +18,6 @@ use DecodeLabs\Elementary\Style\ContainerTrait as StyleContainerTrait;
 use DecodeLabs\Elementary\Tag as TagInterface;
 use DecodeLabs\Elementary\TagTrait;
 use DecodeLabs\Glitch\Dumpable;
-use DecodeLabs\Tagged\Buffer;
-use DecodeLabs\Tagged\Markup;
 
 class Tag implements
     Markup,

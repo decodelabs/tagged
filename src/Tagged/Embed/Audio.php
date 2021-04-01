@@ -7,23 +7,21 @@
 
 declare(strict_types=1);
 
-namespace DecodeLabs\Tagged\Html\Embed;
+namespace DecodeLabs\Tagged\Embed;
 
 use DecodeLabs\Tagged\Buffer;
-use DecodeLabs\Tagged\Html\Element;
+use DecodeLabs\Tagged\Element;
 use DecodeLabs\Tagged\Markup;
 
-class Video implements Media
+class Audio implements Media
 {
     use MediaTrait;
 
     public const URL_MAP = [
-        'youtube' => 'youtube',
-        'youtu.be' => 'youtube',
-        'vimeo' => 'vimeo'
+        'audioboom' => 'audioboom',
+        'audioboo' => 'audioboom'
     ];
 
-    protected $useApi = false;
 
 
     /**
@@ -31,24 +29,7 @@ class Video implements Media
      */
     public static function defaultUrlFromId(string $id): string
     {
-        return '//www.youtube.com/embed/' . $id;
-    }
-
-    /**
-     * Set to use API (youtube)
-     */
-    public function setUseApi(bool $flag): Media
-    {
-        $this->useApi = $flag;
-        return $this;
-    }
-
-    /**
-     * Should use API?
-     */
-    public function shouldUseApi(): bool
-    {
-        return $this->useApi;
+        return '//embeds.audioboom.com/boos/' . $id . '/embed/v4';
     }
 
 
@@ -59,7 +40,7 @@ class Video implements Media
     public function render(): Markup
     {
         if (($this->url === null || !$this->provider) && $this->source !== null) {
-            return Element::create('div.embed.video', new Buffer($this->source));
+            return Element::create('div.embed.audio', new Buffer($this->source));
         }
 
         return $this->prepareIframeElement($this->url);
@@ -70,7 +51,7 @@ class Video implements Media
      */
     protected function prepareIframeElement(string $url): Element
     {
-        $tag = Element::create('iframe.embed.video', null, [
+        $tag = Element::create('iframe.embed.audio', null, [
             'id' => $this->id,
             'src' => $url,
             'width' => $this->width,
@@ -89,7 +70,7 @@ class Video implements Media
         }
 
         if ($this->provider) {
-            $tag->setAttribute('data-video', $this->provider);
+            $tag->setAttribute('data-audio', $this->provider);
         }
 
         return $tag;

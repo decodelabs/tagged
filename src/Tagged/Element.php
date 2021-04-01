@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace DecodeLabs\Tagged\Html;
+namespace DecodeLabs\Tagged;
 
 use DecodeLabs\Elementary\Element as ElementInterface;
 use DecodeLabs\Elementary\ElementTrait as ElementTrait;
