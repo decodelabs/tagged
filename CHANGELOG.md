@@ -1,3 +1,6 @@
+## v0.11.1 (2021-04-01)
+* Fixed plugin class generators
+
 ## v0.11.0 (2021-04-01)
 * Moved XML codebase to Exemplar
 * Moved HTML codebase to root
