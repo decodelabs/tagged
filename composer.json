@@ -33,7 +33,6 @@
         "erusev/parsedown": "^1.7",
         "michelf/php-markdown": "^1.9",
 
-        "decodelabs/atlas": "^0.8",
         "decodelabs/systemic": "^0.7",
         "decodelabs/chirp": "^0.6"
     },
@@ -43,7 +42,6 @@
         "erusev/parsedown": "Add support for Markdown parsing",
         "michelf/php-markdown": "Alternative Markdown parsing provider",
 
-        "decodelabs/atlas": "Save generated XML to file",
         "decodelabs/systemic": "Managed locale and timezone info",
         "decodelabs/chirp": "Enable parsing of Tweets"
     },
