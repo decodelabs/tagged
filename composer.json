@@ -15,7 +15,7 @@
         "symfony/polyfill-php80": "^1.22",
 
         "decodelabs/veneer": "^0.7",
-        "decodelabs/elementary": "^0.1.2",
+        "decodelabs/elementary": "^0.1.4",
         "decodelabs/exceptional": "^0.3",
         "decodelabs/glitch-support": "^0.3",
         "decodelabs/collections": "^0.6.1",

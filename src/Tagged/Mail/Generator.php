@@ -101,9 +101,11 @@ class Generator
                     $contentStyles = $this->getStylesFor('content');
                     $width = $contentStyles->get('width');
 
-                    $containerStyles->set('max-width', $width);
-                    $containerStyles->set('width', $width);
-                    $contentStyles->set('max-width', $width);
+                    if ($width !== null) {
+                        $containerStyles->set('max-width', $width);
+                        $containerStyles->set('width', $width);
+                        $contentStyles->set('max-width', $width);
+                    }
 
                     $el->addClass('bodyContainer');
                     $el->addStyles($containerStyles);
