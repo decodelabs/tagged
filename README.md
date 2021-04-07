@@ -107,6 +107,9 @@ echo Html::div(function($el) {
 
     // Set attributes inline
     yield Html::{'p[data-target=open]'}('Target paragraph');
+
+    // Generator return values are rendered too
+    return Html::{'div.awesome'}('This is awesome!');
 });
 ```
 

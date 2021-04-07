@@ -1,3 +1,6 @@
+## v0.11.2 (2021-04-07)
+* Updated Collections
+
 ## v0.11.1 (2021-04-01)
 * Fixed plugin class generators
 
