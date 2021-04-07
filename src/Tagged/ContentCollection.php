@@ -17,11 +17,15 @@ use IteratorAggregate;
 
 /**
  * @implements IteratorAggregate<mixed>
+ * @implements Sequence<mixed>
  */
 class ContentCollection implements Markup, IteratorAggregate, Sequence
 {
     public const MUTABLE = true;
 
+    /**
+     * @use SequenceTrait<mixed>
+     */
     use SequenceTrait;
     use ChildRendererTrait;
 

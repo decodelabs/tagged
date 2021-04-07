@@ -18,7 +18,7 @@
         "decodelabs/elementary": "^0.1.2",
         "decodelabs/exceptional": "^0.3",
         "decodelabs/glitch-support": "^0.3",
-        "decodelabs/collections": "^0.6",
+        "decodelabs/collections": "^0.6.1",
         "decodelabs/gadgets": "^0.7"
     },
     "require-dev": {
