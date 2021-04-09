@@ -33,7 +33,7 @@
         "erusev/parsedown": "^1.7",
         "michelf/php-markdown": "^1.9",
 
-        "decodelabs/systemic": "^0.7",
+        "decodelabs/systemic": "^0.8",
         "decodelabs/chirp": "^0.6"
     },
     "suggest": {
