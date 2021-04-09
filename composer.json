@@ -14,12 +14,12 @@
         "symfony/polyfill-mbstring": "^1.7",
         "symfony/polyfill-php80": "^1.22",
 
-        "decodelabs/veneer": "^0.7",
+        "decodelabs/collections": "^0.6.1",
         "decodelabs/elementary": "^0.1.4",
         "decodelabs/exceptional": "^0.3",
+        "decodelabs/gadgets": "^0.7",
         "decodelabs/glitch-support": "^0.3",
-        "decodelabs/collections": "^0.6.1",
-        "decodelabs/gadgets": "^0.7"
+        "decodelabs/veneer": "^0.7"
     },
     "require-dev": {
         "phpunit/phpunit": "^8",
