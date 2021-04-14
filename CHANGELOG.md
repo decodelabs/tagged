@@ -1,3 +1,5 @@
+* Updated Time and Number plugins to use Dictum interfaces
+
 ## v0.11.4 (2021-04-09)
 * Updated Systemic dependency
 
