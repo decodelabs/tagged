@@ -18,8 +18,12 @@ trait SystemicProxyTrait
     /**
      * Get system locale
      */
-    protected function getLocale(): string
+    protected function getLocale(?string $locale = null): string
     {
+        if ($locale !== null) {
+            return $locale;
+        }
+
         if (class_exists(Systemic::class)) {
             return (string)Systemic::$locale->get();
         }

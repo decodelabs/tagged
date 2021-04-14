@@ -9,17 +9,24 @@ declare(strict_types=1);
 
 namespace DecodeLabs\Tagged\Plugins;
 
-use DecodeLabs\Exceptional;
+use DecodeLabs\Dictum\Plugin\Number as NumberPlugin;
+use DecodeLabs\Dictum\Plugin\NumberTrait as NumberPluginTrait;
 use DecodeLabs\Tagged\Element;
 use DecodeLabs\Tagged\Factory;
-use DecodeLabs\Tagged\Markup;
-use DecodeLabs\Veneer\Plugin;
 
 use NumberFormatter;
 
-class Number implements Plugin
+/**
+ * @implements NumberPlugin<Element>
+ */
+class Number implements NumberPlugin
 {
     use SystemicProxyTrait;
+
+    /**
+     * @use NumberPluginTrait<Element>
+     */
+    use NumberPluginTrait;
 
     /**
      * @var Factory
@@ -40,35 +47,27 @@ class Number implements Plugin
      *
      * @param int|float|string|null $value
      */
-    public function wrap($value, ?string $unit = null): ?Element
+    public function wrap($value, ?string $unit = null, ?string $locale = null): ?Element
     {
-        if ($value === null) {
-            return null;
-        }
+        return $this->format($value, $unit, $locale);
+    }
 
+    /**
+     * Format and wrap number
+     */
+    public function format($value, ?string $unit = null, ?string $locale = null): ?Element
+    {
         if ($unit === null && is_string($value) && false !== strpos($value, ' ')) {
             list($value, $unit) = explode(' ', $value, 2);
         }
 
-        return $this->html->el('span.number', function () use ($value, $unit) {
-            // Normalize string value
-            if (
-                is_string($value) &&
-                is_numeric($value)
-            ) {
-                $value = $value == (int)$value ?
-                    (int)$value : (float)$value;
-            }
+        if (null === ($value = $this->normalizeNumeric($value, true))) {
+            return null;
+        }
 
-            if (
-                is_int($value) ||
-                is_float($value)
-            ) {
-                $formatter = new NumberFormatter($this->getLocale(), NumberFormatter::DECIMAL);
-                $value = $formatter->format($value);
-            } else {
-                throw Exceptional::InvalidArgument('Value is not a number', null, $value);
-            }
+        return $this->html->el('span.number', function () use ($value, $unit, $locale) {
+            $formatter = new NumberFormatter($this->getLocale($locale), NumberFormatter::DECIMAL);
+            $value = $formatter->format($value);
 
             yield $this->html->el('span.value', $value);
 
@@ -79,11 +78,47 @@ class Number implements Plugin
     }
 
     /**
-     * Format and wrap currency
-     *
-     * @param int|float|string|null $value
+     * Format according to pattern and wrap
      */
-    public function currency($value, ?string $code, ?bool $rounded = null): ?Markup
+    public function pattern($value, string $pattern, ?string $locale = null): ?Element
+    {
+        if (null === ($value = $this->normalizeNumeric($value))) {
+            return null;
+        }
+
+        return $this->html->el('span.number.pattern', function () use ($value, $pattern, $locale) {
+            $formatter = new NumberFormatter($this->getLocale($locale), NumberFormatter::PATTERN_DECIMAL, $pattern);
+            $value = $formatter->format($value);
+
+            yield $this->html->el('span.value', $value);
+        });
+    }
+
+    /**
+     * Format and render a decimal
+     */
+    public function decimal($value, ?int $precision = null, ?string $locale = null): ?Element
+    {
+        if (null === ($value = $this->normalizeNumeric($value))) {
+            return null;
+        }
+
+        return $this->html->el('span.number.decimal', function () use ($value, $precision, $locale) {
+            $formatter = new NumberFormatter($this->getLocale($locale), NumberFormatter::DECIMAL);
+
+            if ($precision !== null) {
+                $formatter->setAttribute(NumberFormatter::MAX_FRACTION_DIGITS, $precision);
+            }
+
+            $value = $formatter->format($value);
+            yield $this->html->el('span.value', $value);
+        });
+    }
+
+    /**
+     * Format and wrap currency
+     */
+    public function currency($value, ?string $code, ?bool $rounded = null, ?string $locale = null): ?Element
     {
         if ($value === null || $code === null) {
             return null;
@@ -97,7 +132,7 @@ class Number implements Plugin
 
         $code = strtoupper($code);
 
-        $formatter = new NumberFormatter($this->getLocale(), NumberFormatter::CURRENCY);
+        $formatter = new NumberFormatter($this->getLocale($locale), NumberFormatter::CURRENCY);
         $formatter->setTextAttribute(NumberFormatter::CURRENCY_CODE, $code);
 
         if (
@@ -148,35 +183,20 @@ class Number implements Plugin
 
     /**
      * Format and render a percentage
-     *
-     * @param int|float|string|null $value
      */
-    public function percent($value, float $total = 100.0, int $decimals = 0): ?Element
+    public function percent($value, float $total = 100.0, int $decimals = 0, ?string $locale = null): ?Element
     {
-        if ($value === null || $total <= 0) {
+        if (
+            null === ($value = $this->normalizeNumeric($value, true)) ||
+            $total <= 0
+        ) {
             return null;
         }
 
-        return $this->html->el('span.number.percent', function () use ($value, $total, $decimals) {
-            // Normalize string value
-            if (
-                is_string($value) &&
-                is_numeric($value)
-            ) {
-                $value = $value == (int)$value ?
-                    (int)$value : (float)$value;
-            }
-
-            if (
-                is_int($value) ||
-                is_float($value)
-            ) {
-                $formatter = new NumberFormatter($this->getLocale(), NumberFormatter::PERCENT);
-                $formatter->setAttribute(NumberFormatter::MAX_FRACTION_DIGITS, $decimals);
-                $value = $formatter->format($value / $total);
-            } else {
-                throw Exceptional::InvalidArgument('Percent value is not a number', null, $value);
-            }
+        return $this->html->el('span.number.percent', function () use ($value, $total, $decimals, $locale) {
+            $formatter = new NumberFormatter($this->getLocale($locale), NumberFormatter::PERCENT);
+            $formatter->setAttribute(NumberFormatter::MAX_FRACTION_DIGITS, $decimals);
+            $value = $formatter->format($value / $total);
 
             if (!preg_match('/^(%)?([0-9,.]+)(%)?$/u', $value, $matches)) {
                 return $value;
@@ -194,35 +214,72 @@ class Number implements Plugin
         });
     }
 
+    /**
+     * Format and render a scientific number
+     */
+    public function scientific($value, ?string $locale = null): ?Element
+    {
+        if (null === ($value = $this->normalizeNumeric($value))) {
+            return null;
+        }
+
+        return $this->html->el('span.number.scientific', function () use ($value, $locale) {
+            $formatter = new NumberFormatter($this->getLocale($locale), NumberFormatter::SCIENTIFIC);
+            $value = $formatter->format($value);
+
+            yield $this->html->el('span.value', $value);
+        });
+    }
+
+    /**
+     * Format and render a number as words
+     */
+    public function spellout($value, ?string $locale = null): ?Element
+    {
+        if (null === ($value = $this->normalizeNumeric($value))) {
+            return null;
+        }
+
+        return $this->html->el('span.number.spellout', function () use ($value, $locale) {
+            $formatter = new NumberFormatter($this->getLocale($locale), NumberFormatter::SPELLOUT);
+            $value = $formatter->format($value);
+
+            yield $this->html->el('span.value', $value);
+        });
+    }
+
+    /**
+     * Format and render a number as ordinal
+     */
+    public function ordinal($value, ?string $locale = null): ?Element
+    {
+        if (null === ($value = $this->normalizeNumeric($value))) {
+            return null;
+        }
+
+        return $this->html->el('span.number.ordinal', function () use ($value, $locale) {
+            $formatter = new NumberFormatter($this->getLocale($locale), NumberFormatter::ORDINAL);
+            $value = $formatter->format($value);
+
+            yield $this->html->el('span.value', $value);
+        });
+    }
+
 
     /**
      * Render difference of number from 0
-     *
-     * @param int|float|string|null $diff
      */
-    public function diff($diff, ?bool $invert = false, string $tag = 'sup'): Element
+    public function diff($diff, ?bool $invert = false, ?string $locale = null): ?Element
     {
-        if (!is_numeric($diff)) {
-            throw Exceptional::InvalidArgument(
-                'Diff value is not a number',
-                null,
-                $diff
-            );
+        if (null === ($diff = $this->normalizeNumeric($diff))) {
+            return null;
         }
 
         $diff = (float)$diff;
 
-        if ($diff > 0) {
-            $arrow = '⬆';
-        } elseif ($diff < 0) {
-            $arrow = '⬇';
-        } else {
-            $arrow = '⬌';
-        }
-
-        $output = $this->html->el($tag, [
-            $arrow,
-            $this->wrap(abs($diff))
+        $output = $this->html->el('span.number.diff', [
+            $this->html->el('span.arrow', $this->getDiffArrow($diff)),
+            $this->format(abs($diff), null, $locale)
         ])->addClass('diff');
 
         if ($invert !== null) {
@@ -242,7 +299,7 @@ class Number implements Plugin
     /**
      * Format filesize
      */
-    public function fileSize(?int $bytes): ?Element
+    public function fileSize(?int $bytes, ?string $locale = null): ?Element
     {
         if ($bytes === null) {
             return null;
@@ -254,16 +311,19 @@ class Number implements Plugin
             $bytes /= 1024;
         }
 
-        return $this->html->el('span.numeric.filesize', [
-            $this->html->el('span.value', round($bytes, 2)),
-            $this->html->el('span.unit', $units[$i])
-        ]);
+        $output = $this->wrap(round($bytes, 2), $units[$i], $locale);
+
+        if ($output !== null) {
+            $output->addClass('filesize');
+        }
+
+        return $output;
     }
 
     /**
      * Format filesize as decimal
      */
-    public function fileSizeDec(?int $bytes): ?Element
+    public function fileSizeDec(?int $bytes, ?string $locale = null): ?Element
     {
         if ($bytes === null) {
             return null;
@@ -275,9 +335,12 @@ class Number implements Plugin
             $bytes /= 1000;
         }
 
-        return $this->html->el('span.numeric.filesize', [
-            $this->html->el('span.value', round($bytes, 2)),
-            $this->html->el('span.unit', $units[$i])
-        ]);
+        $output = $this->wrap(round($bytes, 2), $units[$i], $locale);
+
+        if ($output !== null) {
+            $output->addClass('filesize');
+        }
+
+        return $output;
     }
 }
