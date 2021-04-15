@@ -14,15 +14,11 @@ use DecodeLabs\Dictum\Plugin\NumberTrait as NumberPluginTrait;
 use DecodeLabs\Tagged\Element;
 use DecodeLabs\Tagged\Factory;
 
-use NumberFormatter;
-
 /**
  * @implements NumberPlugin<Element>
  */
 class Number implements NumberPlugin
 {
-    use SystemicProxyTrait;
-
     /**
      * @use NumberPluginTrait<Element>
      */
@@ -57,17 +53,14 @@ class Number implements NumberPlugin
      */
     public function format($value, ?string $unit = null, ?string $locale = null): ?Element
     {
-        if ($unit === null && is_string($value) && false !== strpos($value, ' ')) {
-            list($value, $unit) = explode(' ', $value, 2);
-        }
+        $this->expandStringUnitValue($value, $unit);
 
         if (null === ($value = $this->normalizeNumeric($value, true))) {
             return null;
         }
 
         return $this->html->el('span.number', function () use ($value, $unit, $locale) {
-            $formatter = new NumberFormatter($this->getLocale($locale), NumberFormatter::DECIMAL);
-            $value = $formatter->format($value);
+            $value = $this->formatRawDecimal($value, null, $this->getLocale($locale));
 
             yield $this->html->el('span.value', $value);
 
@@ -87,9 +80,7 @@ class Number implements NumberPlugin
         }
 
         return $this->html->el('span.number.pattern', function () use ($value, $pattern, $locale) {
-            $formatter = new NumberFormatter($this->getLocale($locale), NumberFormatter::PATTERN_DECIMAL, $pattern);
-            $value = $formatter->format($value);
-
+            $value = $this->formatRawPatternDecimal($value, $pattern, $this->getLocale($locale));
             yield $this->html->el('span.value', $value);
         });
     }
@@ -104,13 +95,7 @@ class Number implements NumberPlugin
         }
 
         return $this->html->el('span.number.decimal', function () use ($value, $precision, $locale) {
-            $formatter = new NumberFormatter($this->getLocale($locale), NumberFormatter::DECIMAL);
-
-            if ($precision !== null) {
-                $formatter->setAttribute(NumberFormatter::MAX_FRACTION_DIGITS, $precision);
-            }
-
-            $value = $formatter->format($value);
+            $value = $this->formatRawDecimal($value, $precision, $this->getLocale($locale));
             yield $this->html->el('span.value', $value);
         });
     }
@@ -120,35 +105,17 @@ class Number implements NumberPlugin
      */
     public function currency($value, ?string $code, ?bool $rounded = null, ?string $locale = null): ?Element
     {
-        if ($value === null || $code === null) {
+        if (
+            null === ($value = $this->normalizeNumeric($value)) ||
+            $code === null
+        ) {
             return null;
         }
 
-        if (is_int($value)) {
-            $value = (float)$value;
-        } elseif (!is_float($value)) {
-            $value = (float)((string)$value);
-        }
+        $value = $this->formatRawCurrency($value, $code, $rounded, $this->getLocale($locale));
 
-        $code = strtoupper($code);
-
-        $formatter = new NumberFormatter($this->getLocale($locale), NumberFormatter::CURRENCY);
-        $formatter->setTextAttribute(NumberFormatter::CURRENCY_CODE, $code);
-
-        if (
-            $rounded === true ||
-            (
-                $rounded === null &&
-                (round($value, 0) == round($value, 2))
-            )
-        ) {
-            $formatter->setAttribute(NumberFormatter::FRACTION_DIGITS, 0);
-        }
-
-        $output = $formatter->formatCurrency($value, $code);
-
-        if (!preg_match('/^(([^0-9.,\s][^0-9]*)([\s]*))?([0-9.,]+)(([\s]*)([^0-9.,\s][^0-9]*))?$/u', $output, $matches)) {
-            return $this->html->el('span.number.currency', $output);
+        if (!preg_match('/^(([^0-9.,\s][^0-9]*)([\s]*))?([0-9.,]+)(([\s]*)([^0-9.,\s][^0-9]*))?$/u', $value, $matches)) {
+            return $this->html->el('span.number.currency', $value);
         }
 
         return $this->html->el('span.number.currency', function () use ($matches) {
@@ -194,9 +161,7 @@ class Number implements NumberPlugin
         }
 
         return $this->html->el('span.number.percent', function () use ($value, $total, $decimals, $locale) {
-            $formatter = new NumberFormatter($this->getLocale($locale), NumberFormatter::PERCENT);
-            $formatter->setAttribute(NumberFormatter::MAX_FRACTION_DIGITS, $decimals);
-            $value = $formatter->format($value / $total);
+            $value = $this->formatRawPercent($value, $total, $decimals, $this->getLocale($locale));
 
             if (!preg_match('/^(%)?([0-9,.]+)(%)?$/u', $value, $matches)) {
                 return $value;
@@ -224,9 +189,7 @@ class Number implements NumberPlugin
         }
 
         return $this->html->el('span.number.scientific', function () use ($value, $locale) {
-            $formatter = new NumberFormatter($this->getLocale($locale), NumberFormatter::SCIENTIFIC);
-            $value = $formatter->format($value);
-
+            $value = $this->formatRawScientific($value, $this->getLocale($locale));
             yield $this->html->el('span.value', $value);
         });
     }
@@ -241,9 +204,7 @@ class Number implements NumberPlugin
         }
 
         return $this->html->el('span.number.spellout', function () use ($value, $locale) {
-            $formatter = new NumberFormatter($this->getLocale($locale), NumberFormatter::SPELLOUT);
-            $value = $formatter->format($value);
-
+            $value = $this->formatRawSpellout($value, $this->getLocale($locale));
             yield $this->html->el('span.value', $value);
         });
     }
@@ -258,9 +219,7 @@ class Number implements NumberPlugin
         }
 
         return $this->html->el('span.number.ordinal', function () use ($value, $locale) {
-            $formatter = new NumberFormatter($this->getLocale($locale), NumberFormatter::ORDINAL);
-            $value = $formatter->format($value);
-
+            $value = $this->formatRawOrdinal($value, $this->getLocale($locale));
             yield $this->html->el('span.value', $value);
         });
     }
@@ -277,16 +236,16 @@ class Number implements NumberPlugin
 
         $diff = (float)$diff;
 
+        if ($invert) {
+            $diff *= -1;
+        }
+
         $output = $this->html->el('span.number.diff', [
             $this->html->el('span.arrow', $this->getDiffArrow($diff)),
             $this->format(abs($diff), null, $locale)
         ])->addClass('diff');
 
         if ($invert !== null) {
-            if ($invert) {
-                $diff *= -1;
-            }
-
             $output->addClass($diff < 0 ? 'negative' : 'positive');
         }
 
@@ -305,19 +264,15 @@ class Number implements NumberPlugin
             return null;
         }
 
-        $units = ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB'];
+        $output = $this->formatRawFileSize($bytes, $this->getLocale($locale));
+        $parts = explode(' ', $output);
+        $value = $parts[0] ?? '0';
+        $unit = $parts[1] ?? 'B';
 
-        for ($i = 0; $bytes > 1024; $i++) {
-            $bytes /= 1024;
-        }
-
-        $output = $this->wrap(round($bytes, 2), $units[$i], $locale);
-
-        if ($output !== null) {
-            $output->addClass('filesize');
-        }
-
-        return $output;
+        return $this->html->el('span.number.filesize', [
+            $this->html->el('span.value', $value),
+            $this->html->el('span.unit', $unit)
+        ]);
     }
 
     /**
@@ -329,18 +284,14 @@ class Number implements NumberPlugin
             return null;
         }
 
-        $units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
+        $output = $this->formatRawFileSizeDec($bytes, $this->getLocale($locale));
+        $parts = explode(' ', $output);
+        $value = $parts[0] ?? '0';
+        $unit = $parts[1] ?? 'B';
 
-        for ($i = 0; $bytes > 1000; $i++) {
-            $bytes /= 1000;
-        }
-
-        $output = $this->wrap(round($bytes, 2), $units[$i], $locale);
-
-        if ($output !== null) {
-            $output->addClass('filesize');
-        }
-
-        return $output;
+        return $this->html->el('span.number.filesize', [
+            $this->html->el('span.value', $value),
+            $this->html->el('span.unit', $unit)
+        ]);
     }
 }

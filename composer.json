@@ -15,7 +15,7 @@
         "symfony/polyfill-php80": "^1.22",
 
         "decodelabs/collections": "^0.6.1",
-        "decodelabs/dictum": "^0.2.3",
+        "decodelabs/dictum": "^0.2.4",
         "decodelabs/elementary": "^0.1.4",
         "decodelabs/exceptional": "^0.3",
         "decodelabs/gadgets": "^0.7",
