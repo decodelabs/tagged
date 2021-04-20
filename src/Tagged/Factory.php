@@ -131,7 +131,7 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
      *
      * @param mixed ...$content
      */
-    public function wrap(...$content): Markup
+    public function wrap(...$content): Buffer
     {
         return ContentCollection::normalize($content);
     }
@@ -141,7 +141,7 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
      *
      * @param mixed ...$content
      */
-    public function content(...$content): Markup
+    public function content(...$content): ContentCollection
     {
         return new ContentCollection($content);
     }
