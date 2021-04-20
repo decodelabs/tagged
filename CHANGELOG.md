@@ -1,3 +1,6 @@
+## v0.11.6 (2021-04-20)
+* Improved Factory Markup wrapper return types
+
 ## v0.11.5 (2021-04-15)
 * Updated Time and Number plugins to use Dictum interfaces
 * Simplified Time and Number plugin implementations
