@@ -1,3 +1,6 @@
+## v0.11.8 (2021-04-30)
+* Updated data attribute return type defs
+
 ## v0.11.7 (2021-04-30)
 * Updated return type defs
 
