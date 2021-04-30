@@ -1,3 +1,5 @@
+* Updated return type defs
+
 ## v0.11.6 (2021-04-20)
 * Improved Factory Markup wrapper return types
 

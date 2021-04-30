@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace DecodeLabs\Tagged;
 
-use DecodeLabs\Elementary\Tag as TagInterface;
 use DecodeLabs\Exceptional;
 use DecodeLabs\Glitch\Proxy as Glitch;
 use DecodeLabs\Veneer\Plugin\AccessTarget as VeneerPluginAccessTarget;
@@ -100,7 +99,7 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
      *
      * @param array<string, mixed>|null $attributes
      */
-    public function tag(string $name, array $attributes = null): TagInterface
+    public function tag(string $name, array $attributes = null): Tag
     {
         return new Tag($name, $attributes);
     }
@@ -155,8 +154,13 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
      * @param iterable<mixed>|null $list
      * @param array<string, mixed>|null $attributes
      */
-    public function list(?iterable $list, string $container, ?string $name, ?callable $callback = null, ?array $attributes = null): Element
-    {
+    public function list(
+        ?iterable $list,
+        string $container,
+        ?string $name,
+        ?callable $callback = null,
+        ?array $attributes = null
+    ): Element {
         $output = Element::create($container, function () use ($list, $name, $callback) {
             if (!$list) {
                 return;
@@ -198,8 +202,12 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
      * @param iterable<mixed>|null $list
      * @param array<string, mixed>|null $attributes
      */
-    public function elements(?iterable $list, ?string $name, ?callable $callback = null, ?array $attributes = null): Buffer
-    {
+    public function elements(
+        ?iterable $list,
+        ?string $name,
+        ?callable $callback = null,
+        ?array $attributes = null
+    ): Buffer {
         return ContentCollection::normalize(function () use ($list, $name, $callback, $attributes) {
             if (!$list) {
                 return;
@@ -265,8 +273,11 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
      * @param iterable<mixed>|null $list
      * @param array<string, mixed>|null $attributes
      */
-    public function uList(?iterable $list, ?callable $renderer = null, ?array $attributes = null): Element
-    {
+    public function uList(
+        ?iterable $list,
+        ?callable $renderer = null,
+        ?array $attributes = null
+    ): Element {
         return $this->list($list, 'ul', '?li', $renderer ?? function ($value) {
             return $value;
         }, $attributes);
@@ -278,8 +289,11 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
      * @param iterable<mixed>|null $list
      * @param array<string, mixed>|null $attributes
      */
-    public function oList(?iterable $list, ?callable $renderer = null, ?array $attributes = null): Element
-    {
+    public function oList(
+        ?iterable $list,
+        ?callable $renderer = null,
+        ?array $attributes = null
+    ): Element {
         return $this->list($list, 'ol', '?li', $renderer ?? function ($value) {
             return $value;
         }, $attributes);
@@ -291,8 +305,11 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
      * @param iterable<mixed>|null $list
      * @param array<string, mixed>|null $attributes
      */
-    public function dList(?iterable $list, ?callable $renderer = null, ?array $attributes = null): Element
-    {
+    public function dList(
+        ?iterable $list,
+        ?callable $renderer = null,
+        ?array $attributes = null
+    ): Element {
         $renderer = $renderer ?? function ($value) {
             return $value;
         };
@@ -328,8 +345,13 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
      *
      * @param iterable<mixed>|null $list
      */
-    public function iList(?iterable $list, ?callable $renderer = null, ?string $delimiter = null, ?string $finalDelimiter = null, ?int $limit = null): Element
-    {
+    public function iList(
+        ?iterable $list,
+        ?callable $renderer = null,
+        ?string $delimiter = null,
+        ?string $finalDelimiter = null,
+        ?int $limit = null
+    ): Element {
         if ($delimiter === null) {
             $delimiter = ', ';
         }

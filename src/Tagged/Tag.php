@@ -75,6 +75,7 @@ class Tag implements
      * Set attribute value
      *
      * @param mixed $value
+     * @return $this
      */
     public function setAttribute(string $key, $value): AttributeContainer
     {
@@ -124,6 +125,7 @@ class Tag implements
      * Add data attributes with map
      *
      * @param array<string, mixed> $attributes
+     * @return $this
      */
     public function setDataAttributes(array $attributes): AttributeContainer
     {
@@ -221,6 +223,7 @@ class Tag implements
 
     /**
      * Remove all data attributes
+     * @return $this
      */
     public function clearDataAttributes(): AttributeContainer
     {
@@ -253,8 +256,10 @@ class Tag implements
 
     /**
      * Toggle hidden attribute on/off
+     *
+     * @return $this
      */
-    public function setHidden(bool $hidden): TagInterface
+    public function setHidden(bool $hidden): Tag
     {
         $this->setAttribute('hidden', $hidden);
         return $this;
@@ -270,8 +275,10 @@ class Tag implements
 
     /**
      * Set hidden attribute
+     *
+     * @return $this
      */
-    public function hide(): TagInterface
+    public function hide(): Tag
     {
         $this->setAttribute('hidden', true);
         return $this;
@@ -279,8 +286,10 @@ class Tag implements
 
     /**
      * Remove hidden attribute
+     *
+     * @return $this
      */
-    public function show(): TagInterface
+    public function show(): Tag
     {
         $this->removeAttribute('hidden');
         return $this;
@@ -289,8 +298,10 @@ class Tag implements
 
     /**
      * Set title attribute
+     *
+     * @return $this
      */
-    public function setTitle(?string $title): TagInterface
+    public function setTitle(?string $title): Tag
     {
         $this->setAttribute('title', $title);
         return $this;
