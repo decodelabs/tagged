@@ -140,11 +140,13 @@ class Tag implements
      * Replace all data attributes with new map
      *
      * @param array<string, mixed> $attributes
+     * @return $this
      */
     public function replaceDataAttributes(array $attributes): AttributeContainer
     {
         $this->clearDataAttributes();
-        return $this->setDataAttributes($attributes);
+        $this->setDataAttributes($attributes);
+        return $this;
     }
 
     /**
@@ -169,10 +171,12 @@ class Tag implements
      * Replace single data value
      *
      * @param mixed $value
+     * @return $this
      */
     public function setDataAttribute(string $key, $value): AttributeContainer
     {
-        return $this->setAttribute('data-' . $key, $value);
+        $this->setAttribute('data-' . $key, $value);
+        return $this;
     }
 
     /**
@@ -187,6 +191,7 @@ class Tag implements
 
     /**
      * Remove single data attribute
+     * @return $this
      */
     public function removeDataAttribute(string ...$keys): AttributeContainer
     {
@@ -194,7 +199,8 @@ class Tag implements
             return 'data-' . $key;
         }, $keys);
 
-        return $this->removeAttribute(...$keys);
+        $this->removeAttribute(...$keys);
+        return $this;
     }
 
     /**
