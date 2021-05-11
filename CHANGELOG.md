@@ -1,3 +1,6 @@
+## v0.11.9 (2021-05-11)
+* Added Veneer IDE support stub
+
 ## v0.11.8 (2021-04-30)
 * Updated data attribute return type defs
 
