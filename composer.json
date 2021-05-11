@@ -35,7 +35,10 @@
         "michelf/php-markdown": "^1.9",
 
         "decodelabs/systemic": "^0.8",
-        "decodelabs/chirp": "^0.6"
+        "decodelabs/chirp": "^0.6",
+
+        "decodelabs/atlas": "^0.9",
+        "decodelabs/terminus": "^0.7"
     },
     "suggest": {
         "nesbot/carbon": "Support for time interval formatting",
