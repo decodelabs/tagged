@@ -20,7 +20,7 @@
         "decodelabs/exceptional": "^0.3",
         "decodelabs/gadgets": "^0.7",
         "decodelabs/glitch-support": "^0.3",
-        "decodelabs/veneer": "^0.7|^0.8"
+        "decodelabs/veneer": "^0.8"
     },
     "require-dev": {
         "phpunit/phpunit": "^8",
