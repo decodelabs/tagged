@@ -1,3 +1,6 @@
+## v0.11.10 (2021-10-20)
+* Updated Veneer dependency
+
 ## v0.11.9 (2021-05-11)
 * Added Veneer IDE support stub
 
