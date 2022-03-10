@@ -11,6 +11,7 @@ namespace DecodeLabs\Tagged\Embed;
 
 use DateTime;
 
+use DecodeLabs\Coercion;
 use DecodeLabs\Collections\Tree\NativeMutable as Tree;
 use DecodeLabs\Exceptional;
 use DecodeLabs\Tagged\Markup;
@@ -116,7 +117,9 @@ class Vimeo extends Video
      */
     public function lookupThumbnail(?array $options = null): ?string
     {
-        return $this->lookupMeta($options)['thumbnailUrl'] ?? null;
+        return Coercion::toStringOrNull(
+            $this->lookupMeta($options)['thumbnailUrl'] ?? null
+        );
     }
 
     /**
@@ -138,6 +141,7 @@ class Vimeo extends Video
                     'header' => 'Referer: ' . $referrer
                 ]
             ])))) {
+                /* @phpstan-ignore-next-line */
                 $json = new Tree(json_decode($json, true));
             } else {
                 $json = new Tree();

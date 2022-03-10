@@ -153,6 +153,7 @@ class Youtube extends Video
 
         try {
             if (false !== ($json = file_get_contents($url))) {
+                /* @phpstan-ignore-next-line */
                 $json = new Tree(json_decode($json, true));
             } else {
                 $json = new Tree();

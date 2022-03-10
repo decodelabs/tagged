@@ -14,20 +14,20 @@
         "symfony/polyfill-mbstring": "^1.7",
         "symfony/polyfill-php80": "^1.22",
 
+        "decodelabs/coercion": "^0.1",
         "decodelabs/collections": "^0.6.1",
-        "decodelabs/dictum": "^0.2.4",
+        "decodelabs/dictum": "^0.3",
         "decodelabs/elementary": "^0.1.4",
         "decodelabs/exceptional": "^0.3",
-        "decodelabs/gadgets": "^0.7",
         "decodelabs/glitch-support": "^0.3",
         "decodelabs/veneer": "^0.8"
     },
     "require-dev": {
         "phpunit/phpunit": "^8",
-        "phpstan/phpstan": "^0.12.45",
+        "phpstan/phpstan": "^1",
         "phpstan/extension-installer": "^1.0",
         "decodelabs/phpstan-decodelabs": "^0.5",
-        "symplify/easy-coding-standard": "^8.3",
+        "symplify/easy-coding-standard": "^10",
 
         "nesbot/carbon": "^2.25",
         "soundasleep/html2text": "^1.1",
