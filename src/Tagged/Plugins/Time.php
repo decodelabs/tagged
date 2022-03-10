@@ -73,6 +73,27 @@ class Time implements TimePlugin
     }
 
     /**
+     * Custom locale format a date with ICU and wrap it
+     */
+    public function pattern(
+        $date,
+        string $pattern,
+        $timezone = true,
+        ?string $locale = null
+    ): ?Element {
+        $output = $this->formatRawIcuDate($date, $pattern, $timezone, $locale);
+
+        if ($output === null) {
+            return null;
+        }
+
+        return $this->wrap(
+            $date->format($timezone === false ? 'Y-m-d' : DateTime::W3C),
+            $output
+        );
+    }
+
+    /**
      * Format date according to locale
      */
     public function locale($date, $dateSize = true, $timeSize = true, $timezone = true, ?string $locale = null): ?Element

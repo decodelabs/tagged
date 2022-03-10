@@ -110,6 +110,8 @@ trait MediaTrait
                     }
 
                     $url = trim($matches[2]);
+
+                    /** @var class-string<static> */
                     $class = self::getClassForUrl($url);
                     $output = new $class($url, null, null, $embed);
 
@@ -161,10 +163,12 @@ trait MediaTrait
                 );
             }
 
+            /** @var class-string<static> */
             $class = self::getClassForUrl($url);
             $output = new $class($url);
         }
 
+        /* @phpstan-ignore-next-line */
         return $output;
     }
 

@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace DecodeLabs\Tagged;
 
+use DecodeLabs\Coercion;
 use DecodeLabs\Exceptional;
 use DecodeLabs\Glitch\Proxy as Glitch;
 use DecodeLabs\Veneer\Plugin\AccessTarget as VeneerPluginAccessTarget;
@@ -85,6 +86,7 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
             throw Exceptional::InvalidArgument($name . ' is not a recognised Veneer plugin');
         }
 
+        /** @var class-string<VeneerPlugin> */
         $class = '\\DecodeLabs\\Tagged\\Plugins\\' . ucfirst($name);
         return new $class($this);
     }
@@ -122,7 +124,7 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
      */
     public function raw($html): Buffer
     {
-        return new Buffer((string)$html);
+        return new Buffer(Coercion::forceString($html));
     }
 
     /**
@@ -465,10 +467,10 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
         }
 
         try {
-            return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
+            return htmlspecialchars(Coercion::forceString($value), ENT_QUOTES, 'UTF-8');
         } catch (Throwable $e) {
             Glitch::logException($e);
-            return (string)$value;
+            return Coercion::forceString($value);
         }
     }
 }

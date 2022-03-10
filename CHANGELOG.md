@@ -1,3 +1,8 @@
+## v0.12.0 (2022-03-10)
+* Added pattern() to Time plugin
+* Transitioned from Travis to GHA
+* Updated PHPStan and ECS dependencies
+
 ## v0.11.10 (2021-10-20)
 * Updated Veneer dependency
 

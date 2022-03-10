@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace DecodeLabs\Tagged;
 
+use DecodeLabs\Coercion;
 use DecodeLabs\Collections\AttributeContainer;
 use DecodeLabs\Elementary\Attribute\ClassList\Container as ClassListContainer;
 use DecodeLabs\Elementary\Attribute\ClassList\ContainerTrait as ClassListContainerTrait;
@@ -95,7 +96,7 @@ class Tag implements
         }
 
         if (!is_bool($value)) {
-            $value = (string)$value;
+            $value = Coercion::forceString($value);
         }
 
         $this->attributes[$key] = $value;
@@ -318,7 +319,7 @@ class Tag implements
      */
     public function getTitle(): ?string
     {
-        return $this->getAttribute('title');
+        return Coercion::toStringOrNull($this->getAttribute('title'));
     }
 
 

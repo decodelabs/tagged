@@ -11,6 +11,7 @@ namespace DecodeLabs\Tagged\Embed;
 
 use DateTime;
 
+use DecodeLabs\Coercion;
 use DecodeLabs\Collections\Tree\NativeMutable as Tree;
 use DecodeLabs\Exceptional;
 
@@ -151,7 +152,8 @@ class Audioboom extends Audio
             return null;
         }
 
-        return $json['thumbnail_url'] ?? null;
+        /** @var array<string, mixed> $json */
+        return Coercion::toStringOrNull($json['thumbnail_url'] ?? null);
     }
 
     /**
@@ -186,6 +188,7 @@ class Audioboom extends Audio
 
         try {
             if (false !== ($json = file_get_contents($url))) {
+                /* @phpstan-ignore-next-line */
                 $json = new Tree(json_decode($json, true));
             } else {
                 $json = new Tree();
@@ -223,6 +226,7 @@ class Audioboom extends Audio
 
         try {
             if (false !== ($json = file_get_contents($url))) {
+                /* @phpstan-ignore-next-line */
                 $json = new Tree(json_decode($json, true));
             } else {
                 $json = new Tree();
@@ -237,7 +241,7 @@ class Audioboom extends Audio
 
         foreach ($playlist->memberships as $item) {
             $duration += $item->audio_clip['duration'];
-            $currentDate = new DateTime($item->audio_clip['uploaded_at']);
+            $currentDate = new DateTime(Coercion::toString($item->audio_clip['uploaded_at']));
             $ts = $currentDate->getTimestamp();
 
             if ($ts > $uploadTs) {

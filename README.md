@@ -1,11 +1,11 @@
 # Tagged
 
-[![PHP from Packagist](https://img.shields.io/packagist/php-v/decodelabs/tagged?style=flat-square)](https://packagist.org/packages/decodelabs/tagged)
-[![Latest Version](https://img.shields.io/packagist/v/decodelabs/tagged.svg?style=flat-square)](https://packagist.org/packages/decodelabs/tagged)
-[![Total Downloads](https://img.shields.io/packagist/dt/decodelabs/tagged.svg?style=flat-square)](https://packagist.org/packages/decodelabs/tagged)
-[![Build Status](https://img.shields.io/travis/com/decodelabs/tagged/main.svg?style=flat-square)](https://travis-ci.com/decodelabs/tagged)
-[![PHPStan](https://img.shields.io/badge/PHPStan-enabled-44CC11.svg?longCache=true&style=flat-square)](https://github.com/phpstan/phpstan)
-[![License](https://img.shields.io/packagist/l/decodelabs/tagged?style=flat-square)](https://packagist.org/packages/decodelabs/tagged)
+[![PHP from Packagist](https://img.shields.io/packagist/php-v/decodelabs/tagged?style=flat)](https://packagist.org/packages/decodelabs/tagged)
+[![Latest Version](https://img.shields.io/packagist/v/decodelabs/tagged.svg?style=flat)](https://packagist.org/packages/decodelabs/tagged)
+[![Total Downloads](https://img.shields.io/packagist/dt/decodelabs/tagged.svg?style=flat)](https://packagist.org/packages/decodelabs/tagged)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/decodelabs/tagged/PHP%20Composer)](https://github.com/decodelabs/tagged/actions/workflows/php.yml)
+[![PHPStan](https://img.shields.io/badge/PHPStan-enabled-44CC11.svg?longCache=true&style=flat)](https://github.com/phpstan/phpstan)
+[![License](https://img.shields.io/packagist/l/decodelabs/tagged?style=flat)](https://packagist.org/packages/decodelabs/tagged)
 
 PHP markup generation without the fuss.
 
