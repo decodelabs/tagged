@@ -114,26 +114,6 @@ echo Html::div(function($el) {
 ```
 
 
-### Convert to HTML
-Parse various formats and convert to HTML:
-
-```php
-use DecodeLabs\Tagged as Html;
-
-// Plain text
-echo Html::$parse->plainText($plainText); // Replace \n with <br />
-
-// Markdown
-echo Html::$parse->markdown($myMarkdown); // Trusted markdown
-echo Html::$parse->userMarkdown($myMarkdown); // Untrusted markdown
-echo Html::$parse->inlineMarkdown($myMarkdown); // Trusted inline markdown
-echo Html::$parse->userInlineMarkdown($myMarkdown); // Untrusted inline markdown
-
-// Tweet
-echo Html::$parse->tweet($plainTweet); // Convert tweet source to HTML
-```
-
-
 ### Time and date
 Format and wrap dates and intervals
 
@@ -190,22 +170,18 @@ echo Html::$embed->video('https://www.youtube.com/watch?v=RG9TMn1FJzc');
 ```
 
 
-### To text
-Convert and normalize html to plain text:
+## Deprecated functionality
 
-```php
-use DecodeLabs\Tagged as Html;
+Looking for the functionality that was here before? It's likely been moved to a dedicated library:
 
-Html::$toText->convert('<h1>My html</h1>'); // My html
-Html::$toText->preview('<h1>My html</h1>', 5); // My ht...
-```
-
-
-## XML handling
-
-Looking for the XML stuff that was here?
+### XML handling
 
 The XML manipulation functionality of Tagged has been moved to its own project, [Exemplar](https://github.com/decodelabs/exemplar/).
+
+
+### Content parsing (Tagged::$parse and ::$toText plugins)
+
+Content transformations are now handled by the [Metamorph](https://github.com/decodelabs/metamorph/) library.
 
 
 ## Licensing
