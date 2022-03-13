@@ -1,3 +1,6 @@
+## v0.13.0 (2022-03-13)
+* Moved $parse and $toText plugins to Metamorph
+
 ## v0.12.0 (2022-03-10)
 * Added pattern() to Time plugin
 * Transitioned from Travis to GHA
