@@ -86,7 +86,7 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
             throw Exceptional::InvalidArgument($name . ' is not a recognised Veneer plugin');
         }
 
-        /** @var class-string<VeneerPlugin> */
+        /** @phpstan-var class-string<VeneerPlugin> */
         $class = '\\DecodeLabs\\Tagged\\Plugins\\' . ucfirst($name);
         return new $class($this);
     }
