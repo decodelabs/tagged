@@ -1,3 +1,8 @@
+## v0.14.0 (2022-08-23)
+* Removed PHP7 compatibility
+* Updated ECS to v11
+* Updated PHPUnit to v9
+
 ## v0.13.0 (2022-03-13)
 * Moved $parse and $toText plugins to Metamorph
 
