@@ -16,13 +16,6 @@ PHP markup generation without the fuss.
 composer require decodelabs/tagged
 ```
 
-### PHP version
-
-_Please note, the final v1 releases of all Decode Labs libraries will target **PHP8** or above._
-
-Current support for earlier versions of PHP will be phased out in the coming months.
-
-
 ## Usage
 
 Tagged uses [Veneer](https://github.com/decodelabs/veneer) to provide a unified frontage under <code>DecodeLabs\Tagged</code>.

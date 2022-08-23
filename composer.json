@@ -9,31 +9,25 @@
         "email": "tom@inflatablecookie.com"
     }],
     "require": {
-        "php": "^7.2|^8.0",
+        "php": "^8.0",
         "ext-intl": "*",
         "symfony/polyfill-mbstring": "^1.7",
-        "symfony/polyfill-php80": "^1.22",
 
-        "decodelabs/coercion": "^0.1",
-        "decodelabs/collections": "^0.6.1",
-        "decodelabs/dictum": "^0.3",
-        "decodelabs/elementary": "^0.1.4",
-        "decodelabs/exceptional": "^0.3",
-        "decodelabs/glitch-support": "^0.3",
-        "decodelabs/veneer": "^0.8"
+        "decodelabs/coercion": "^0.2",
+        "decodelabs/collections": "^0.7",
+        "decodelabs/dictum": "^0.4",
+        "decodelabs/elementary": "^0.2",
+        "decodelabs/exceptional": "^0.4",
+        "decodelabs/glitch-support": "^0.4",
+        "decodelabs/veneer": "^0.9"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8",
+        "phpunit/phpunit": "^9",
         "phpstan/phpstan": "^1",
         "phpstan/extension-installer": "^1.0",
-        "decodelabs/phpstan-decodelabs": "^0.5",
-        "symplify/easy-coding-standard": "^10",
+        "symplify/easy-coding-standard": "^11",
 
-        "nesbot/carbon": "^2.25",
-
-        "decodelabs/systemic": "^0.8",
-        "decodelabs/atlas": "^0.9",
-        "decodelabs/terminus": "^0.7"
+        "decodelabs/phpstan-decodelabs": "^0.6"
     },
     "suggest": {
         "nesbot/carbon": "Support for time interval formatting",
@@ -49,7 +43,12 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-develop": "0.13.x-dev"
+            "dev-develop": "0.14.x-dev"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "phpstan/extension-installer": true
         }
     },
     "scripts": {
