@@ -427,7 +427,7 @@ class Factory implements
             }
 
             if ($more) {
-                yield Element::create('em.more', '… +' . $more);
+                yield Element::create('em.more', '… +' . $more); // @ignore-non-ascii
             }
         });
     }
