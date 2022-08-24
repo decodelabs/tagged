@@ -13,7 +13,10 @@ use DecodeLabs\Elementary\Buffer as BufferInterface;
 use DecodeLabs\Elementary\BufferTrait;
 use DecodeLabs\Glitch\Dumpable;
 
-class Buffer implements BufferInterface, Markup, Dumpable
+class Buffer implements
+    BufferInterface,
+    Markup,
+    Dumpable
 {
     use BufferTrait;
 }

@@ -20,20 +20,17 @@ use ErrorException;
 
 class Youtube extends Video
 {
-    /**
-     * @var string
-     */
-    protected $youtubeId;
+    protected string $youtubeId;
 
     /**
      * @var array<string, mixed>
      */
-    protected $options = [];
+    protected array $options = [];
 
     /**
      * Extract parts from URL
      */
-    protected function setUrl(?string $url): Media
+    protected function setUrl(?string $url): static
     {
         parent::setUrl($url);
 

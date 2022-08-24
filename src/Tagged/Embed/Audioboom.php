@@ -22,25 +22,18 @@ use ErrorException;
 
 class Audioboom extends Audio
 {
-    /**
-     * @var string
-     */
-    protected $audioboomId;
-
-    /**
-     * @var string
-     */
-    protected $type = 'embed';
+    protected string $audioboomId;
+    protected string $type = 'embed';
 
     /**
      * @var array<string, string>
      */
-    protected $options = [];
+    protected array $options = [];
 
     /**
      * Extract parts from URL
      */
-    protected function setUrl(?string $url): Media
+    protected function setUrl(?string $url): static
     {
         parent::setUrl($url);
 

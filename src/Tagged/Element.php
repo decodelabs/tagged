@@ -19,18 +19,22 @@ use Throwable;
 /**
  * @implements IteratorAggregate<mixed>
  */
-class Element extends Tag implements IteratorAggregate, ElementInterface
+class Element extends Tag implements
+    IteratorAggregate,
+    ElementInterface
 {
     use ElementTrait;
 
     /**
      * Apply nested by string name
      *
-     * @param mixed $content
      * @param array<string, mixed>|null $attributes
      */
-    public static function create(string $name, $content = null, array $attributes = null): Element
-    {
+    public static function create(
+        string $name,
+        mixed $content = null,
+        array $attributes = null
+    ): self {
         if (false !== strpos($name, '>')) {
             $parts = explode('>', $name);
 

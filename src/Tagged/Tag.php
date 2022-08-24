@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace DecodeLabs\Tagged;
 
 use DecodeLabs\Coercion;
-use DecodeLabs\Collections\AttributeContainer;
 use DecodeLabs\Elementary\Attribute\ClassList\Container as ClassListContainer;
 use DecodeLabs\Elementary\Attribute\ClassList\ContainerTrait as ClassListContainerTrait;
 use DecodeLabs\Elementary\Buffer as BufferInterface;
@@ -75,11 +74,12 @@ class Tag implements
     /**
      * Set attribute value
      *
-     * @param mixed $value
      * @return $this
      */
-    public function setAttribute(string $key, $value): AttributeContainer
-    {
+    public function setAttribute(
+        string $key,
+        mixed $value
+    ): static {
         $key = strtolower($key);
 
         if ($key == 'class') {
@@ -108,7 +108,7 @@ class Tag implements
      *
      * @return mixed
      */
-    public function getAttribute(string $key)
+    public function getAttribute(string $key): mixed
     {
         $key = strtolower($key);
 
@@ -128,7 +128,7 @@ class Tag implements
      * @param array<string, mixed> $attributes
      * @return $this
      */
-    public function setDataAttributes(array $attributes): AttributeContainer
+    public function setDataAttributes(array $attributes): static
     {
         foreach ($attributes as $key => $value) {
             $this->setDataAttribute($key, $value);
@@ -143,7 +143,7 @@ class Tag implements
      * @param array<string, mixed> $attributes
      * @return $this
      */
-    public function replaceDataAttributes(array $attributes): AttributeContainer
+    public function replaceDataAttributes(array $attributes): static
     {
         $this->clearDataAttributes();
         $this->setDataAttributes($attributes);
@@ -174,7 +174,7 @@ class Tag implements
      * @param mixed $value
      * @return $this
      */
-    public function setDataAttribute(string $key, $value): AttributeContainer
+    public function setDataAttribute(string $key, $value): static
     {
         $this->setAttribute('data-' . $key, $value);
         return $this;
@@ -194,7 +194,7 @@ class Tag implements
      * Remove single data attribute
      * @return $this
      */
-    public function removeDataAttribute(string ...$keys): AttributeContainer
+    public function removeDataAttribute(string ...$keys): static
     {
         $keys = array_map(function ($key) {
             return 'data-' . $key;
@@ -232,7 +232,7 @@ class Tag implements
      * Remove all data attributes
      * @return $this
      */
-    public function clearDataAttributes(): AttributeContainer
+    public function clearDataAttributes(): static
     {
         foreach (array_keys($this->attributes) as $key) {
             if (preg_match('/^data\-/i', (string)$key)) {

@@ -19,23 +19,25 @@ use IteratorAggregate;
  * @implements IteratorAggregate<mixed>
  * @implements Sequence<mixed>
  */
-class ContentCollection implements Markup, IteratorAggregate, Sequence
+class ContentCollection implements
+    Markup,
+    IteratorAggregate,
+    Sequence
 {
-    public const MUTABLE = true;
-
     /**
      * @use SequenceTrait<mixed>
      */
     use SequenceTrait;
     use ChildRendererTrait;
+    public const MUTABLE = true;
 
     /**
      * Normalize abitrary content
-     *
-     * @param mixed $content
      */
-    public static function normalize($content, bool $pretty = false): Buffer
-    {
+    public static function normalize(
+        mixed $content,
+        bool $pretty = false
+    ): Buffer {
         if (!is_array($content)) {
             $content = [$content];
         }

@@ -21,20 +21,17 @@ use ErrorException;
 
 class Vimeo extends Video
 {
-    /**
-     * @var string
-     */
-    protected $vimeoId;
+    protected string $vimeoId;
 
     /**
      * @var array<string, mixed>
      */
-    protected $options = [];
+    protected array $options = [];
 
     /**
      * Extract parts from URL
      */
-    protected function setUrl(?string $url): Media
+    protected function setUrl(?string $url): static
     {
         parent::setUrl($url);
 

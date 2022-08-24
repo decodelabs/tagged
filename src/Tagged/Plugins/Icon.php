@@ -16,26 +16,10 @@ use DecodeLabs\Veneer\Plugin;
 
 class Icon implements Plugin
 {
-    /**
-     * @var Factory
-     */
-    protected $html;
-
-    /**
-     * @var string
-     */
-    protected $format = 'svg';
-
-    /**
-     * @var string|null
-     */
-    protected $svgReference = null;
-
-    /**
-     * @var string
-     */
-    protected $baseClass = 'icon';
-
+    protected Factory $html;
+    protected string $format = 'svg';
+    protected ?string $svgReference = null;
+    protected string $baseClass = 'icon';
 
     /**
      * Init with parent factory
@@ -47,8 +31,10 @@ class Icon implements Plugin
 
     /**
      * Set format mode
+     *
+     * @return $this
      */
-    public function setFormat(string $format): Icon
+    public function setFormat(string $format): static
     {
         switch ($format) {
             case 'svg':
@@ -73,8 +59,10 @@ class Icon implements Plugin
 
     /**
      * Set SVG reference
+     *
+     * @return $this
      */
-    public function setSvgReference(?string $reference): Icon
+    public function setSvgReference(?string $reference): static
     {
         $this->svgReference = $reference;
         return $this;
@@ -90,8 +78,10 @@ class Icon implements Plugin
 
     /**
      * Set base element class
+     *
+     * @return $this
      */
-    public function setBaseClass(string $class): Icon
+    public function setBaseClass(string $class): static
     {
         $this->baseClass = $class;
         return $this;
@@ -129,8 +119,10 @@ class Icon implements Plugin
      *
      * @param array<string> $args
      */
-    public function __call(string $name, array $args): Element
-    {
+    public function __call(
+        string $name,
+        array $args
+    ): Element {
         return $this->__get($name);
     }
 
@@ -149,8 +141,10 @@ class Icon implements Plugin
     /**
      * Yes / no icon
      */
-    public function yesNo(?bool $value, bool $allowNull = true): ?Element
-    {
+    public function yesNo(
+        ?bool $value,
+        bool $allowNull = true
+    ): ?Element {
         if ($value === null && $allowNull) {
             return null;
         }
