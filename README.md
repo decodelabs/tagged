@@ -3,7 +3,7 @@
 [![PHP from Packagist](https://img.shields.io/packagist/php-v/decodelabs/tagged?style=flat)](https://packagist.org/packages/decodelabs/tagged)
 [![Latest Version](https://img.shields.io/packagist/v/decodelabs/tagged.svg?style=flat)](https://packagist.org/packages/decodelabs/tagged)
 [![Total Downloads](https://img.shields.io/packagist/dt/decodelabs/tagged.svg?style=flat)](https://packagist.org/packages/decodelabs/tagged)
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/decodelabs/tagged/PHP%20Composer)](https://github.com/decodelabs/tagged/actions/workflows/php.yml)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/decodelabs/tagged/Integrate)](https://github.com/decodelabs/tagged/actions/workflows/integrate.yml)
 [![PHPStan](https://img.shields.io/badge/PHPStan-enabled-44CC11.svg?longCache=true&style=flat)](https://github.com/phpstan/phpstan)
 [![License](https://img.shields.io/packagist/l/decodelabs/tagged?style=flat)](https://packagist.org/packages/decodelabs/tagged)
 
