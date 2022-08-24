@@ -40,7 +40,7 @@ class Video implements Media
     /**
      * Set to use API (youtube)
      */
-    public function setUseApi(bool $flag): Media
+    public function setUseApi(bool $flag): static
     {
         $this->useApi = $flag;
         return $this;

@@ -21,7 +21,10 @@ use DecodeLabs\Veneer\Plugin\ProviderTrait as VeneerPluginProviderTrait;
 use Stringable;
 use Throwable;
 
-class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
+class Factory implements
+    Markup,
+    VeneerPluginProvider,
+    VeneerPluginAccessTarget
 {
     use VeneerPluginProviderTrait;
     use VeneerPluginAccessTargetTrait;
@@ -39,11 +42,13 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
     /**
      * Instance shortcut to el
      *
-     * @param mixed $content
      * @param array<string, mixed>|null $attributes
      */
-    public function __invoke(string $name, $content, array $attributes = null): Element
-    {
+    public function __invoke(
+        string $name,
+        mixed $content,
+        array $attributes = null
+    ): Element {
         return $this->el($name, $content, $attributes);
     }
 
@@ -52,8 +57,10 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
      *
      * @param array<mixed> $args
      */
-    public function __call(string $name, array $args): Element
-    {
+    public function __call(
+        string $name,
+        array $args
+    ): Element {
         return Element::create($name, ...$args);
     }
 
@@ -101,48 +108,46 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
      *
      * @param array<string, mixed>|null $attributes
      */
-    public function tag(string $name, array $attributes = null): Tag
-    {
+    public function tag(
+        string $name,
+        array $attributes = null
+    ): Tag {
         return new Tag($name, $attributes);
     }
 
     /**
      * Create a standalone element
      *
-     * @param mixed $content
      * @param array<string, mixed>|null $attributes
      */
-    public function el(string $name, $content = null, array $attributes = null): Element
-    {
+    public function el(
+        string $name,
+        mixed $content = null,
+        array $attributes = null
+    ): Element {
         return Element::create($name, $content, $attributes);
     }
 
     /**
      * Wrap raw html string
-     *
-     * @param mixed $html
      */
-    public function raw($html): Buffer
+    public function raw(mixed $html): Buffer
     {
         return new Buffer(Coercion::forceString($html));
     }
 
     /**
      * Normalize arbitrary content
-     *
-     * @param mixed ...$content
      */
-    public function wrap(...$content): Buffer
+    public function wrap(mixed ...$content): Buffer
     {
         return ContentCollection::normalize($content);
     }
 
     /**
      * Wrap arbitrary content as collection
-     *
-     * @param mixed ...$content
      */
-    public function content(...$content): ContentCollection
+    public function content(mixed ...$content): ContentCollection
     {
         return new ContentCollection($content);
     }
@@ -247,8 +252,10 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
      *
      * @param iterable<mixed>|null $list
      */
-    public function loop(?iterable $list, ?callable $callback = null): Buffer
-    {
+    public function loop(
+        ?iterable $list,
+        ?callable $callback = null
+    ): Buffer {
         return ContentCollection::normalize(function () use ($list, $callback) {
             if (!$list) {
                 return;
@@ -430,13 +437,13 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
 
     /**
      * Create image tag
-     *
-     * @param string|Stringable|null $url
-     * @param string|int|null $width
-     * @param string|int|null $height
      */
-    public function image($url, ?string $alt = null, $width = null, $height = null): Element
-    {
+    public function image(
+        string|Stringable|null $url,
+        ?string $alt = null,
+        string|int|null $width = null,
+        string|int|null $height = null
+    ): Element {
         $output = $this->el('img', null, [
             'src' => (string)$url,
             'alt' => $alt
@@ -457,10 +464,8 @@ class Factory implements Markup, VeneerPluginProvider, VeneerPluginAccessTarget
 
     /**
      * Escape HTML
-     *
-     * @param mixed $value
      */
-    public function esc($value): ?string
+    public function esc(mixed $value): ?string
     {
         if ($value === null) {
             return null;

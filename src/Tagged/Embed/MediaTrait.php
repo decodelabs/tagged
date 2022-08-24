@@ -15,75 +15,28 @@ trait MediaTrait
 {
     //public const URL_MAP = [];
 
-    /**
-     * @var string|null
-     */
-    protected $url;
+    protected ?string $url = null;
+    protected ?string $provider = null;
+    protected ?string $id = null;
+    protected ?string $origin = null;
 
-    /**
-     * @var string|null
-     */
-    protected $provider;
+    protected ?int $width = 640;
+    protected ?int $height = 360;
 
-    /**
-     * @var string|null
-     */
-    protected $id;
+    protected bool $allowFullScreen = true;
+    protected bool $autoPlay = false;
 
-    /**
-     * @var string|null
-     */
-    protected $origin;
+    protected ?int $startTime = null;
+    protected ?int $endTime = null;
+    protected ?int $duration = null;
 
-
-    /**
-     * @var int|null
-     */
-    protected $width = 640;
-
-    /**
-     * @var int|null
-     */
-    protected $height = 360;
-
-
-    /**
-     * @var bool
-     */
-    protected $allowFullScreen = true;
-
-    /**
-     * @var bool
-     */
-    protected $autoPlay = false;
-
-
-    /**
-     * @var int|null
-     */
-    protected $startTime;
-
-    /**
-     * @var int|null
-     */
-    protected $endTime;
-
-    /**
-     * @var int|null
-     */
-    protected $duration;
-
-
-    /**
-     * @var string|null
-     */
-    protected $source;
+    protected ?string $source = null;
 
 
     /**
      * Parse embed string
      */
-    public static function parse(string $embed): Media
+    public static function parse(string $embed): static
     {
         $embed = trim($embed);
         $stripEmbed = strip_tags($embed, '<iframe><object><embed><script>');
@@ -208,8 +161,12 @@ trait MediaTrait
     /**
      * Init with main iframe details
      */
-    public function __construct(?string $url, int $width = null, int $height = null, ?string $mediaSource = null)
-    {
+    public function __construct(
+        ?string $url,
+        int $width = null,
+        int $height = null,
+        ?string $mediaSource = null
+    ) {
         $this->setUrl($url);
 
         if ($width !== null) {
@@ -227,7 +184,7 @@ trait MediaTrait
     /**
      * Set media source URL
      */
-    protected function setUrl(?string $url): Media
+    protected function setUrl(?string $url): static
     {
         if (empty($url)) {
             $this->url = null;
@@ -276,7 +233,7 @@ trait MediaTrait
     /**
      * Set Media element id
      */
-    public function setId(?string $id): Media
+    public function setId(?string $id): static
     {
         $this->id = $id;
         return $this;
@@ -293,7 +250,7 @@ trait MediaTrait
     /**
      * Set media origin
      */
-    public function setOrigin(?string $origin): Media
+    public function setOrigin(?string $origin): static
     {
         $this->origin = $origin;
         return $this;
@@ -311,7 +268,7 @@ trait MediaTrait
     /**
      * Set Media element width
      */
-    public function setWidth(?int $width): Media
+    public function setWidth(?int $width): static
     {
         $this->width = $width;
         return $this;
@@ -320,7 +277,7 @@ trait MediaTrait
     /**
      * Scale dimensions from original width
      */
-    public function scaleWidth(int $width): Media
+    public function scaleWidth(int $width): static
     {
         $this->height = (int)round($width / $this->width * $this->height);
         $this->width = $width;
@@ -339,7 +296,7 @@ trait MediaTrait
     /**
      * Set Media element height
      */
-    public function setHeight(?int $height): Media
+    public function setHeight(?int $height): static
     {
         $this->height = $height;
         return $this;
@@ -356,8 +313,10 @@ trait MediaTrait
     /**
      * Set width and height and scale accordingly
      */
-    public function setDimensions(?int $width, ?int $height = null): Media
-    {
+    public function setDimensions(
+        ?int $width,
+        ?int $height = null
+    ): static {
         $width = $width;
         $height = $height;
 
@@ -383,7 +342,7 @@ trait MediaTrait
     /**
      * Set whether Media element can go full screen
      */
-    public function setAllowFullScreen(bool $flag): Media
+    public function setAllowFullScreen(bool $flag): static
     {
         $this->allowFullScreen = $flag;
         return $this;
@@ -401,7 +360,7 @@ trait MediaTrait
     /**
      * Set whether media can autoplay
      */
-    public function setAutoPlay(bool $autoplay): Media
+    public function setAutoPlay(bool $autoplay): static
     {
         $this->autoPlay = $autoplay;
         return $this;
@@ -419,7 +378,7 @@ trait MediaTrait
     /**
      * Set start time of media
      */
-    public function setStartTime(?int $seconds): Media
+    public function setStartTime(?int $seconds): static
     {
         $this->startTime = $seconds;
         return $this;
@@ -436,7 +395,7 @@ trait MediaTrait
     /**
      * Set end time of media
      */
-    public function setEndTime(?int $seconds): Media
+    public function setEndTime(?int $seconds): static
     {
         $this->endTime = $seconds;
 
@@ -458,7 +417,7 @@ trait MediaTrait
     /**
      * Set media duration
      */
-    public function setDuration(?int $seconds): Media
+    public function setDuration(?int $seconds): static
     {
         $this->duration = $seconds;
 

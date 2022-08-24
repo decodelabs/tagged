@@ -16,7 +16,7 @@ interface Media extends Markup
     /**
      * @return static
      */
-    public static function parse(string $embed): Media;
+    public static function parse(string $embed): static;
 
     public static function extractProviderName(string $url): ?string;
     public static function getClassForUrl(string $url): string;
@@ -29,67 +29,67 @@ interface Media extends Markup
     /**
      * @return static
      */
-    public function setId(?string $id): Media;
+    public function setId(?string $id): static;
 
     public function getId(): ?string;
 
     /**
      * @return static
      */
-    public function setOrigin(?string $origin): Media;
+    public function setOrigin(?string $origin): static;
     public function getOrigin(): ?string;
 
     /**
      * @return static
      */
-    public function setWidth(?int $width): Media;
+    public function setWidth(?int $width): static;
 
     /**
      * @return static
      */
-    public function scaleWidth(int $width): Media;
+    public function scaleWidth(int $width): static;
 
     public function getWidth(): ?int;
 
     /**
      * @return static
      */
-    public function setHeight(?int $height): Media;
+    public function setHeight(?int $height): static;
 
     public function getHeight(): ?int;
-    public function setDimensions(?int $width, ?int $height = null): Media;
+    public function setDimensions(?int $width, ?int $height = null): static;
 
     /**
      * @return static
      */
-    public function setAllowFullScreen(bool $flag): Media;
+    public function setAllowFullScreen(bool $flag): static;
     public function shouldAllowFullScreen(): bool;
 
     /**
      * @return static
      */
-    public function setAutoPlay(bool $flag): Media;
+    public function setAutoPlay(bool $flag): static;
 
     public function shouldAutoPlay(): bool;
 
     /**
      * @return static
      */
-    public function setStartTime(?int $seconds): Media;
+    public function setStartTime(?int $seconds): static;
 
     public function getStartTime(): ?int;
 
     /**
      * @return static
      */
-    public function setEndTime(?int $seconds): Media;
+    public function setEndTime(?int $seconds): static;
 
     public function getEndTime(): ?int;
 
     /**
      * @return static
      */
-    public function setDuration(?int $seconds): Media;
+    public function setDuration(?int $seconds): static;
 
     public function getDuration(): ?int;
 

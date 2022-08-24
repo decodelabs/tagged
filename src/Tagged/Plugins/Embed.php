@@ -18,10 +18,7 @@ use DecodeLabs\Veneer\Plugin;
 
 class Embed implements Plugin
 {
-    /**
-     * @var Factory
-     */
-    protected $html;
+    protected Factory $html;
 
     /**
      * Init with parent factory
@@ -35,8 +32,11 @@ class Embed implements Plugin
     /**
      * Embed shared video code
      */
-    public function video(?string $embed, int $width = null, int $height = null): ?Markup
-    {
+    public function video(
+        ?string $embed,
+        int $width = null,
+        int $height = null
+    ): ?Markup {
         if ($embed === null) {
             return null;
         }
@@ -54,8 +54,11 @@ class Embed implements Plugin
     /**
      * Embed shared audio code
      */
-    public function audio(?string $embed, int $width = null, int $height = null): ?Markup
-    {
+    public function audio(
+        ?string $embed,
+        int $width = null,
+        int $height = null
+    ): ?Markup {
         if ($embed === null) {
             return null;
         }

@@ -14,6 +14,5 @@ use DecodeLabs\Tagged\Markup;
 
 interface Proxy extends RootProxy
 {
-    // Reinstate for 7.4+
-    // public function toMarkup(): Markup;
+    public function toMarkup(): Markup;
 }

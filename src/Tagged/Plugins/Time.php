@@ -11,6 +11,7 @@ namespace DecodeLabs\Tagged\Plugins;
 
 use DateInterval;
 use DateTime;
+use DateTimeZone;
 
 use DecodeLabs\Dictum\Plugin\Time as TimePlugin;
 use DecodeLabs\Dictum\Plugin\TimeTrait as TimePluginTrait;
@@ -29,10 +30,7 @@ class Time implements TimePlugin
      */
     use TimePluginTrait;
 
-    /**
-     * @var Factory
-     */
-    protected $html;
+    protected Factory $html;
 
     /**
      * Init with parent factory
@@ -45,8 +43,11 @@ class Time implements TimePlugin
     /**
      * Custom format a date and wrap it
      */
-    public function format($date, string $format, $timezone = true): ?Element
-    {
+    public function format(
+        DateTime|DateInterval|string|Stringable|int|null $date,
+        string $format,
+        DateTimeZone|string|Stringable|bool|null $timezone = true
+    ): ?Element {
         if (!$date = $this->prepare($date, $timezone, true)) {
             return null;
         }
@@ -60,8 +61,10 @@ class Time implements TimePlugin
     /**
      * Custom format a date and wrap it
      */
-    public function formatDate($date, string $format): ?Element
-    {
+    public function formatDate(
+        DateTime|DateInterval|string|Stringable|int|null $date,
+        string $format
+    ): ?Element {
         if (!$date = $this->prepare($date, false, true)) {
             return null;
         }
@@ -76,9 +79,9 @@ class Time implements TimePlugin
      * Custom locale format a date with ICU and wrap it
      */
     public function pattern(
-        $date,
+        DateTime|DateInterval|string|Stringable|int|null $date,
         string $pattern,
-        $timezone = true,
+        DateTimeZone|string|Stringable|bool|null $timezone = true,
         ?string $locale = null
     ): ?Element {
         $output = $this->formatRawIcuDate($date, $pattern, $timezone, $locale);
@@ -96,8 +99,13 @@ class Time implements TimePlugin
     /**
      * Format date according to locale
      */
-    public function locale($date, $dateSize = true, $timeSize = true, $timezone = true, ?string $locale = null): ?Element
-    {
+    public function locale(
+        DateTime|DateInterval|string|Stringable|int|null $date,
+        string|int|bool|null $dateSize = true,
+        string|int|bool|null $timeSize = true,
+        DateTimeZone|string|Stringable|bool|null $timezone = true,
+        ?string $locale = null
+    ): ?Element {
         $output = $this->formatRawLocaleDate($date, $dateSize, $timeSize, $timezone, $locale, $wrapFormat);
 
         if ($output === null) {
@@ -116,8 +124,15 @@ class Time implements TimePlugin
      * Format interval
      * @param DateTime|DateInterval|string|Stringable|int|null $date
      */
-    protected function formatNowInterval($date, bool $invert, ?int $parts, bool $short = false, bool $absolute = false, ?bool $positive = false, ?string $locale = null): ?Element
-    {
+    protected function formatNowInterval(
+        DateTime|DateInterval|string|Stringable|int|null $date,
+        bool $invert,
+        ?int $parts,
+        bool $short = false,
+        bool $absolute = false,
+        ?bool $positive = false,
+        ?string $locale = null
+    ): ?Element {
         $output = $this->formatRawNowInterval($date, $interval, $invert, $parts, $short, $absolute, $positive, $locale);
 
         if ($output === null) {
@@ -153,12 +168,14 @@ class Time implements TimePlugin
 
     /**
      * Format interval until date
-     *
-     * @param DateTime|DateInterval|string|Stringable|int|null $date1
-     * @param DateTime|DateInterval|string|Stringable|int|null $date2
      */
-    protected function formatBetweenInterval($date1, $date2, ?int $parts = 1, bool $short = false, ?string $locale = null): ?Element
-    {
+    protected function formatBetweenInterval(
+        DateTime|DateInterval|string|Stringable|int|null $date1,
+        DateTime|DateInterval|string|Stringable|int|null $date2,
+        ?int $parts = 1,
+        bool $short = false,
+        ?string $locale = null
+    ): ?Element {
         $output = $this->formatRawBetweenInterval($date1, $date2, $interval, $parts, $short, $locale);
 
         if ($output === null) {
@@ -186,8 +203,11 @@ class Time implements TimePlugin
     /**
      * Wrap date / time in Markup
      */
-    protected function wrap(string $w3c, string $formatted, ?string $title = null): Element
-    {
+    protected function wrap(
+        string $w3c,
+        string $formatted,
+        ?string $title = null
+    ): Element {
         $output = $this->html->el('time', $formatted, [
             'datetime' => $w3c
         ]);
