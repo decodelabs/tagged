@@ -14,7 +14,7 @@
         "symfony/polyfill-mbstring": "^1.7",
 
         "decodelabs/coercion": "^0.2",
-        "decodelabs/collections": "^0.7",
+        "decodelabs/collections": "^0.8",
         "decodelabs/dictum": "^0.4",
         "decodelabs/elementary": "^0.2",
         "decodelabs/exceptional": "^0.4",
