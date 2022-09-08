@@ -7,7 +7,7 @@ namespace DecodeLabs;
 use DecodeLabs\Veneer\Proxy;
 use DecodeLabs\Veneer\ProxyTrait;
 use DecodeLabs\Tagged\Factory as Inst;
-class Tagged implements Proxy { use ProxyTrait; 
+class Tagged implements Proxy { use ProxyTrait;
 const VENEER = 'Tagged';
 const VENEER_TARGET = Inst::class;
 const PLUGINS = Inst::PLUGINS;

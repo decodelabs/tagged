@@ -83,7 +83,7 @@ class Vimeo extends Video
         if($this->duration !== null) {
             $queryVals['end'] = $this->duration + $this->startTime;
         }
-        */
+         */
 
         if (!empty($queryVars)) {
             $url .= '?' . http_build_query($queryVars);

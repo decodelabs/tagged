@@ -1,3 +1,7 @@
+## v0.14.2 (2022-09-08)
+* Updated Collections dependency
+* Updated CI environment
+
 ## v0.14.1 (2022-08-24)
 * Added concrete types to all members
 

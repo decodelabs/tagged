@@ -43,9 +43,7 @@ class Tag implements
         'q', 'rt', 'ins', 'font', 'small', 'strong',
         's', 'tt', 'sub', 'mark',
         'u', 'xm', 'sup', 'nobr',
-                   'var', 'ruby',
-                   'wbr', 'span',
-                          'time',
+        'var', 'ruby', 'wbr', 'span', 'time',
     ];
 
     public const BOOLEAN_ATTRIBUTES = [
