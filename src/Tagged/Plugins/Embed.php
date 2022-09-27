@@ -13,8 +13,6 @@ use DecodeLabs\Tagged\Embed\Audio;
 use DecodeLabs\Tagged\Embed\Video;
 use DecodeLabs\Tagged\Factory;
 
-use DecodeLabs\Tagged\Markup;
-
 class Embed
 {
     protected Factory $html;
@@ -35,7 +33,7 @@ class Embed
         ?string $embed,
         int $width = null,
         int $height = null
-    ): ?Markup {
+    ): ?Video {
         if ($embed === null) {
             return null;
         }
@@ -57,7 +55,7 @@ class Embed
         ?string $embed,
         int $width = null,
         int $height = null
-    ): ?Markup {
+    ): ?Audio {
         if ($embed === null) {
             return null;
         }

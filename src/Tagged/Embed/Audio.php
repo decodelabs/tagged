@@ -37,7 +37,7 @@ class Audio implements Media
     /**
      * Render embed to markup
      */
-    public function render(): Markup
+    public function render(): Element
     {
         if (($this->url === null || !$this->provider) && $this->source !== null) {
             return Element::create('div.embed.audio', new Buffer($this->source));

@@ -1,3 +1,6 @@
+## v0.14.5 (2022-09-27)
+* Updated media embed return signatures
+
 ## v0.14.4 (2022-09-27)
 * Updated Veneer stub
 * Updated composer check script

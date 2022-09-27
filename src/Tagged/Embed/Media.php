@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace DecodeLabs\Tagged\Embed;
 
+use DecodeLabs\Tagged\Element;
 use DecodeLabs\Tagged\Markup;
 
 interface Media extends Markup
@@ -104,6 +105,6 @@ interface Media extends Markup
      */
     public function lookupMeta(?array $options = null): ?array;
 
-    public function render(): ?Markup;
+    public function render(): ?Element;
     public function __toString(): string;
 }
