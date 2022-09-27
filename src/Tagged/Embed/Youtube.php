@@ -13,8 +13,7 @@ use DateTime;
 
 use DecodeLabs\Collections\Tree\NativeMutable as Tree;
 use DecodeLabs\Exceptional;
-use DecodeLabs\Tagged\Markup;
-use DecodeLabs\Tagged\Tag;
+use DecodeLabs\Tagged\Element;
 
 use ErrorException;
 
@@ -126,7 +125,7 @@ class Youtube extends Video
     /**
      * Render URL embed
      */
-    public function render(): Markup
+    public function render(): Element
     {
         return $this->prepareIframeElement((string)$this->getPreparedUrl());
     }
