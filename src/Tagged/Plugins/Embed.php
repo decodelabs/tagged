@@ -14,9 +14,8 @@ use DecodeLabs\Tagged\Embed\Video;
 use DecodeLabs\Tagged\Factory;
 
 use DecodeLabs\Tagged\Markup;
-use DecodeLabs\Veneer\Plugin;
 
-class Embed implements Plugin
+class Embed
 {
     protected Factory $html;
 

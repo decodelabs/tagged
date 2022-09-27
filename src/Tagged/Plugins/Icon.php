@@ -12,9 +12,8 @@ namespace DecodeLabs\Tagged\Plugins;
 use DecodeLabs\Exceptional;
 use DecodeLabs\Tagged\Element;
 use DecodeLabs\Tagged\Factory;
-use DecodeLabs\Veneer\Plugin;
 
-class Icon implements Plugin
+class Icon
 {
     protected Factory $html;
     protected string $format = 'svg';

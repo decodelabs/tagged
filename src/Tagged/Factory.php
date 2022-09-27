@@ -10,33 +10,36 @@ declare(strict_types=1);
 namespace DecodeLabs\Tagged;
 
 use DecodeLabs\Coercion;
-use DecodeLabs\Exceptional;
 use DecodeLabs\Glitch\Proxy as Glitch;
-use DecodeLabs\Veneer\Plugin\AccessTarget as VeneerPluginAccessTarget;
-use DecodeLabs\Veneer\Plugin\AccessTargetTrait as VeneerPluginAccessTargetTrait;
-use DecodeLabs\Veneer\Plugin as VeneerPlugin;
-use DecodeLabs\Veneer\Plugin\Provider as VeneerPluginProvider;
-use DecodeLabs\Veneer\Plugin\ProviderTrait as VeneerPluginProviderTrait;
+
+use DecodeLabs\Tagged\Plugins\Embed as EmbedPlugin;
+use DecodeLabs\Tagged\Plugins\Icon as IconPlugin;
+use DecodeLabs\Tagged\Plugins\Number as NumberPlugin;
+use DecodeLabs\Tagged\Plugins\Time as TimePlugin;
+
+use DecodeLabs\Veneer\LazyLoad;
+use DecodeLabs\Veneer\Plugin;
 
 use Stringable;
 use Throwable;
 
-class Factory implements
-    Markup,
-    VeneerPluginProvider,
-    VeneerPluginAccessTarget
+class Factory implements Markup
 {
-    use VeneerPluginProviderTrait;
-    use VeneerPluginAccessTargetTrait;
+    #[Plugin]
+    #[LazyLoad]
+    public EmbedPlugin $embed;
 
-    public const PLUGINS = [
-        'parse',
-        'toText',
-        'icon',
-        'number',
-        'time',
-        'embed'
-    ];
+    #[Plugin]
+    #[LazyLoad]
+    public IconPlugin $icon;
+
+    #[Plugin]
+    #[LazyLoad]
+    public TimePlugin $time;
+
+    #[Plugin]
+    #[LazyLoad]
+    public NumberPlugin $number;
 
 
     /**
@@ -70,32 +73,6 @@ class Factory implements
     public function __toString(): string
     {
         return '';
-    }
-
-
-
-    /**
-     * Stub to get empty plugin list to avoid broken targets
-     *
-     * @return array<string>
-     */
-    public function getVeneerPluginNames(): array
-    {
-        return static::PLUGINS;
-    }
-
-    /**
-     * Load factory plugins
-     */
-    public function loadVeneerPlugin(string $name): VeneerPlugin
-    {
-        if (!in_array($name, self::PLUGINS)) {
-            throw Exceptional::InvalidArgument($name . ' is not a recognised Veneer plugin');
-        }
-
-        /** @phpstan-var class-string<VeneerPlugin> */
-        $class = '\\DecodeLabs\\Tagged\\Plugins\\' . ucfirst($name);
-        return new $class($this);
     }
 
 
