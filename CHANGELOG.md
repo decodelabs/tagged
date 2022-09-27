@@ -1,3 +1,6 @@
+## v0.14.2=3 (2022-09-27)
+* Converted Veneer plugins to load with Attributes
+
 ## v0.14.2 (2022-09-08)
 * Updated Collections dependency
 * Updated CI environment
