@@ -19,7 +19,7 @@
         "decodelabs/elementary": "^0.2",
         "decodelabs/exceptional": "^0.4",
         "decodelabs/glitch-support": "^0.4",
-        "decodelabs/veneer": "^0.10.7"
+        "decodelabs/veneer": "^0.10.10"
     },
     "require-dev": {
         "phpunit/phpunit": "^9",
@@ -28,9 +28,7 @@
         "php-parallel-lint/php-parallel-lint": "^1.3",
         "symplify/easy-coding-standard": "^11",
 
-        "decodelabs/phpstan-decodelabs": "^0.6",
-        "decodelabs/atlas": "^0.10.4",
-        "decodelabs/terminus": "^0.8.4"
+        "decodelabs/phpstan-decodelabs": "^0.6"
     },
     "suggest": {
         "nesbot/carbon": "Support for time interval formatting",
