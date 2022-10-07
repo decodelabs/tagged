@@ -7,7 +7,13 @@
 [![PHPStan](https://img.shields.io/badge/PHPStan-enabled-44CC11.svg?longCache=true&style=flat)](https://github.com/phpstan/phpstan)
 [![License](https://img.shields.io/packagist/l/decodelabs/tagged?style=flat)](https://packagist.org/packages/decodelabs/tagged)
 
-PHP markup generation without the fuss.
+### PHP markup generation without the fuss.
+
+Tagged provides a simple, powerful and beautiful way to create HTML markup without the spaghetti.
+
+_Get news and updates on the [DecodeLabs blog](https://blog.decodelabs.com)._
+
+---
 
 
 ## Installation
