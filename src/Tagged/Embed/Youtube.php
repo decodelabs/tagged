@@ -11,6 +11,7 @@ namespace DecodeLabs\Tagged\Embed;
 
 use DateTime;
 
+use DecodeLabs\Coercion;
 use DecodeLabs\Collections\Tree\NativeMutable as Tree;
 use DecodeLabs\Exceptional;
 use DecodeLabs\Tagged\Element;
@@ -56,7 +57,7 @@ class Youtube extends Video
             }
         }
 
-        $this->youtubeId = $id;
+        $this->youtubeId = Coercion::toString($id);
 
 
         static $vars = [
@@ -67,7 +68,7 @@ class Youtube extends Video
         ];
 
         foreach ((array)$query as $key => $value) {
-            if (in_array(strtolower($key), $vars)) {
+            if (in_array(strtolower((string)$key), $vars)) {
                 $this->options[(string)$key] = $value;
             }
         }

@@ -53,7 +53,7 @@ class Audioboom extends Audio
 
         if ($booId === 'playlist' || $booId === 'playlist') {
             $this->type = 'playlist';
-            $this->audioboomId = $query['data_for_content_type'];
+            $this->audioboomId = Coercion::toString($query['data_for_content_type']);
         } else {
             $this->type = 'embed';
             $this->audioboomId = (string)$booId;
@@ -63,8 +63,8 @@ class Audioboom extends Audio
             ];
 
             foreach ((array)$query as $key => $value) {
-                if (in_array(strtolower($key), $vars)) {
-                    $this->options[(string)$key] = (string)$value;
+                if (in_array(strtolower((string)$key), $vars)) {
+                    $this->options[(string)$key] = Coercion::forceString($value);
                 }
             }
         }

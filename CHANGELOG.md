@@ -1,3 +1,5 @@
+* Fixed PHP8.1 testing
+
 ## v0.14.5 (2022-09-27)
 * Updated media embed return signatures
 

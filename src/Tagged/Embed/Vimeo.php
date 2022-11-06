@@ -53,7 +53,15 @@ class Vimeo extends Video
         }
 
         $this->vimeoId = $id;
-        $this->options = (array)$query;
+        $this->options = [];
+
+        foreach ((array)$query as $key => $value) {
+            if (is_array($value)) {
+                continue;
+            }
+
+            $this->options[(string)$key] = (string)$value;
+        }
 
         return $this;
     }
