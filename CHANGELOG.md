@@ -1,3 +1,5 @@
+## v0.14.6 (2022-11-28)
+* Switched to Cosmos for plugin interfaces
 * Migrated to use effigy in CI workflow
 * Fixed PHP8.1 testing
 
