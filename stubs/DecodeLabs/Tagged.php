@@ -5,8 +5,8 @@
  */
 namespace DecodeLabs;
 
-use DecodeLabs\Veneer\Proxy;
-use DecodeLabs\Veneer\ProxyTrait;
+use DecodeLabs\Veneer\Proxy as Proxy;
+use DecodeLabs\Veneer\ProxyTrait as ProxyTrait;
 use DecodeLabs\Tagged\Factory as Inst;
 use DecodeLabs\Tagged\Plugins\Embed as EmbedPlugin;
 use DecodeLabs\Tagged\Plugins\Icon as IconPlugin;

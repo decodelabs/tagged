@@ -15,22 +15,14 @@
 
         "decodelabs/coercion": "^0.2",
         "decodelabs/collections": "^0.8",
-        "decodelabs/dictum": "^0.4",
+        "decodelabs/cosmos": "^0.1.2",
         "decodelabs/elementary": "^0.2",
         "decodelabs/exceptional": "^0.4",
         "decodelabs/glitch-support": "^0.4",
-        "decodelabs/veneer": "^0.10.7"
+        "decodelabs/veneer": "^0.10.10"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9",
-        "phpstan/phpstan": "^1",
-        "phpstan/extension-installer": "^1.0",
-        "php-parallel-lint/php-parallel-lint": "^1.3",
-        "symplify/easy-coding-standard": "^11",
-
-        "decodelabs/phpstan-decodelabs": "^0.6",
-        "decodelabs/atlas": "^0.10.4",
-        "decodelabs/terminus": "^0.8.4"
+        "decodelabs/phpstan-decodelabs": "^0.6"
     },
     "suggest": {
         "nesbot/carbon": "Support for time interval formatting",
@@ -48,31 +40,5 @@
         "branch-alias": {
             "dev-develop": "0.14.x-dev"
         }
-    },
-    "config": {
-        "allow-plugins": {
-            "phpstan/extension-installer": true
-        }
-    },
-    "scripts": {
-        "analyze": "phpstan analyze --no-progress",
-        "clear-phpstan": "phpstan clear-result-cache",
-        "ecs": "ecs check --no-progress-bar",
-        "ecs-fix": "ecs check --no-progress-bar --fix",
-        "lint": "parallel-lint src/ stubs/ ecs.php",
-        "eclint": "eclint check src/ stubs/ ecs.php",
-        "eclint-fix": "eclint fix src/ stubs/ ecs.php",
-        "non-ascii": "! LC_ALL=C.UTF-8 find src/ -type f -name \"*.php\" -print0 | xargs -0 -- grep -PHn \"[^ -~]\" | grep -v '// @ignore-non-ascii$'",
-        "veneer-stub": "vendor/bin/veneer-stub",
-        "check": [
-            "@composer update",
-            "@veneer-stub",
-            "@clear-phpstan",
-            "@analyze",
-            "@ecs-fix",
-            "@lint",
-            "@eclint",
-            "@non-ascii"
-        ]
     }
 }

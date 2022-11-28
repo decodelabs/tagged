@@ -13,8 +13,9 @@ use DateInterval;
 use DateTime;
 use DateTimeZone;
 
-use DecodeLabs\Dictum\Plugin\Time as TimePlugin;
-use DecodeLabs\Dictum\Plugin\TimeTrait as TimePluginTrait;
+use DecodeLabs\Cosmos\Extension\Time as TimePlugin;
+use DecodeLabs\Cosmos\Extension\TimeTrait as TimePluginTrait;
+use DecodeLabs\Cosmos\Locale;
 use DecodeLabs\Tagged\Element;
 use DecodeLabs\Tagged\Factory;
 
@@ -82,7 +83,7 @@ class Time implements TimePlugin
         DateTime|DateInterval|string|Stringable|int|null $date,
         string $pattern,
         DateTimeZone|string|Stringable|bool|null $timezone = true,
-        ?string $locale = null
+        string|Locale|null $locale = null
     ): ?Element {
         $output = $this->formatRawIcuDate($date, $pattern, $timezone, $locale);
 
@@ -104,7 +105,7 @@ class Time implements TimePlugin
         string|int|bool|null $dateSize = true,
         string|int|bool|null $timeSize = true,
         DateTimeZone|string|Stringable|bool|null $timezone = true,
-        ?string $locale = null
+        string|Locale|null $locale = null
     ): ?Element {
         $output = $this->formatRawLocaleDate($date, $dateSize, $timeSize, $timezone, $locale, $wrapFormat);
 
@@ -131,7 +132,7 @@ class Time implements TimePlugin
         bool $short = false,
         bool $absolute = false,
         ?bool $positive = false,
-        ?string $locale = null
+        string|Locale|null $locale = null
     ): ?Element {
         $output = $this->formatRawNowInterval($date, $interval, $invert, $parts, $short, $absolute, $positive, $locale);
 
@@ -174,7 +175,7 @@ class Time implements TimePlugin
         DateTime|DateInterval|string|Stringable|int|null $date2,
         ?int $parts = 1,
         bool $short = false,
-        ?string $locale = null
+        string|Locale|null $locale = null
     ): ?Element {
         $output = $this->formatRawBetweenInterval($date1, $date2, $interval, $parts, $short, $locale);
 

@@ -9,8 +9,9 @@ declare(strict_types=1);
 
 namespace DecodeLabs\Tagged\Plugins;
 
-use DecodeLabs\Dictum\Plugin\Number as NumberPlugin;
-use DecodeLabs\Dictum\Plugin\NumberTrait as NumberPluginTrait;
+use DecodeLabs\Cosmos\Extension\Number as NumberPlugin;
+use DecodeLabs\Cosmos\Extension\NumberTrait as NumberPluginTrait;
+use DecodeLabs\Cosmos\Locale;
 use DecodeLabs\Tagged\Element;
 use DecodeLabs\Tagged\Factory;
 
@@ -41,7 +42,7 @@ class Number implements NumberPlugin
     public function wrap(
         int|float|string|null $value,
         ?string $unit = null,
-        ?string $locale = null
+        string|Locale|null $locale = null
     ): ?Element {
         return $this->format($value, $unit, $locale);
     }
@@ -52,7 +53,7 @@ class Number implements NumberPlugin
     public function format(
         int|float|string|null $value,
         ?string $unit = null,
-        ?string $locale = null
+        string|Locale|null $locale = null
     ): ?Element {
         $this->expandStringUnitValue($value, $unit);
 
@@ -61,7 +62,7 @@ class Number implements NumberPlugin
         }
 
         return $this->html->el('span.number', function () use ($value, $unit, $locale) {
-            $value = $this->formatRawDecimal($value, null, $this->getLocale($locale));
+            $value = $this->formatRawDecimal($value, null, $locale);
 
             yield $this->html->el('span.value', $value);
 
@@ -77,14 +78,14 @@ class Number implements NumberPlugin
     public function pattern(
         int|float|string|null $value,
         string $pattern,
-        ?string $locale = null
+        string|Locale|null $locale = null
     ): ?Element {
         if (null === ($value = $this->normalizeNumeric($value))) {
             return null;
         }
 
         return $this->html->el('span.number.pattern', function () use ($value, $pattern, $locale) {
-            $value = $this->formatRawPatternDecimal($value, $pattern, $this->getLocale($locale));
+            $value = $this->formatRawPatternDecimal($value, $pattern, $locale);
             yield $this->html->el('span.value', $value);
         });
     }
@@ -95,14 +96,14 @@ class Number implements NumberPlugin
     public function decimal(
         int|float|string|null $value,
         ?int $precision = null,
-        ?string $locale = null
+        string|Locale|null $locale = null
     ): ?Element {
         if (null === ($value = $this->normalizeNumeric($value))) {
             return null;
         }
 
         return $this->html->el('span.number.decimal', function () use ($value, $precision, $locale) {
-            $value = $this->formatRawDecimal($value, $precision, $this->getLocale($locale));
+            $value = $this->formatRawDecimal($value, $precision, $locale);
             yield $this->html->el('span.value', $value);
         });
     }
@@ -114,7 +115,7 @@ class Number implements NumberPlugin
         int|float|string|null $value,
         ?string $code,
         ?bool $rounded = null,
-        ?string $locale = null
+        string|Locale|null $locale = null
     ): ?Element {
         if (
             null === ($value = $this->normalizeNumeric($value)) ||
@@ -123,7 +124,7 @@ class Number implements NumberPlugin
             return null;
         }
 
-        $value = $this->formatRawCurrency($value, $code, $rounded, $this->getLocale($locale));
+        $value = $this->formatRawCurrency($value, $code, $rounded, $locale);
 
         if (!preg_match('/^(([^0-9.,\s][^0-9]*)([\s]*))?([0-9.,]+)(([\s]*)([^0-9.,\s][^0-9]*))?$/u', $value, $matches)) {
             return $this->html->el('span.number.currency', $value);
@@ -166,7 +167,7 @@ class Number implements NumberPlugin
         int|float|string|null $value,
         float $total = 100.0,
         int $decimals = 0,
-        ?string $locale = null
+        string|Locale|null $locale = null
     ): ?Element {
         if (
             null === ($value = $this->normalizeNumeric($value, true)) ||
@@ -176,7 +177,7 @@ class Number implements NumberPlugin
         }
 
         return $this->html->el('span.number.percent', function () use ($value, $total, $decimals, $locale) {
-            $value = $this->formatRawPercent($value, $total, $decimals, $this->getLocale($locale));
+            $value = $this->formatRawPercent($value, $total, $decimals, $locale);
 
             if (!preg_match('/^(%)?([0-9,.]+)(%)?$/u', $value, $matches)) {
                 return $value;
@@ -199,14 +200,14 @@ class Number implements NumberPlugin
      */
     public function scientific(
         int|float|string|null $value,
-        ?string $locale = null
+        string|Locale|null $locale = null
     ): ?Element {
         if (null === ($value = $this->normalizeNumeric($value))) {
             return null;
         }
 
         return $this->html->el('span.number.scientific', function () use ($value, $locale) {
-            $value = $this->formatRawScientific($value, $this->getLocale($locale));
+            $value = $this->formatRawScientific($value, $locale);
             yield $this->html->el('span.value', $value);
         });
     }
@@ -216,14 +217,14 @@ class Number implements NumberPlugin
      */
     public function spellout(
         int|float|string|null $value,
-        ?string $locale = null
+        string|Locale|null $locale = null
     ): ?Element {
         if (null === ($value = $this->normalizeNumeric($value))) {
             return null;
         }
 
         return $this->html->el('span.number.spellout', function () use ($value, $locale) {
-            $value = $this->formatRawSpellout($value, $this->getLocale($locale));
+            $value = $this->formatRawSpellout($value, $locale);
             yield $this->html->el('span.value', $value);
         });
     }
@@ -233,14 +234,14 @@ class Number implements NumberPlugin
      */
     public function ordinal(
         int|float|string|null $value,
-        ?string $locale = null
+        string|Locale|null $locale = null
     ): ?Element {
         if (null === ($value = $this->normalizeNumeric($value))) {
             return null;
         }
 
         return $this->html->el('span.number.ordinal', function () use ($value, $locale) {
-            $value = $this->formatRawOrdinal($value, $this->getLocale($locale));
+            $value = $this->formatRawOrdinal($value, $locale);
             yield $this->html->el('span.value', $value);
         });
     }
@@ -252,7 +253,7 @@ class Number implements NumberPlugin
     public function diff(
         int|float|string|null $diff,
         ?bool $invert = false,
-        ?string $locale = null
+        string|Locale|null $locale = null
     ): ?Element {
         if (null === ($diff = $this->normalizeNumeric($diff))) {
             return null;
@@ -284,13 +285,13 @@ class Number implements NumberPlugin
      */
     public function fileSize(
         ?int $bytes,
-        ?string $locale = null
+        string|Locale|null $locale = null
     ): ?Element {
         if ($bytes === null) {
             return null;
         }
 
-        $output = $this->formatRawFileSize($bytes, $this->getLocale($locale));
+        $output = $this->formatRawFileSize($bytes, $locale);
         $parts = explode(' ', $output);
         $value = $parts[0] ?? '0';
         $unit = $parts[1] ?? 'B';
@@ -306,13 +307,13 @@ class Number implements NumberPlugin
      */
     public function fileSizeDec(
         ?int $bytes,
-        ?string $locale = null
+        string|Locale|null $locale = null
     ): ?Element {
         if ($bytes === null) {
             return null;
         }
 
-        $output = $this->formatRawFileSizeDec($bytes, $this->getLocale($locale));
+        $output = $this->formatRawFileSizeDec($bytes, $locale);
         $parts = explode(' ', $output);
         $value = $parts[0] ?? '0';
         $unit = $parts[1] ?? 'B';

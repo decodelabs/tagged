@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace DecodeLabs\Tagged\Embed;
 
+use DecodeLabs\Coercion;
 use DecodeLabs\Exceptional;
 
 trait MediaTrait
@@ -71,22 +72,29 @@ trait MediaTrait
                     if (preg_match('/width\=\"([^\"]+)\"/i', $embed, $matches)) {
                         $width = $matches[1];
 
-                        if (preg_match('/height\=\"([^\"]+)\"/i', $embed, $matches)) {
-                            $height = $matches[1];
-                        } else {
-                            $height = round($width / $output->width * $output->height);
-                        }
-
                         if (false !== strpos($width, '%')) {
                             $width = 720 / 100 * (int)$width;
                         }
 
-                        if (false !== strpos($height, '%')) {
-                            $height = 450 / 100 * (int)$height;
+                        $width = Coercion::toInt($width);
+
+                        if (preg_match('/height\=\"([^\"]+)\"/i', $embed, $matches)) {
+                            $height = $matches[1];
+
+                            if (false !== strpos($height, '%')) {
+                                $height = 450 / 100 * (int)$height;
+                            }
+
+                            $height = Coercion::toInt($height);
+                        } else {
+                            $height = Coercion::toInt(
+                                round($width / $output->width * $output->height)
+                            );
                         }
 
-                        $output->setWidth((int)$width);
-                        $output->setHeight((int)$height);
+
+                        $output->setWidth($width);
+                        $output->setHeight($height);
                     }
 
                     break;
