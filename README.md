@@ -123,7 +123,7 @@ use DecodeLabs\Tagged as Html;
 Html::$time->format('now', 'd/m/Y', 'Europe/London');
 
 // Locale format
-// When timezone is true it is fetched from Systemic::$timezone
+// When timezone is true it is fetched from Cosmos::$timezone
 Html::$time->locale('now', 'long', 'long', true);
 
 // Locale shortcuts
