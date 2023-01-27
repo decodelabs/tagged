@@ -25,8 +25,7 @@
         "decodelabs/phpstan-decodelabs": "^0.6"
     },
     "suggest": {
-        "nesbot/carbon": "Support for time interval formatting",
-        "decodelabs/systemic": "Managed locale and timezone info"
+        "nesbot/carbon": "Support for time interval formatting"
     },
     "autoload": {
         "psr-4": {

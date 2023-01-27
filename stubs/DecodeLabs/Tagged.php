@@ -23,7 +23,7 @@ class Tagged implements Proxy
 {
     use ProxyTrait;
 
-    const VENEER = 'DecodeLabs\Tagged';
+    const VENEER = 'DecodeLabs\\Tagged';
     const VENEER_TARGET = Inst::class;
 
     public static Inst $instance;

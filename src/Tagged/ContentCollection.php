@@ -29,6 +29,8 @@ class ContentCollection implements
      */
     use SequenceTrait;
     use ChildRendererTrait;
+    use BufferProviderTrait;
+
     public const MUTABLE = true;
 
     /**
