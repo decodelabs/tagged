@@ -1,3 +1,4 @@
+## v0.14.7 (2023-01-27)
 * Fixed buffer handling in ContentCollections
 
 ## v0.14.6 (2022-11-28)
