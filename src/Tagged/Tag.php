@@ -12,7 +12,6 @@ namespace DecodeLabs\Tagged;
 use DecodeLabs\Coercion;
 use DecodeLabs\Elementary\Attribute\ClassList\Container as ClassListContainer;
 use DecodeLabs\Elementary\Attribute\ClassList\ContainerTrait as ClassListContainerTrait;
-use DecodeLabs\Elementary\Buffer as BufferInterface;
 use DecodeLabs\Elementary\Style\Container as StyleContainer;
 use DecodeLabs\Elementary\Style\ContainerTrait as StyleContainerTrait;
 use DecodeLabs\Elementary\Tag as TagInterface;
@@ -29,6 +28,7 @@ class Tag implements
     use TagTrait;
     use ClassListContainerTrait;
     use StyleContainerTrait;
+    use BufferProviderTrait;
 
     public const CLOSED_TAGS = [
         'area', 'base', 'br', 'col', 'command', 'embed',
@@ -318,14 +318,5 @@ class Tag implements
     public function getTitle(): ?string
     {
         return Coercion::toStringOrNull($this->getAttribute('title'));
-    }
-
-
-    /**
-     * Create new buffer
-     */
-    protected function newBuffer(?string $content): BufferInterface
-    {
-        return new Buffer($content);
     }
 }
