@@ -16,6 +16,7 @@ use DecodeLabs\Elementary\Style\Container as StyleContainer;
 use DecodeLabs\Elementary\Style\ContainerTrait as StyleContainerTrait;
 use DecodeLabs\Elementary\Tag as TagInterface;
 use DecodeLabs\Elementary\TagTrait;
+use DecodeLabs\Exceptional;
 use DecodeLabs\Glitch\Dumpable;
 
 class Tag implements
@@ -93,7 +94,16 @@ class Tag implements
             return $this;
         }
 
-        if (!is_bool($value)) {
+        if (
+            is_array($value) &&
+            substr($key, 0, 1) == ':'
+        ) {
+            if (!$value = json_encode($value)) {
+                throw Exceptional::UnexpectedValue(
+                    'Unable to encode attribute value to JSON'
+                );
+            }
+        } elseif (!is_bool($value)) {
             $value = Coercion::forceString($value);
         }
 
