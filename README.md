@@ -66,6 +66,14 @@ use DecodeLabs\Tagged as Html;
 $buffer = Html::raw('<span class="test">My span</span>');
 ```
 
+Dump script data to Html:
+
+```php
+yield Html::script(Html::raw(json_encode( $some_data )), [
+    'type' => 'application/json'
+]);
+```
+
 Prepare arbitrary input for Markup output:
 
 ```php
