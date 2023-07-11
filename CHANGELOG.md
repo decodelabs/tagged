@@ -1,3 +1,5 @@
+* Added array attribute json encoding
+
 ## v0.14.7 (2023-01-27)
 * Fixed buffer handling in ContentCollections
 
