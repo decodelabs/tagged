@@ -1,3 +1,5 @@
+* Added callable resolver to attribute handler
+
 ## v0.14.8 (2023-07-11)
 * Added array attribute json encoding
 

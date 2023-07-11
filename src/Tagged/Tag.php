@@ -18,6 +18,7 @@ use DecodeLabs\Elementary\Tag as TagInterface;
 use DecodeLabs\Elementary\TagTrait;
 use DecodeLabs\Exceptional;
 use DecodeLabs\Glitch\Dumpable;
+use Generator;
 
 class Tag implements
     Markup,
@@ -92,6 +93,14 @@ class Tag implements
         if ($value === null) {
             $this->removeAttribute($key);
             return $this;
+        }
+
+        if (is_callable($value)) {
+            $value = $value($this);
+        }
+
+        if ($value instanceof Generator) {
+            $value = iterator_to_array($value);
         }
 
         if (
