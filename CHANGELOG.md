@@ -1,3 +1,4 @@
+## v0.14.9 (2023-07-11)
 * Added callable resolver to attribute handler
 
 ## v0.14.8 (2023-07-11)
