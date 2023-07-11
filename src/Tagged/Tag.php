@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace DecodeLabs\Tagged;
 
+use Closure;
 use DecodeLabs\Coercion;
 use DecodeLabs\Elementary\Attribute\ClassList\Container as ClassListContainer;
 use DecodeLabs\Elementary\Attribute\ClassList\ContainerTrait as ClassListContainerTrait;
@@ -95,7 +96,7 @@ class Tag implements
             return $this;
         }
 
-        if (is_callable($value)) {
+        if ($value instanceof Closure) {
             $value = $value($this);
         }
 
