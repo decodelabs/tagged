@@ -65,7 +65,7 @@ trait MediaTrait
 
                     $url = trim($matches[2]);
 
-                    /** @phpstan-var class-string<static> */
+                    /** @var class-string<static> */
                     $class = self::getClassForUrl($url);
                     $output = new $class($url, null, null, $embed);
 
@@ -124,7 +124,7 @@ trait MediaTrait
                 );
             }
 
-            /** @phpstan-var class-string<static> */
+            /** @var class-string<static> */
             $class = self::getClassForUrl($url);
             $output = new $class($url);
         }
