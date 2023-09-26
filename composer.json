@@ -39,5 +39,7 @@
         "branch-alias": {
             "dev-develop": "0.14.x-dev"
         }
+    },
+    "repositories": {
     }
 }

@@ -1,3 +1,5 @@
+* Converted phpstan doc comments to generic
+
 ## v0.14.10 (2023-07-11)
 * Fixed callable instance issue
 
