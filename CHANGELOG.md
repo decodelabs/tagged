@@ -1,3 +1,5 @@
+* Refactored package file structure
+
 ## v0.14.11 (2023-09-26)
 * Converted phpstan doc comments to generic
 

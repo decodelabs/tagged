@@ -11,15 +11,14 @@ namespace DecodeLabs\Tagged;
 
 use DecodeLabs\Coercion;
 use DecodeLabs\Glitch\Proxy as Glitch;
-
+use DecodeLabs\Tagged;
 use DecodeLabs\Tagged\Plugins\Embed as EmbedPlugin;
 use DecodeLabs\Tagged\Plugins\Icon as IconPlugin;
 use DecodeLabs\Tagged\Plugins\Number as NumberPlugin;
 use DecodeLabs\Tagged\Plugins\Time as TimePlugin;
-
+use DecodeLabs\Veneer;
 use DecodeLabs\Veneer\LazyLoad;
 use DecodeLabs\Veneer\Plugin;
-
 use Stringable;
 use Throwable;
 
@@ -456,3 +455,7 @@ class Factory implements Markup
         }
     }
 }
+
+
+// Register the Veneer proxy
+Veneer::register(Factory::class, Tagged::class);
