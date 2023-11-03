@@ -45,7 +45,9 @@ class Number implements NumberPlugin
         ?string $unit = null,
         string|Locale|null $locale = null
     ): ?Element {
-        return $this->format($value, $unit, $locale);
+        /** @var ?Element */
+        $output = $this->format($value, $unit, $locale);
+        return $output;
     }
 
     /**
