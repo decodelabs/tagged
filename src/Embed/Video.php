@@ -32,16 +32,18 @@ class Video implements Media
     /**
      * Convert an anonymous id to a URL
      */
-    public static function defaultUrlFromId(string $id): string
-    {
+    public static function defaultUrlFromId(
+        string $id
+    ): string {
         return '//www.youtube.com/embed/' . $id;
     }
 
     /**
      * Set to use API (youtube)
      */
-    public function setUseApi(bool $flag): static
-    {
+    public function setUseApi(
+        bool $flag
+    ): static {
         $this->useApi = $flag;
         return $this;
     }
@@ -71,8 +73,9 @@ class Video implements Media
     /**
      * Prepare iframe element
      */
-    protected function prepareIframeElement(?string $url): Element
-    {
+    protected function prepareIframeElement(
+        ?string $url
+    ): Element {
         $tag = Element::create('iframe.embed.video', null, [
             'id' => $this->id,
             'src' => $url,

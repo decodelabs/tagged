@@ -30,8 +30,9 @@ class Vimeo extends Video
     /**
      * Extract parts from URL
      */
-    protected function setUrl(?string $url): static
-    {
+    protected function setUrl(
+        ?string $url
+    ): static {
         parent::setUrl($url);
 
         if (!$this->url) {
@@ -119,8 +120,9 @@ class Vimeo extends Video
     /**
      * Lookup thumbnail URL
      */
-    public function lookupThumbnail(?array $options = null): ?string
-    {
+    public function lookupThumbnail(
+        ?array $options = null
+    ): ?string {
         return Coercion::toStringOrNull(
             $this->lookupMeta($options)['thumbnailUrl'] ?? null
         );
@@ -129,8 +131,9 @@ class Vimeo extends Video
     /**
      * Lookup media meta information
      */
-    public function lookupMeta(?array $options = null): ?array
-    {
+    public function lookupMeta(
+        ?array $options = null
+    ): ?array {
         if ($this->url === null) {
             return null;
         }

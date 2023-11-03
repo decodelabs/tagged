@@ -32,8 +32,9 @@ class Audioboom extends Audio
     /**
      * Extract parts from URL
      */
-    protected function setUrl(?string $url): static
-    {
+    protected function setUrl(
+        ?string $url
+    ): static {
         parent::setUrl($url);
 
         if (!$this->url) {
@@ -122,8 +123,9 @@ class Audioboom extends Audio
      *
      * @param array<string, mixed> $options
      */
-    public function lookupThumbnail(?array $options = null): ?string
-    {
+    public function lookupThumbnail(
+        ?array $options = null
+    ): ?string {
         switch ($this->type) {
             case 'embed':
                 $url = 'https://audioboom.com/publishing/oembed.json?url=https://audioboom.com/posts/' . $this->audioboomId;
@@ -154,8 +156,9 @@ class Audioboom extends Audio
      * @param array<string, mixed> $options
      * @return array<string, mixed>
      */
-    public function lookupMeta(?array $options = null): ?array
-    {
+    public function lookupMeta(
+        ?array $options = null
+    ): ?array {
         switch ($this->type) {
             case 'embed':
                 return $this->lookupEmbedMeta($options);
@@ -174,8 +177,9 @@ class Audioboom extends Audio
      * @param array<string, mixed> $options
      * @return array<string, mixed>
      */
-    protected function lookupEmbedMeta(?array $options = null): ?array
-    {
+    protected function lookupEmbedMeta(
+        ?array $options = null
+    ): ?array {
         $url = 'https://audioboom.com/publishing/oembed.json?url=https://audioboom.com/posts/' . $this->audioboomId;
 
         try {
@@ -212,8 +216,9 @@ class Audioboom extends Audio
      * @param array<string, mixed> $options
      * @return array<string, mixed>
      */
-    protected function lookupPlaylistMeta(?array $options = null): ?array
-    {
+    protected function lookupPlaylistMeta(
+        ?array $options = null
+    ): ?array {
         $url = 'https://api.audioboom.com/playlists/' . $this->audioboomId;
 
         try {

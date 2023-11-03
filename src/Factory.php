@@ -107,24 +107,27 @@ class Factory implements Markup
     /**
      * Wrap raw html string
      */
-    public function raw(mixed $html): Buffer
-    {
+    public function raw(
+        mixed $html
+    ): Buffer {
         return new Buffer(Coercion::forceString($html));
     }
 
     /**
      * Normalize arbitrary content
      */
-    public function wrap(mixed ...$content): Buffer
-    {
+    public function wrap(
+        mixed ...$content
+    ): Buffer {
         return ContentCollection::normalize($content);
     }
 
     /**
      * Wrap arbitrary content as collection
      */
-    public function content(mixed ...$content): ContentCollection
-    {
+    public function content(
+        mixed ...$content
+    ): ContentCollection {
         return new ContentCollection($content);
     }
 
@@ -441,8 +444,9 @@ class Factory implements Markup
     /**
      * Escape HTML
      */
-    public function esc(mixed $value): ?string
-    {
+    public function esc(
+        mixed $value
+    ): ?string {
         if ($value === null) {
             return null;
         }

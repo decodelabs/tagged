@@ -37,8 +37,9 @@ trait MediaTrait
     /**
      * Parse embed string
      */
-    public static function parse(string $embed): static
-    {
+    public static function parse(
+        string $embed
+    ): static {
         $embed = trim($embed);
         $stripEmbed = strip_tags($embed, '<iframe><object><embed><script>');
         $parts = explode('<', $stripEmbed, 2);
@@ -137,8 +138,9 @@ trait MediaTrait
     /**
      * Extract provider name from URL
      */
-    public static function extractProviderName(string $url): ?string
-    {
+    public static function extractProviderName(
+        string $url
+    ): ?string {
         foreach (self::URL_MAP as $search => $key) {
             if (false !== stripos($url, $search)) {
                 return $key;
@@ -151,8 +153,9 @@ trait MediaTrait
     /**
      * Get instance class for entry URL
      */
-    public static function getClassForUrl(string $url): string
-    {
+    public static function getClassForUrl(
+        string $url
+    ): string {
         $class = get_called_class();
 
         if ($provider = self::extractProviderName($url)) {
@@ -192,8 +195,9 @@ trait MediaTrait
     /**
      * Set media source URL
      */
-    protected function setUrl(?string $url): static
-    {
+    protected function setUrl(
+        ?string $url
+    ): static {
         if (empty($url)) {
             $this->url = null;
             return $this;
@@ -241,8 +245,9 @@ trait MediaTrait
     /**
      * Set Media element id
      */
-    public function setId(?string $id): static
-    {
+    public function setId(
+        ?string $id
+    ): static {
         $this->id = $id;
         return $this;
     }
@@ -258,8 +263,9 @@ trait MediaTrait
     /**
      * Set media origin
      */
-    public function setOrigin(?string $origin): static
-    {
+    public function setOrigin(
+        ?string $origin
+    ): static {
         $this->origin = $origin;
         return $this;
     }
@@ -276,8 +282,9 @@ trait MediaTrait
     /**
      * Set Media element width
      */
-    public function setWidth(?int $width): static
-    {
+    public function setWidth(
+        ?int $width
+    ): static {
         $this->width = $width;
         return $this;
     }
@@ -285,8 +292,9 @@ trait MediaTrait
     /**
      * Scale dimensions from original width
      */
-    public function scaleWidth(int $width): static
-    {
+    public function scaleWidth(
+        int $width
+    ): static {
         $this->height = (int)round($width / $this->width * $this->height);
         $this->width = $width;
 
@@ -304,8 +312,9 @@ trait MediaTrait
     /**
      * Set Media element height
      */
-    public function setHeight(?int $height): static
-    {
+    public function setHeight(
+        ?int $height
+    ): static {
         $this->height = $height;
         return $this;
     }
@@ -350,8 +359,9 @@ trait MediaTrait
     /**
      * Set whether Media element can go full screen
      */
-    public function setAllowFullScreen(bool $flag): static
-    {
+    public function setAllowFullScreen(
+        bool $flag
+    ): static {
         $this->allowFullScreen = $flag;
         return $this;
     }
@@ -368,8 +378,9 @@ trait MediaTrait
     /**
      * Set whether media can autoplay
      */
-    public function setAutoPlay(bool $autoplay): static
-    {
+    public function setAutoPlay(
+        bool $autoplay
+    ): static {
         $this->autoPlay = $autoplay;
         return $this;
     }
@@ -386,8 +397,9 @@ trait MediaTrait
     /**
      * Set start time of media
      */
-    public function setStartTime(?int $seconds): static
-    {
+    public function setStartTime(
+        ?int $seconds
+    ): static {
         $this->startTime = $seconds;
         return $this;
     }
@@ -403,8 +415,9 @@ trait MediaTrait
     /**
      * Set end time of media
      */
-    public function setEndTime(?int $seconds): static
-    {
+    public function setEndTime(
+        ?int $seconds
+    ): static {
         $this->endTime = $seconds;
 
         if ($this->endTime) {
@@ -425,8 +438,9 @@ trait MediaTrait
     /**
      * Set media duration
      */
-    public function setDuration(?int $seconds): static
-    {
+    public function setDuration(
+        ?int $seconds
+    ): static {
         $this->duration = $seconds;
 
         if ($this->duration) {
@@ -448,16 +462,18 @@ trait MediaTrait
     /**
      * Lookup thumbnail URL
      */
-    public function lookupThumbnail(?array $options = null): ?string
-    {
+    public function lookupThumbnail(
+        ?array $options = null
+    ): ?string {
         return null;
     }
 
     /**
      * Lookup media meta information
      */
-    public function lookupMeta(?array $options = null): ?array
-    {
+    public function lookupMeta(
+        ?array $options = null
+    ): ?array {
         return null;
     }
 

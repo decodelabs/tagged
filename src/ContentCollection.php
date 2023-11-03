@@ -58,8 +58,9 @@ class ContentCollection implements
     /**
      * Render contents
      */
-    public function render(bool $pretty = false): Buffer
-    {
+    public function render(
+        bool $pretty = false
+    ): Buffer {
         $output = '';
 
         foreach ($this->items as $value) {

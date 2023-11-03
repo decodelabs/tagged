@@ -16,8 +16,9 @@ trait BufferProviderTrait
     /**
      * Create new buffer
      */
-    protected function newBuffer(?string $content): BufferInterface
-    {
+    protected function newBuffer(
+        ?string $content
+    ): BufferInterface {
         return new Buffer($content);
     }
 }

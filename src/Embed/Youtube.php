@@ -30,8 +30,9 @@ class Youtube extends Video
     /**
      * Extract parts from URL
      */
-    protected function setUrl(?string $url): static
-    {
+    protected function setUrl(
+        ?string $url
+    ): static {
         parent::setUrl($url);
 
         if (!$this->url) {
@@ -135,16 +136,18 @@ class Youtube extends Video
     /**
      * Lookup thumbnail URL
      */
-    public function lookupThumbnail(?array $options = null): ?string
-    {
+    public function lookupThumbnail(
+        ?array $options = null
+    ): ?string {
         return 'https://img.youtube.com/vi/' . $this->youtubeId . '/hqdefault.jpg';
     }
 
     /**
      * Lookup media meta information
      */
-    public function lookupMeta(?array $options = null): ?array
-    {
+    public function lookupMeta(
+        ?array $options = null
+    ): ?array {
         $url = 'https://www.youtube.com/oembed?url=' . urlencode('https://www.youtube.com/watch?v=' . $this->youtubeId) . '&format=json';
         $infoUrl = 'https://www.youtube.com/get_video_info?video_id=' . $this->youtubeId;
 

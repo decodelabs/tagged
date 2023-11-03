@@ -27,8 +27,9 @@ class Audio implements Media
     /**
      * Convert an anonymous id to a URL
      */
-    public static function defaultUrlFromId(string $id): string
-    {
+    public static function defaultUrlFromId(
+        string $id
+    ): string {
         return '//embeds.audioboom.com/boos/' . $id . '/embed/v4';
     }
 
@@ -49,8 +50,9 @@ class Audio implements Media
     /**
      * Prepare iframe element
      */
-    protected function prepareIframeElement(?string $url): Element
-    {
+    protected function prepareIframeElement(
+        ?string $url
+    ): Element {
         $tag = Element::create('iframe.embed.audio', null, [
             'id' => $this->id,
             'src' => $url,
