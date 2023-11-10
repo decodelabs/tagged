@@ -9,7 +9,7 @@
             "email": "tom@inflatablecookie.com"
         } ],
     "require": {
-        "php": "^8.0",
+        "php": "^8.1",
         "ext-intl": "*",
         "symfony/polyfill-mbstring": "^1.7",
 
