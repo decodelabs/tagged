@@ -1,3 +1,4 @@
+## v0.14.12 (2023-11-23)
 * Added consent controls to media embeds
 * Made PHP8.1 minimum version
 * Refactored package file structure
