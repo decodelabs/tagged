@@ -11,15 +11,14 @@ namespace DecodeLabs\Tagged;
 
 use DecodeLabs\Coercion;
 use DecodeLabs\Glitch\Proxy as Glitch;
-
+use DecodeLabs\Tagged;
 use DecodeLabs\Tagged\Plugins\Embed as EmbedPlugin;
 use DecodeLabs\Tagged\Plugins\Icon as IconPlugin;
 use DecodeLabs\Tagged\Plugins\Number as NumberPlugin;
 use DecodeLabs\Tagged\Plugins\Time as TimePlugin;
-
+use DecodeLabs\Veneer;
 use DecodeLabs\Veneer\LazyLoad;
 use DecodeLabs\Veneer\Plugin;
-
 use Stringable;
 use Throwable;
 
@@ -108,24 +107,27 @@ class Factory implements Markup
     /**
      * Wrap raw html string
      */
-    public function raw(mixed $html): Buffer
-    {
+    public function raw(
+        mixed $html
+    ): Buffer {
         return new Buffer(Coercion::forceString($html));
     }
 
     /**
      * Normalize arbitrary content
      */
-    public function wrap(mixed ...$content): Buffer
-    {
+    public function wrap(
+        mixed ...$content
+    ): Buffer {
         return ContentCollection::normalize($content);
     }
 
     /**
      * Wrap arbitrary content as collection
      */
-    public function content(mixed ...$content): ContentCollection
-    {
+    public function content(
+        mixed ...$content
+    ): ContentCollection {
         return new ContentCollection($content);
     }
 
@@ -442,8 +444,9 @@ class Factory implements Markup
     /**
      * Escape HTML
      */
-    public function esc(mixed $value): ?string
-    {
+    public function esc(
+        mixed $value
+    ): ?string {
         if ($value === null) {
             return null;
         }
@@ -456,3 +459,7 @@ class Factory implements Markup
         }
     }
 }
+
+
+// Register the Veneer proxy
+Veneer::register(Factory::class, Tagged::class);

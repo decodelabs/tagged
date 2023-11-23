@@ -30,8 +30,9 @@ class Number implements NumberPlugin
     /**
      * Init with parent factory
      */
-    public function __construct(Factory $html)
-    {
+    public function __construct(
+        Factory $html
+    ) {
         $this->html = $html;
     }
 
@@ -44,7 +45,9 @@ class Number implements NumberPlugin
         ?string $unit = null,
         string|Locale|null $locale = null
     ): ?Element {
-        return $this->format($value, $unit, $locale);
+        /** @var ?Element */
+        $output = $this->format($value, $unit, $locale);
+        return $output;
     }
 
     /**
@@ -143,8 +146,9 @@ class Number implements NumberPlugin
         });
     }
 
-    protected function wrapCurrencySymbol(string $symbolInput): Element
-    {
+    protected function wrapCurrencySymbol(
+        string $symbolInput
+    ): Element {
         if (empty($symbol = str_replace('&nbsp;', '', htmlentities($symbolInput)))) {
             $symbol = $symbolInput;
         } else {

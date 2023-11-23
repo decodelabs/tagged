@@ -56,16 +56,18 @@ class Tag implements
     /**
      * Can tag be closed with full </tag>
      */
-    public static function isClosableTagName(string $name): bool
-    {
+    public static function isClosableTagName(
+        string $name
+    ): bool {
         return !in_array(strtolower($name), self::CLOSED_TAGS);
     }
 
     /**
      * Should tag be single inline entity
      */
-    public static function isInlineTagName(string $name): bool
-    {
+    public static function isInlineTagName(
+        string $name
+    ): bool {
         return in_array(strtolower($name), self::INLINE_TAGS);
     }
 
@@ -126,8 +128,9 @@ class Tag implements
      *
      * @return mixed
      */
-    public function getAttribute(string $key): mixed
-    {
+    public function getAttribute(
+        string $key
+    ): mixed {
         $key = strtolower($key);
 
         if ($key == 'class') {
@@ -146,8 +149,9 @@ class Tag implements
      * @param array<string, mixed> $attributes
      * @return $this
      */
-    public function setDataAttributes(array $attributes): static
-    {
+    public function setDataAttributes(
+        array $attributes
+    ): static {
         foreach ($attributes as $key => $value) {
             $this->setDataAttribute($key, $value);
         }
@@ -161,8 +165,9 @@ class Tag implements
      * @param array<string, mixed> $attributes
      * @return $this
      */
-    public function replaceDataAttributes(array $attributes): static
-    {
+    public function replaceDataAttributes(
+        array $attributes
+    ): static {
         $this->clearDataAttributes();
         $this->setDataAttributes($attributes);
         return $this;
@@ -192,8 +197,10 @@ class Tag implements
      * @param mixed $value
      * @return $this
      */
-    public function setDataAttribute(string $key, $value): static
-    {
+    public function setDataAttribute(
+        string $key,
+        mixed $value
+    ): static {
         $this->setAttribute('data-' . $key, $value);
         return $this;
     }
@@ -203,8 +210,9 @@ class Tag implements
      *
      * @return mixed
      */
-    public function getDataAttribute(string $key)
-    {
+    public function getDataAttribute(
+        string $key
+    ) {
         return $this->getAttribute('data-' . $key);
     }
 
@@ -212,8 +220,9 @@ class Tag implements
      * Remove single data attribute
      * @return $this
      */
-    public function removeDataAttribute(string ...$keys): static
-    {
+    public function removeDataAttribute(
+        string ...$keys
+    ): static {
         $keys = array_map(function ($key) {
             return 'data-' . $key;
         }, $keys);
@@ -225,8 +234,9 @@ class Tag implements
     /**
      *  Have any of these data attributes been set?
      */
-    public function hasDataAttribute(string ...$keys): bool
-    {
+    public function hasDataAttribute(
+        string ...$keys
+    ): bool {
         $keys = array_map(function ($key) {
             return 'data-' . $key;
         }, $keys);
@@ -237,8 +247,9 @@ class Tag implements
     /**
      *  Have all of these data attributes been set?
      */
-    public function hasDataAttributes(string ...$keys): bool
-    {
+    public function hasDataAttributes(
+        string ...$keys
+    ): bool {
         $keys = array_map(function ($key) {
             return 'data-' . $key;
         }, $keys);
@@ -284,8 +295,9 @@ class Tag implements
      *
      * @return $this
      */
-    public function setHidden(bool $hidden): Tag
-    {
+    public function setHidden(
+        bool $hidden
+    ): Tag {
         $this->setAttribute('hidden', $hidden);
         return $this;
     }
@@ -326,8 +338,9 @@ class Tag implements
      *
      * @return $this
      */
-    public function setTitle(?string $title): Tag
-    {
+    public function setTitle(
+        ?string $title
+    ): Tag {
         $this->setAttribute('title', $title);
         return $this;
     }

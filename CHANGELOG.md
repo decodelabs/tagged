@@ -1,3 +1,8 @@
+## v0.14.12 (2023-11-23)
+* Added consent controls to media embeds
+* Made PHP8.1 minimum version
+* Refactored package file structure
+
 ## v0.14.11 (2023-09-26)
 * Converted phpstan doc comments to generic
 

@@ -20,8 +20,9 @@ class Embed
     /**
      * Init with parent factory
      */
-    public function __construct(Factory $html)
-    {
+    public function __construct(
+        Factory $html
+    ) {
         $this->html = $html;
     }
 

@@ -23,8 +23,9 @@ class Icon
     /**
      * Init with parent factory
      */
-    public function __construct(Factory $html)
-    {
+    public function __construct(
+        Factory $html
+    ) {
         $this->html = $html;
     }
 
@@ -33,8 +34,9 @@ class Icon
      *
      * @return $this
      */
-    public function setFormat(string $format): static
-    {
+    public function setFormat(
+        string $format
+    ): static {
         switch ($format) {
             case 'svg':
             case 'font':
@@ -61,8 +63,9 @@ class Icon
      *
      * @return $this
      */
-    public function setSvgReference(?string $reference): static
-    {
+    public function setSvgReference(
+        ?string $reference
+    ): static {
         $this->svgReference = $reference;
         return $this;
     }
@@ -80,8 +83,9 @@ class Icon
      *
      * @return $this
      */
-    public function setBaseClass(string $class): static
-    {
+    public function setBaseClass(
+        string $class
+    ): static {
         $this->baseClass = $class;
         return $this;
     }
@@ -97,8 +101,9 @@ class Icon
     /**
      * Create icon without args
      */
-    public function __get(string $name): Element
-    {
+    public function __get(
+        string $name
+    ): Element {
         switch ($this->format) {
             case 'svg':
                 return $this->html->el('svg.' . $this->baseClass . ' > /use', null, [
@@ -129,8 +134,9 @@ class Icon
     /**
      * Boolean icon
      */
-    public function boolean(?bool $value): Element
-    {
+    public function boolean(
+        ?bool $value
+    ): Element {
         $output = $this->__get($value ? 'tick' : 'cross');
         $output->addClass($value ? 'positive' : 'negative');
         return $output;
@@ -157,8 +163,9 @@ class Icon
     /**
      * Locked / unlocked icon
      */
-    public function locked(?bool $value): Element
-    {
+    public function locked(
+        ?bool $value
+    ): Element {
         $output = $this->__get($value ? 'lock' : 'unlock');
         $output->addClass($value ? 'locked' : 'unlocked');
         return $output;

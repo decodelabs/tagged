@@ -129,8 +129,9 @@ class Generator
     /**
      * Render hidden preview content
      */
-    public function previewText(?string $content): Element
-    {
+    public function previewText(
+        ?string $content
+    ): Element {
         return Html::{'?span.previewText'}($content)
             ->addStyles($this->getStylesFor('previewText'));
     }
@@ -395,8 +396,9 @@ class Generator
     /**
      * Render list of columns
      */
-    public function columns(mixed ...$contents): Element
-    {
+    public function columns(
+        mixed ...$contents
+    ): Element {
         return Html::{'table.columns'}([
             Html::{'tbody > tr'}(function () use ($contents) {
                 foreach ($contents as $content) {
@@ -416,8 +418,9 @@ class Generator
     /**
      * Render list of rows
      */
-    public function rows(mixed ...$contents): Element
-    {
+    public function rows(
+        mixed ...$contents
+    ): Element {
         return Html::{'table.rows'}([
             Html::{'tbody'}(function () use ($contents) {
                 foreach ($contents as $content) {
@@ -555,8 +558,9 @@ class Generator
     /**
      * Merge styles for tag
      */
-    public function getStylesFor(string ...$tags): StyleList
-    {
+    public function getStylesFor(
+        string ...$tags
+    ): StyleList {
         $output = new StyleList();
 
         foreach (array_reverse($tags) as $tag) {
