@@ -32,6 +32,7 @@ trait MediaTrait
     protected ?int $duration = null;
 
     protected ?string $source = null;
+    protected bool $consent = false;
 
 
     /**
@@ -194,6 +195,8 @@ trait MediaTrait
 
     /**
      * Set media source URL
+     *
+     * @return $this
      */
     protected function setUrl(
         ?string $url
@@ -244,6 +247,8 @@ trait MediaTrait
 
     /**
      * Set Media element id
+     *
+     * @return $this
      */
     public function setId(
         ?string $id
@@ -262,6 +267,8 @@ trait MediaTrait
 
     /**
      * Set media origin
+     *
+     * @return $this
      */
     public function setOrigin(
         ?string $origin
@@ -281,6 +288,8 @@ trait MediaTrait
 
     /**
      * Set Media element width
+     *
+     * @return $this
      */
     public function setWidth(
         ?int $width
@@ -291,6 +300,8 @@ trait MediaTrait
 
     /**
      * Scale dimensions from original width
+     *
+     * @return $this
      */
     public function scaleWidth(
         int $width
@@ -311,6 +322,8 @@ trait MediaTrait
 
     /**
      * Set Media element height
+     *
+     * @return $this
      */
     public function setHeight(
         ?int $height
@@ -329,6 +342,8 @@ trait MediaTrait
 
     /**
      * Set width and height and scale accordingly
+     *
+     * @return $this
      */
     public function setDimensions(
         ?int $width,
@@ -358,6 +373,8 @@ trait MediaTrait
 
     /**
      * Set whether Media element can go full screen
+     *
+     * @return $this
      */
     public function setAllowFullScreen(
         bool $flag
@@ -377,6 +394,8 @@ trait MediaTrait
 
     /**
      * Set whether media can autoplay
+     *
+     * @return $this
      */
     public function setAutoPlay(
         bool $autoplay
@@ -396,6 +415,8 @@ trait MediaTrait
 
     /**
      * Set start time of media
+     *
+     * @return $this
      */
     public function setStartTime(
         ?int $seconds
@@ -414,6 +435,8 @@ trait MediaTrait
 
     /**
      * Set end time of media
+     *
+     * @return $this
      */
     public function setEndTime(
         ?int $seconds
@@ -437,6 +460,8 @@ trait MediaTrait
 
     /**
      * Set media duration
+     *
+     * @return $this
      */
     public function setDuration(
         ?int $seconds
@@ -456,6 +481,27 @@ trait MediaTrait
     public function getDuration(): ?int
     {
         return $this->duration;
+    }
+
+
+    /**
+     * Set consent status
+     *
+     * @return $this
+     */
+    public function setConsent(
+        bool $consent
+    ): static {
+        $this->consent = $consent;
+        return $this;
+    }
+
+    /**
+     * Has consent
+     */
+    public function hasConsent(): bool
+    {
+        return $this->consent;
     }
 
 

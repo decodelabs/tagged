@@ -82,7 +82,13 @@ class Youtube extends Video
      */
     public function getPreparedUrl(): ?string
     {
-        $url = 'https://www.youtube.com/embed/' . $this->youtubeId;
+        $url = 'https://www.youtube';
+
+        if (!$this->consent) {
+            $url .= '-nocookie';
+        }
+
+        $url .= '.com/embed/' . $this->youtubeId;
         $queryVars = $this->options;
 
         if ($this->startTime !== null) {

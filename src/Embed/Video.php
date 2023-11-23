@@ -20,6 +20,7 @@ class Video implements Media
     public const URL_MAP = [
         'youtube' => 'youtube',
         'youtu.be' => 'youtube',
+        'youtube-nocookie.com' => 'youtube',
         'vimeo' => 'vimeo'
     ];
 
@@ -63,7 +64,13 @@ class Video implements Media
      */
     public function render(): Element
     {
-        if (($this->url === null || !$this->provider) && $this->source !== null) {
+        if (
+            (
+                $this->url === null ||
+                !$this->provider
+            ) &&
+            $this->source !== null
+        ) {
             return Element::create('div.embed.video', new Buffer($this->source));
         }
 
