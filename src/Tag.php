@@ -115,7 +115,10 @@ class Tag implements
                     'Unable to encode attribute value to JSON'
                 );
             }
-        } elseif (!is_bool($value)) {
+        } elseif (
+            !is_bool($value) &&
+            !$value instanceof Buffer
+        ) {
             $value = Coercion::forceString($value);
         }
 

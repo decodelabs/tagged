@@ -1,3 +1,6 @@
+## v0.14.13 (2024-04-23)
+* Allow raw Buffers in attributes
+
 ## v0.14.12 (2023-11-23)
 * Added consent controls to media embeds
 * Made PHP8.1 minimum version
