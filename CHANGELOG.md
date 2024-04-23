@@ -1,3 +1,4 @@
+## v0.14.13 (2024-04-23)
 * Allow raw Buffers in attributes
 
 ## v0.14.12 (2023-11-23)
