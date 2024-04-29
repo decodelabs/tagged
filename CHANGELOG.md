@@ -1,3 +1,6 @@
+## v0.14.14 (2024-04-29)
+* Fixed Veneer stubs in gitattributes
+
 ## v0.14.13 (2024-04-23)
 * Allow raw Buffers in attributes
 
