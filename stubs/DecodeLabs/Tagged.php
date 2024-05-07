@@ -78,4 +78,7 @@ class Tagged implements Proxy
     public static function esc(mixed $value): ?string {
         return static::$instance->esc(...func_get_args());
     }
+    public static function jsonSerialize(): mixed {
+        return static::$instance->jsonSerialize();
+    }
 };

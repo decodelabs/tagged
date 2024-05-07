@@ -1,3 +1,6 @@
+## v0.15.0 (2024-05-07)
+* Added JsonSerializable to Markup interface
+
 ## v0.14.14 (2024-04-29)
 * Fixed Veneer stubs in gitattributes
 

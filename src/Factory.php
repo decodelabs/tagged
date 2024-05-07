@@ -458,6 +458,14 @@ class Factory implements Markup
             return Coercion::forceString($value);
         }
     }
+
+    /**
+     * Serialize to json
+     */
+    public function jsonSerialize(): mixed
+    {
+        return (string)$this;
+    }
 }
 
 
