@@ -530,4 +530,12 @@ trait MediaTrait
     {
         return (string)$this->render();
     }
+
+    /**
+     * Serialize to json
+     */
+    public function jsonSerialize(): mixed
+    {
+        return (string)$this;
+    }
 }
