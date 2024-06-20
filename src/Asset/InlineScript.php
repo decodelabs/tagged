@@ -13,7 +13,7 @@ use DecodeLabs\Coercion;
 use DecodeLabs\Tagged\AssetTrait;
 use DecodeLabs\Tagged\Element;
 
-class RemoteScript implements Script
+class InlineScript implements Script
 {
     use AssetTrait;
 

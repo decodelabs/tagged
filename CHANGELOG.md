@@ -1,3 +1,6 @@
+## v0.15.2 (2024-06-20)
+* Fixed InlineScript
+
 ## v0.15.1 (2024-06-20)
 * Added ViewAssetContainer structure
 * Added initial Asset implementations
