@@ -40,6 +40,23 @@ class InlineScript implements Script
     }
 
     /**
+     * Set source
+     */
+    public function setSource(
+        string $source
+    ): void {
+        $this->source = $source;
+    }
+
+    /**
+     * Get source
+     */
+    public function getSource(): string
+    {
+        return $this->source;
+    }
+
+    /**
      * Set type
      */
     public function setType(
