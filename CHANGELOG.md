@@ -1,3 +1,4 @@
+## v0.15.3 (2024-06-20)
 * Added source accessors to InlineScript
 
 ## v0.15.2 (2024-06-20)
