@@ -1,3 +1,7 @@
+## v0.15.1 (2024-06-20)
+* Added ViewAssetContainer structure
+* Added initial Asset implementations
+
 ## v0.15.0 (2024-05-07)
 * Added JsonSerializable to Markup interface
 
