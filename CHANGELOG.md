@@ -1,3 +1,5 @@
+* Updated Veneer dependency
+
 ## v0.15.3 (2024-06-20)
 * Added source accessors to InlineScript
 
