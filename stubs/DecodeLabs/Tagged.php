@@ -23,8 +23,8 @@ class Tagged implements Proxy
 {
     use ProxyTrait;
 
-    const VENEER = 'DecodeLabs\\Tagged';
-    const VENEER_TARGET = Inst::class;
+    const Veneer = 'DecodeLabs\\Tagged';
+    const VeneerTarget = Inst::class;
 
     public static Inst $instance;
     /** @var EmbedPlugin|PluginWrapper<EmbedPlugin> $embed */
