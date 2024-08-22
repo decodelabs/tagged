@@ -12,7 +12,6 @@ namespace DecodeLabs\Tagged;
 use DecodeLabs\Elementary\Element as ElementInterface;
 use DecodeLabs\Elementary\ElementTrait as ElementTrait;
 use DecodeLabs\Glitch\Proxy as Glitch;
-
 use IteratorAggregate;
 use Throwable;
 

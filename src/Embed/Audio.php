@@ -17,7 +17,7 @@ class Audio implements Media
 {
     use MediaTrait;
 
-    public const URL_MAP = [
+    protected const UrlMap = [
         'audioboom' => 'audioboom',
         'audioboo' => 'audioboom'
     ];

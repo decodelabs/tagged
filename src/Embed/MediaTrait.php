@@ -14,7 +14,7 @@ use DecodeLabs\Exceptional;
 
 trait MediaTrait
 {
-    //public const URL_MAP = [];
+    //protected const UrlMap = [];
 
     protected ?string $url = null;
     protected ?string $provider = null;
@@ -142,7 +142,7 @@ trait MediaTrait
     public static function extractProviderName(
         string $url
     ): ?string {
-        foreach (self::URL_MAP as $search => $key) {
+        foreach (self::UrlMap as $search => $key) {
             if (false !== stripos($url, $search)) {
                 return $key;
             }
