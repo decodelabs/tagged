@@ -33,13 +33,15 @@ class Tag implements
     use StyleContainerTrait;
     use BufferProviderTrait;
 
-    public const CLOSED_TAGS = [
+    protected const Mutable = true;
+
+    protected const ClosedTags = [
         'area', 'base', 'br', 'col', 'command', 'embed',
         'hr', 'img', 'input', 'keygen', 'link', 'meta',
         'param', 'source', 'wbr'
     ];
 
-    public const INLINE_TAGS = [
+    protected const InlineTags = [
         'a', 'br', 'bdo', 'abbr', 'blink', 'nextid', 'acronym', 'basefont',
         'b', 'em', 'big', 'cite', 'input', 'spacer', 'listing',
         'i', 'rp', 'del', 'code', 'label', 'strike', 'marquee',
@@ -49,7 +51,7 @@ class Tag implements
         'var', 'ruby', 'wbr', 'span', 'time',
     ];
 
-    public const BOOLEAN_ATTRIBUTES = [
+    protected const BooleanAttributes = [
         'spellcheck'
     ];
 
@@ -59,7 +61,7 @@ class Tag implements
     public static function isClosableTagName(
         string $name
     ): bool {
-        return !in_array(strtolower($name), self::CLOSED_TAGS);
+        return !in_array(strtolower($name), self::ClosedTags);
     }
 
     /**
@@ -68,7 +70,7 @@ class Tag implements
     public static function isInlineTagName(
         string $name
     ): bool {
-        return in_array(strtolower($name), self::INLINE_TAGS);
+        return in_array(strtolower($name), self::InlineTags);
     }
 
 

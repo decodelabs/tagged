@@ -25,8 +25,8 @@ class Generator
      */
     public function __construct()
     {
-        $this->styles = new StyleSheet(static::STYLES);
-        $this->mobileStyles = new StyleSheet(static::MOBILE_STYLES);
+        $this->styles = new StyleSheet(static::Styles);
+        $this->mobileStyles = new StyleSheet(static::MobileStyles);
     }
 
     /**
@@ -573,7 +573,7 @@ class Generator
     }
 
 
-    public const STYLES = [
+    protected const Styles = [
         'text' => [
             'font-size' => '15px',
             'font-family' => '-apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Ubuntu, sans-serif',
@@ -701,7 +701,7 @@ class Generator
         ]
     ];
 
-    public const MOBILE_STYLES = [
+    protected const MobileStyles = [
         'table[class=body] .bodyContainer, table[class=body] .content' => [
             'width' => '100% !important'
         ],

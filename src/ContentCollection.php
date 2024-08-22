@@ -31,7 +31,7 @@ class ContentCollection implements
     use ChildRendererTrait;
     use BufferProviderTrait;
 
-    public const MUTABLE = true;
+    protected const Mutable = true;
 
     /**
      * Normalize abitrary content

@@ -17,7 +17,7 @@ class Video implements Media
 {
     use MediaTrait;
 
-    public const URL_MAP = [
+    protected const UrlMap = [
         'youtube' => 'youtube',
         'youtu.be' => 'youtube',
         'youtube-nocookie.com' => 'youtube',
