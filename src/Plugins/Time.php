@@ -10,15 +10,13 @@ declare(strict_types=1);
 namespace DecodeLabs\Tagged\Plugins;
 
 use DateInterval;
-use DateTime;
+use DateTimeInterface;
 use DateTimeZone;
-
 use DecodeLabs\Cosmos\Extension\Time as TimePlugin;
 use DecodeLabs\Cosmos\Extension\TimeTrait as TimePluginTrait;
 use DecodeLabs\Cosmos\Locale;
 use DecodeLabs\Tagged\Element;
 use DecodeLabs\Tagged\Factory;
-
 use Stringable;
 
 /**
@@ -46,7 +44,7 @@ class Time implements TimePlugin
      * Custom format a date and wrap it
      */
     public function format(
-        DateTime|DateInterval|string|Stringable|int|null $date,
+        DateTimeInterface|DateInterval|string|Stringable|int|null $date,
         string $format,
         DateTimeZone|string|Stringable|bool|null $timezone = true
     ): ?Element {
@@ -55,7 +53,7 @@ class Time implements TimePlugin
         }
 
         return $this->wrap(
-            $date->format($timezone === false ? 'Y-m-d' : DateTime::W3C),
+            $date->format($timezone === false ? 'Y-m-d' : DateTimeInterface::W3C),
             $date->format($format)
         );
     }
@@ -64,7 +62,7 @@ class Time implements TimePlugin
      * Custom format a date and wrap it
      */
     public function formatDate(
-        DateTime|DateInterval|string|Stringable|int|null $date,
+        DateTimeInterface|DateInterval|string|Stringable|int|null $date,
         string $format
     ): ?Element {
         if (!$date = $this->prepare($date, false, true)) {
@@ -81,7 +79,7 @@ class Time implements TimePlugin
      * Custom locale format a date with ICU and wrap it
      */
     public function pattern(
-        DateTime|DateInterval|string|Stringable|int|null $date,
+        DateTimeInterface|DateInterval|string|Stringable|int|null $date,
         string $pattern,
         DateTimeZone|string|Stringable|bool|null $timezone = true,
         string|Locale|null $locale = null
@@ -93,7 +91,7 @@ class Time implements TimePlugin
         }
 
         return $this->wrap(
-            $date->format($timezone === false ? 'Y-m-d' : DateTime::W3C),
+            $date->format($timezone === false ? 'Y-m-d' : DateTimeInterface::W3C),
             $output
         );
     }
@@ -102,7 +100,7 @@ class Time implements TimePlugin
      * Format date according to locale
      */
     public function locale(
-        DateTime|DateInterval|string|Stringable|int|null $date,
+        DateTimeInterface|DateInterval|string|Stringable|int|null $date,
         string|int|bool|null $dateSize = true,
         string|int|bool|null $timeSize = true,
         DateTimeZone|string|Stringable|bool|null $timezone = true,
@@ -124,10 +122,9 @@ class Time implements TimePlugin
 
     /**
      * Format interval
-     * @param DateTime|DateInterval|string|Stringable|int|null $date
      */
     protected function formatNowInterval(
-        DateTime|DateInterval|string|Stringable|int|null $date,
+        DateTimeInterface|DateInterval|string|Stringable|int|null $date,
         bool $invert,
         ?int $parts,
         bool $short = false,
@@ -142,7 +139,7 @@ class Time implements TimePlugin
         }
 
         $output = $this->wrap(
-            $date->format(DateTime::W3C),
+            $date->format(DateTimeInterface::W3C),
             $output,
             $this->formatRawLocaleDate($date, true, true, true, $locale)
         );
@@ -172,8 +169,8 @@ class Time implements TimePlugin
      * Format interval until date
      */
     protected function formatBetweenInterval(
-        DateTime|DateInterval|string|Stringable|int|null $date1,
-        DateTime|DateInterval|string|Stringable|int|null $date2,
+        DateTimeInterface|DateInterval|string|Stringable|int|null $date1,
+        DateTimeInterface|DateInterval|string|Stringable|int|null $date2,
         ?int $parts = 1,
         bool $short = false,
         string|Locale|null $locale = null

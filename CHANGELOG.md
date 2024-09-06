@@ -1,3 +1,4 @@
+* Updated Cosmos extension intefaces
 * Added @phpstan-require-implements constraints
 
 ## v0.15.5 (2024-08-21)
