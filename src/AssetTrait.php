@@ -11,6 +11,9 @@ namespace DecodeLabs\Tagged;
 
 use DecodeLabs\Collections\AttributeContainerTrait;
 
+/**
+ * @phpstan-require-implements Asset
+ */
 trait AssetTrait
 {
     use AttributeContainerTrait;

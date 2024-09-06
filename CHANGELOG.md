@@ -1,3 +1,7 @@
+## v0.15.6 (2024-09-06)
+* Updated Cosmos extension intefaces
+* Added @phpstan-require-implements constraints
+
 ## v0.15.5 (2024-08-21)
 * Converted consts to protected PascalCase
 * Updated Veneer dependency and Stub

@@ -12,6 +12,9 @@ namespace DecodeLabs\Tagged\Embed;
 use DecodeLabs\Coercion;
 use DecodeLabs\Exceptional;
 
+/**
+ * @phpstan-require-implements Media
+ */
 trait MediaTrait
 {
     //protected const UrlMap = [];
