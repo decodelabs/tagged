@@ -32,8 +32,8 @@ class Embed
      */
     public function video(
         ?string $embed,
-        int $width = null,
-        int $height = null
+        ?int $width = null,
+        ?int $height = null
     ): ?Video {
         if ($embed === null) {
             return null;
@@ -54,8 +54,8 @@ class Embed
      */
     public function audio(
         ?string $embed,
-        int $width = null,
-        int $height = null
+        ?int $width = null,
+        ?int $height = null
     ): ?Audio {
         if ($embed === null) {
             return null;

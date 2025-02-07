@@ -32,7 +32,7 @@ class Element extends Tag implements
     public static function create(
         string $name,
         mixed $content = null,
-        array $attributes = null
+        ?array $attributes = null
     ): self {
         if (false !== strpos($name, '>')) {
             $parts = explode('>', $name);

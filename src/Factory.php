@@ -49,7 +49,7 @@ class Factory implements Markup
     public function __invoke(
         string $name,
         mixed $content,
-        array $attributes = null
+        ?array $attributes = null
     ): Element {
         return $this->el($name, $content, $attributes);
     }
@@ -86,7 +86,7 @@ class Factory implements Markup
      */
     public function tag(
         string $name,
-        array $attributes = null
+        ?array $attributes = null
     ): Tag {
         return new Tag($name, $attributes);
     }
@@ -99,7 +99,7 @@ class Factory implements Markup
     public function el(
         string $name,
         mixed $content = null,
-        array $attributes = null
+        ?array $attributes = null
     ): Element {
         return Element::create($name, $content, $attributes);
     }

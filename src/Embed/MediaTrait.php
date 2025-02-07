@@ -178,8 +178,8 @@ trait MediaTrait
      */
     public function __construct(
         ?string $url,
-        int $width = null,
-        int $height = null,
+        ?int $width = null,
+        ?int $height = null,
         ?string $mediaSource = null
     ) {
         $this->setUrl($url);
