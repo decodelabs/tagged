@@ -375,8 +375,8 @@ class Generator
      */
     public function card(
         mixed $content,
-        array $tagStyles = null,
-        array $attributes = null
+        ?array $tagStyles = null,
+        ?array $attributes = null
     ): Element {
         $output = $this->container(
             function ($el) use ($content) {

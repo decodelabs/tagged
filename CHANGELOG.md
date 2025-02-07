@@ -1,3 +1,6 @@
+## v0.15.7 (2025-02-07)
+* Fixed implicit nullable arguments
+
 ## v0.15.6 (2024-09-06)
 * Updated Cosmos extension intefaces
 * Added @phpstan-require-implements constraints
