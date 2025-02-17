@@ -11,6 +11,11 @@ namespace DecodeLabs\Tagged;
 
 use DecodeLabs\Collections\AttributeContainer;
 
+/**
+ * @phpstan-import-type TAttributeValue from Tag
+ * @phpstan-import-type TAttributeInput from Tag
+ * @extends AttributeContainer<TAttributeValue,TAttributeInput>
+ */
 interface Asset extends AttributeContainer
 {
     public function getPriority(): int;

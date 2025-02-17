@@ -91,7 +91,7 @@ class Time implements TimePlugin
         }
 
         return $this->wrap(
-            $date->format($timezone === false ? 'Y-m-d' : DateTimeInterface::W3C),
+            (string)$date?->format($timezone === false ? 'Y-m-d' : DateTimeInterface::W3C),
             $output
         );
     }
@@ -113,7 +113,7 @@ class Time implements TimePlugin
         }
 
         return $this->wrap(
-            $date->format($wrapFormat),
+            (string)$date?->format((string)$wrapFormat),
             $output
         );
     }
@@ -139,12 +139,12 @@ class Time implements TimePlugin
         }
 
         $output = $this->wrap(
-            $date->format(DateTimeInterface::W3C),
+            (string)$date?->format(DateTimeInterface::W3C),
             $output,
             $this->formatRawLocaleDate($date, true, true, true, $locale)
         );
 
-        if ($interval->invert) {
+        if ($interval?->invert) {
             $output->addClass('future');
         } else {
             $output->addClass('past');
@@ -154,7 +154,7 @@ class Time implements TimePlugin
             $positiveClass = $positive ? 'positive' : 'negative';
             $negativeClass = $positive ? 'negative' : 'positive';
 
-            if ($interval->invert) {
+            if ($interval?->invert) {
                 $output->addClass($invert ? $positiveClass : $negativeClass . ' pending');
             } else {
                 $output->addClass($invert ? $negativeClass : $positiveClass);
@@ -186,7 +186,7 @@ class Time implements TimePlugin
             $output
         );
 
-        if ($interval->invert) {
+        if ($interval?->invert) {
             $output->addClass('negative');
         } else {
             $output->addClass('positive');

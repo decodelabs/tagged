@@ -17,27 +17,22 @@ use DecodeLabs\Tagged\Plugins\Icon as IconPlugin;
 use DecodeLabs\Tagged\Plugins\Number as NumberPlugin;
 use DecodeLabs\Tagged\Plugins\Time as TimePlugin;
 use DecodeLabs\Veneer;
-use DecodeLabs\Veneer\LazyLoad;
 use DecodeLabs\Veneer\Plugin;
 use Stringable;
 use Throwable;
 
 class Factory implements Markup
 {
-    #[Plugin]
-    #[LazyLoad]
+    #[Plugin(lazy: true)]
     public EmbedPlugin $embed;
 
-    #[Plugin]
-    #[LazyLoad]
+    #[Plugin(lazy: true)]
     public IconPlugin $icon;
 
-    #[Plugin]
-    #[LazyLoad]
+    #[Plugin(lazy: true)]
     public TimePlugin $time;
 
-    #[Plugin]
-    #[LazyLoad]
+    #[Plugin(lazy: true)]
     public NumberPlugin $number;
 
 
@@ -344,7 +339,9 @@ class Factory implements Markup
             $delimiter = ', ';
         }
 
-        return Element::create('span.list', function ($el) use ($list, $renderer, $delimiter, $finalDelimiter, $limit) {
+        return Element::create('span.list', function (
+            Element $el
+        ) use ($list, $renderer, $delimiter, $finalDelimiter, $limit) {
             $el->setRenderEmpty(false);
 
             if (!$list) {
@@ -380,7 +377,10 @@ class Factory implements Markup
                     continue;
                 }
 
-                if ($limit !== null && $i > $limit) {
+                if (
+                    $limit !== null &&
+                    $i > $limit
+                ) {
                     $more++;
                     continue;
                 }
@@ -470,4 +470,7 @@ class Factory implements Markup
 
 
 // Register the Veneer proxy
-Veneer::register(Factory::class, Tagged::class);
+Veneer\Manager::getGlobalManager()->register(
+    Factory::class,
+    Tagged::class
+);

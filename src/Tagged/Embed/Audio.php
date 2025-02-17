@@ -17,7 +17,10 @@ class Audio implements Media
 {
     use MediaTrait;
 
-    protected const UrlMap = [
+    /**
+     * @var array<string,string>
+     */
+    protected const array UrlMap = [
         'audioboom' => 'audioboom',
         'audioboo' => 'audioboom'
     ];
@@ -40,7 +43,13 @@ class Audio implements Media
      */
     public function render(): Element
     {
-        if (($this->url === null || !$this->provider) && $this->source !== null) {
+        if (
+            (
+                $this->url === null ||
+                !$this->provider
+            ) &&
+            $this->source !== null
+        ) {
             return Element::create('div.embed.audio', new Buffer($this->source));
         }
 

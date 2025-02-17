@@ -10,20 +10,25 @@ declare(strict_types=1);
 namespace DecodeLabs\Tagged\Embed;
 
 use DateTime;
-
 use DecodeLabs\Coercion;
-use DecodeLabs\Collections\Tree\NativeMutable as Tree;
+use DecodeLabs\Collections\Tree;
 use DecodeLabs\Exceptional;
 use DecodeLabs\Tagged\Element;
-
 use ErrorException;
 
 class Youtube extends Video
 {
+    private const array QueryVars = [
+        'autohide', 'autoplay', 'cc_load_policy', 'color', 'controls',
+        'disablekb', 'enablejsapi', 'end', 'fs', 'hl', 'iv_load_policy',
+        'list', 'listType', 'loop', 'modestbranding', 'origin', 'playerapiid',
+        'playlist', 'playsinline', 'rel', 'showinfo', 'start', 'theme'
+    ];
+
     protected string $youtubeId;
 
     /**
-     * @var array<string, mixed>
+     * @var array<string,mixed>
      */
     protected array $options = [];
 
@@ -42,7 +47,10 @@ class Youtube extends Video
         $urlParts = parse_url($this->url);
 
         if ($urlParts === false || empty($urlParts)) {
-            throw Exceptional::UnexpectedValue('Unable to parse URL', null, $this->url);
+            throw Exceptional::UnexpectedValue(
+                message: 'Unable to parse URL',
+                data: $this->url
+            );
         }
 
         parse_str($urlParts['query'] ?? '', $query);
@@ -54,22 +62,18 @@ class Youtube extends Video
             $id = array_pop($parts);
 
             if ($id == 'watch') {
-                throw Exceptional::UnexpectedValue('Malformed youtube URL', null, $this->url);
+                throw Exceptional::UnexpectedValue(
+                    message: 'Malformed youtube URL',
+                    data: $this->url
+                );
             }
         }
 
         $this->youtubeId = Coercion::toString($id);
 
 
-        static $vars = [
-            'autohide', 'autoplay', 'cc_load_policy', 'color', 'controls',
-            'disablekb', 'enablejsapi', 'end', 'fs', 'hl', 'iv_load_policy',
-            'list', 'listType', 'loop', 'modestbranding', 'origin', 'playerapiid',
-            'playlist', 'playsinline', 'rel', 'showinfo', 'start', 'theme'
-        ];
-
         foreach ((array)$query as $key => $value) {
-            if (in_array(strtolower((string)$key), $vars)) {
+            if (in_array(strtolower((string)$key), self::QueryVars)) {
                 $this->options[(string)$key] = $value;
             }
         }
@@ -181,7 +185,9 @@ class Youtube extends Video
             'width' => $json['width'],
             'height' => $json['height'],
             'duration' => $info['length_seconds'],
-            'uploadDate' => isset($info['timestamp']) ? (new DateTime())->setTimestamp((int)$info['timestamp']) : null,
+            'uploadDate' => isset($info['timestamp']) ?
+                new DateTime()->setTimestamp((int)$info['timestamp']) :
+                null,
             'description' => $json['description'],
             'authorName' => $json['author_name'],
             'authorUrl' => $json['author_url'],

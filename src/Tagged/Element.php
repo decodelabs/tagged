@@ -16,7 +16,10 @@ use IteratorAggregate;
 use Throwable;
 
 /**
+ * @phpstan-import-type TAttributeValue from Tag
+ * @phpstan-import-type TAttributeInput from Tag
  * @implements IteratorAggregate<mixed>
+ * @implements ElementInterface<TAttributeValue,TAttributeInput>
  */
 class Element extends Tag implements
     IteratorAggregate,
@@ -27,7 +30,7 @@ class Element extends Tag implements
     /**
      * Apply nested by string name
      *
-     * @param array<string, mixed>|null $attributes
+     * @param array<string,mixed>|null $attributes
      */
     public static function create(
         string $name,
