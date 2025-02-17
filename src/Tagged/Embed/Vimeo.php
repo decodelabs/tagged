@@ -10,12 +10,10 @@ declare(strict_types=1);
 namespace DecodeLabs\Tagged\Embed;
 
 use DateTime;
-
 use DecodeLabs\Coercion;
-use DecodeLabs\Collections\Tree\NativeMutable as Tree;
+use DecodeLabs\Collections\Tree;
 use DecodeLabs\Exceptional;
 use DecodeLabs\Tagged\Element;
-
 use ErrorException;
 
 class Vimeo extends Video
@@ -23,7 +21,7 @@ class Vimeo extends Video
     protected string $vimeoId;
 
     /**
-     * @var array<string, mixed>
+     * @var array<string,mixed>
      */
     protected array $options = [];
 
@@ -42,7 +40,10 @@ class Vimeo extends Video
         $urlParts = parse_url($this->url);
 
         if ($urlParts === false || empty($urlParts)) {
-            throw Exceptional::UnexpectedValue('Unable to parse URL', null, $this->url);
+            throw Exceptional::UnexpectedValue(
+                message: 'Unable to parse URL',
+                data: $this->url
+            );
         }
 
         parse_str($urlParts['query'] ?? '', $query);
@@ -50,7 +51,10 @@ class Vimeo extends Video
         $id = array_pop($parts);
 
         if (!is_numeric($id)) {
-            throw Exceptional::UnexpectedValue('Malformed vimeo URL', null, $this->url);
+            throw Exceptional::UnexpectedValue(
+                message: 'Malformed vimeo URL',
+                data: $this->url
+            );
         }
 
         $this->vimeoId = $id;
@@ -76,20 +80,20 @@ class Vimeo extends Video
         $queryVars = $this->options;
 
         if ($this->autoPlay) {
-            $queryVals['autoplay'] = 1;
+            $queryVars['autoplay'] = 1;
         }
 
         /*
         if($this->startTime !== null) {
-            $queryVals['start'] = $this->startTime.'s';
+            $queryVars['start'] = $this->startTime.'s';
         }
 
         if($this->endTime !== null) {
-            $queryVals['end'] = $this->endTime.'s';
+            $queryVars['end'] = $this->endTime.'s';
         }
 
         if($this->duration !== null) {
-            $queryVals['end'] = $this->duration + $this->startTime;
+            $queryVars['end'] = $this->duration + $this->startTime;
         }
          */
 
@@ -139,7 +143,10 @@ class Vimeo extends Video
         }
 
         $url = 'https://vimeo.com/api/oembed.json?url=' . urlencode($this->url);
-        $referrer = $options['referrer'] ?? $options['referer'] ?? $_SERVER['SERVER_NAME'];
+
+        $referrer = Coercion::toString(
+            $options['referrer'] ?? $options['referer'] ?? $_SERVER['SERVER_NAME']
+        );
 
         try {
             if (false !== ($json = file_get_contents($url, false, stream_context_create([

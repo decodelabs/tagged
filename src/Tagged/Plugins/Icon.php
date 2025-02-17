@@ -44,7 +44,9 @@ class Icon
                 break;
 
             default:
-                throw Exceptional::InvalidArgument('Invalid icon format: ' . $format);
+                throw Exceptional::InvalidArgument(
+                    message: 'Invalid icon format: ' . $format
+                );
         }
 
         return $this;
@@ -114,7 +116,9 @@ class Icon
                 return $this->html->el('i.' . $this->baseClass . '.icon-' . $name);
 
             default:
-                throw Exceptional::UnexpectedValue('Unsupported icon format: ' . $this->format);
+                throw Exceptional::UnexpectedValue(
+                    message: 'Unsupported icon format: ' . $this->format
+                );
         }
     }
 
@@ -150,7 +154,10 @@ class Icon
         ?bool $value,
         bool $allowNull = true
     ): ?Element {
-        if ($value === null && $allowNull) {
+        if (
+            $value === null &&
+            $allowNull
+        ) {
             return null;
         }
 

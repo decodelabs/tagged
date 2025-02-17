@@ -10,17 +10,18 @@ declare(strict_types=1);
 namespace DecodeLabs\Tagged\Embed;
 
 use DateTime;
-
 use DecodeLabs\Coercion;
-use DecodeLabs\Collections\Tree\NativeMutable as Tree;
+use DecodeLabs\Collections\Tree;
 use DecodeLabs\Exceptional;
-
 use DecodeLabs\Tagged\Element;
-
 use ErrorException;
 
 class Audioboom extends Audio
 {
+    protected const array QueryVars = [
+        'eid', 'player_type'
+    ];
+
     protected string $audioboomId;
     protected string $type = 'embed';
 
@@ -44,7 +45,10 @@ class Audioboom extends Audio
         $urlParts = parse_url($this->url);
 
         if ($urlParts === false || empty($urlParts)) {
-            throw Exceptional::UnexpectedValue('Unable to parse URL', null, $this->url);
+            throw Exceptional::UnexpectedValue(
+                message: 'Unable to parse URL',
+                data: $this->url
+            );
         }
 
         parse_str($urlParts['query'] ?? '', $query);
@@ -52,19 +56,18 @@ class Audioboom extends Audio
         $parts = explode('/', ltrim($urlParts['path'] ?? '', '/'));
         $booId = $parts[1] ?? null;
 
-        if ($booId === 'playlist' || $booId === 'playlist') {
+        if (
+            $booId === 'playlist' ||
+            $booId === 'playlist'
+        ) {
             $this->type = 'playlist';
             $this->audioboomId = Coercion::toString($query['data_for_content_type']);
         } else {
             $this->type = 'embed';
             $this->audioboomId = (string)$booId;
 
-            static $vars = [
-                'eid', 'player_type'
-            ];
-
             foreach ((array)$query as $key => $value) {
-                if (in_array(strtolower((string)$key), $vars)) {
+                if (in_array(strtolower((string)$key), self::QueryVars)) {
                     $this->options[(string)$key] = Coercion::forceString($value);
                 }
             }
@@ -87,7 +90,10 @@ class Audioboom extends Audio
                 $url .= '?' . http_build_query($this->options);
             }
         } else {
-            throw Exceptional::UnexpectedValue('Unexpected Audioboom type', null, $this->type);
+            throw Exceptional::UnexpectedValue(
+                message: 'Unexpected Audioboom type',
+                data: $this->type
+            );
         }
 
         return $url;
@@ -167,7 +173,9 @@ class Audioboom extends Audio
                 return $this->lookupPlaylistMeta($options);
 
             default:
-                throw Exceptional::UnexpectedValue('Unsupported Audioboom type: ' . $this->type);
+                throw Exceptional::UnexpectedValue(
+                    message: 'Unsupported Audioboom type: ' . $this->type
+                );
         }
     }
 

@@ -9,35 +9,51 @@
             "email": "tom@inflatablecookie.com"
         } ],
     "require": {
-        "php": "^8.1",
+        "php": "^8.4",
         "ext-intl": "*",
-        "symfony/polyfill-mbstring": "^1.7",
+        "symfony/polyfill-mbstring": "^1.31",
 
-        "decodelabs/coercion": "^0.2",
-        "decodelabs/collections": "^0.9",
-        "decodelabs/cosmos": "^0.2",
-        "decodelabs/elementary": "^0.4",
-        "decodelabs/exceptional": "^0.4",
-        "decodelabs/glitch-support": "^0.4",
-        "decodelabs/veneer": "^0.11.6"
+        "decodelabs/coercion": "^0.2.15",
+        "decodelabs/collections": "^0.10.4",
+        "decodelabs/cosmos": "^0.2.1",
+        "decodelabs/elementary": "^0.4.4",
+        "decodelabs/exceptional": "^0.5.3",
+        "decodelabs/glitch-support": "^0.5.1",
+        "decodelabs/veneer": "^0.12.3"
     },
     "require-dev": {
-        "decodelabs/phpstan-decodelabs": "^0.6"
+        "decodelabs/phpstan-decodelabs": "^0.7"
     },
     "suggest": {
         "nesbot/carbon": "Support for time interval formatting"
     },
     "autoload": {
         "psr-4": {
-            "DecodeLabs\\Tagged\\": "src/"
+            "DecodeLabs\\Tagged\\": "src/Tagged",
+            "DecodeLabs\\PHPStan\\": "src/PHPStan"
         },
         "files": [
-            "src/Factory.php"
+            "src/Tagged/Factory.php"
         ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "DecodeLabs\\Tagged\\Tests\\": "tests/"
+        }
     },
     "extra": {
         "branch-alias": {
-            "dev-develop": "0.15.x-dev"
+            "dev-develop": "0.16.x-dev"
+        },
+        "effigy": {
+            "exports": [
+                "phpstan-extension.neon"
+            ]
+        },
+        "phpstan": {
+            "includes": [
+                "phpstan-extension.neon"
+            ]
         }
     },
     "repositories": {

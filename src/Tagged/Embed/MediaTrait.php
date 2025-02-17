@@ -53,7 +53,7 @@ trait MediaTrait
 
             if (!preg_match('/^\<([a-zA-Z0-9\-]+) /i', $embed, $matches)) {
                 throw Exceptional::UnexpectedValue(
-                    'Don\'t know how to parse this embed'
+                    message: 'Don\'t know how to parse this embed'
                 );
             }
 
@@ -64,7 +64,7 @@ trait MediaTrait
                 case 'object':
                     if (!preg_match('/src\=(\"|\')([^\'"]+)(\"|\')/i', $embed, $matches)) {
                         throw Exceptional::UnexpectedValue(
-                            'Could not extract source from flash embed'
+                            message: 'Could not extract source from flash embed'
                         );
                     }
 
@@ -110,7 +110,7 @@ trait MediaTrait
 
                 default:
                     throw Exceptional::UnexpectedValue(
-                        'Don\'t know how to parse this media embed'
+                        message: 'Don\'t know how to parse this media embed'
                     );
             }
         } else {
@@ -125,7 +125,7 @@ trait MediaTrait
                 // Url direct
             } else {
                 throw Exceptional::UnexpectedValue(
-                    'Don\'t know how to parse this media embed'
+                    message: 'Don\'t know how to parse this media embed'
                 );
             }
 

@@ -1,0 +1,5 @@
+services:
+    -
+        class: DecodeLabs\PHPStan\TaggedReflectionExtension
+        tags:
+            - phpstan.broker.methodsClassReflectionExtension

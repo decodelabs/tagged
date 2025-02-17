@@ -9,20 +9,20 @@ declare(strict_types=1);
 
 namespace DecodeLabs\Tagged;
 
-use DecodeLabs\Collections\Native\SequenceTrait;
-use DecodeLabs\Collections\Sequence;
+use DecodeLabs\Collections\SequenceTrait;
+use DecodeLabs\Collections\SequenceInterface;
 use DecodeLabs\Elementary\Markup\ChildRendererTrait;
 
 use IteratorAggregate;
 
 /**
  * @implements IteratorAggregate<mixed>
- * @implements Sequence<mixed>
+ * @implements SequenceInterface<mixed>
  */
 class ContentCollection implements
     Markup,
     IteratorAggregate,
-    Sequence
+    SequenceInterface
 {
     /**
      * @use SequenceTrait<mixed>
@@ -31,7 +31,7 @@ class ContentCollection implements
     use ChildRendererTrait;
     use BufferProviderTrait;
 
-    protected const Mutable = true;
+    protected const bool Mutable = true;
 
     /**
      * Normalize abitrary content
@@ -64,7 +64,10 @@ class ContentCollection implements
         $output = '';
 
         foreach ($this->items as $value) {
-            if (empty($value) && $value != '0') {
+            if (
+                empty($value) &&
+                $value != '0'
+            ) {
                 continue;
             }
 

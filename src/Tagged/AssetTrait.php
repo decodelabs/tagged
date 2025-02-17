@@ -13,9 +13,14 @@ use DecodeLabs\Collections\AttributeContainerTrait;
 
 /**
  * @phpstan-require-implements Asset
+ * @phpstan-import-type TAttributeValue from Tag
+ * @phpstan-import-type TAttributeInput from Tag
  */
 trait AssetTrait
 {
+    /**
+     * @use AttributeContainerTrait<TAttributeValue,TAttributeInput>
+     */
     use AttributeContainerTrait;
 
     protected int $priority = 10;

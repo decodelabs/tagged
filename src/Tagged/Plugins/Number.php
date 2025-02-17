@@ -297,7 +297,7 @@ class Number implements NumberPlugin
 
         $output = $this->formatRawFileSize($bytes, $locale);
         $parts = explode(' ', $output);
-        $value = $parts[0] ?? '0';
+        $value = $parts[0];
         $unit = $parts[1] ?? 'B';
 
         return $this->html->el('span.number.filesize', [
@@ -319,7 +319,7 @@ class Number implements NumberPlugin
 
         $output = $this->formatRawFileSizeDec($bytes, $locale);
         $parts = explode(' ', $output);
-        $value = $parts[0] ?? '0';
+        $value = $parts[0];
         $unit = $parts[1] ?? 'B';
 
         return $this->html->el('span.number.filesize', [

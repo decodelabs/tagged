@@ -11,8 +11,10 @@ namespace DecodeLabs\Tagged;
 
 use Closure;
 use DecodeLabs\Coercion;
+use DecodeLabs\Elementary\Attribute\ClassList;
 use DecodeLabs\Elementary\Attribute\ClassList\Container as ClassListContainer;
 use DecodeLabs\Elementary\Attribute\ClassList\ContainerTrait as ClassListContainerTrait;
+use DecodeLabs\Elementary\Style\Collection as StyleCollection;
 use DecodeLabs\Elementary\Style\Container as StyleContainer;
 use DecodeLabs\Elementary\Style\ContainerTrait as StyleContainerTrait;
 use DecodeLabs\Elementary\Tag as TagInterface;
@@ -21,6 +23,11 @@ use DecodeLabs\Exceptional;
 use DecodeLabs\Glitch\Dumpable;
 use Generator;
 
+/**
+ * @phpstan-type TAttributeValue = string|int|float|bool|iterable<mixed>|ClassList|StyleCollection|Buffer
+ * @phpstan-type TAttributeInput = mixed
+ * @implements TagInterface<TAttributeValue,TAttributeInput>
+ */
 class Tag implements
     Markup,
     TagInterface,
@@ -28,20 +35,29 @@ class Tag implements
     StyleContainer,
     Dumpable
 {
+    /**
+     * @use TagTrait<TAttributeValue,TAttributeInput>
+     */
     use TagTrait;
     use ClassListContainerTrait;
     use StyleContainerTrait;
     use BufferProviderTrait;
 
-    protected const Mutable = true;
+    protected const bool Mutable = true;
 
-    protected const ClosedTags = [
+    /**
+     * @var list<string>
+     */
+    protected const array ClosedTags = [
         'area', 'base', 'br', 'col', 'command', 'embed',
         'hr', 'img', 'input', 'keygen', 'link', 'meta',
         'param', 'source', 'wbr'
     ];
 
-    protected const InlineTags = [
+    /**
+     * @var list<string>
+     */
+    protected const array InlineTags = [
         'a', 'br', 'bdo', 'abbr', 'blink', 'nextid', 'acronym', 'basefont',
         'b', 'em', 'big', 'cite', 'input', 'spacer', 'listing',
         'i', 'rp', 'del', 'code', 'label', 'strike', 'marquee',
@@ -51,9 +67,19 @@ class Tag implements
         'var', 'ruby', 'wbr', 'span', 'time',
     ];
 
-    protected const BooleanAttributes = [
+    /**
+     * @var list<string>
+     */
+    protected const array BooleanAttributes = [
         'spellcheck'
     ];
+
+
+    /**
+     * @var array<string,TAttributeValue>
+     */
+    protected array $attributes = [];
+
 
     /**
      * Can tag be closed with full </tag>
@@ -114,7 +140,7 @@ class Tag implements
         ) {
             if (!$value = json_encode($value)) {
                 throw Exceptional::UnexpectedValue(
-                    'Unable to encode attribute value to JSON'
+                    message: 'Unable to encode attribute value to JSON'
                 );
             }
         } elseif (
@@ -131,7 +157,7 @@ class Tag implements
     /**
      * Get attribute value
      *
-     * @return mixed
+     * @return TAttributeValue|null
      */
     public function getAttribute(
         string $key
@@ -151,7 +177,7 @@ class Tag implements
     /**
      * Add data attributes with map
      *
-     * @param array<string, mixed> $attributes
+     * @param array<string,TAttributeInput> $attributes
      * @return $this
      */
     public function setDataAttributes(
@@ -167,7 +193,7 @@ class Tag implements
     /**
      * Replace all data attributes with new map
      *
-     * @param array<string, mixed> $attributes
+     * @param array<string,TAttributeInput> $attributes
      * @return $this
      */
     public function replaceDataAttributes(
@@ -181,7 +207,7 @@ class Tag implements
     /**
      * Get map of current data attributes
      *
-     * @return array<string, mixed>
+     * @return array<string,TAttributeValue>
      */
     public function getDataAttributes(): array
     {
@@ -199,7 +225,7 @@ class Tag implements
     /**
      * Replace single data value
      *
-     * @param mixed $value
+     * @param TAttributeInput $value
      * @return $this
      */
     public function setDataAttribute(
@@ -213,11 +239,11 @@ class Tag implements
     /**
      * Retrieve data attribute value if set
      *
-     * @return mixed
+     * @return TAttributeValue|null
      */
     public function getDataAttribute(
         string $key
-    ) {
+    ): mixed {
         return $this->getAttribute('data-' . $key);
     }
 
@@ -279,6 +305,8 @@ class Tag implements
 
     /**
      * How many data attributes have been set?
+     *
+     * @return int<0,max>
      */
     public function countDataAttributes(): int
     {
@@ -355,6 +383,8 @@ class Tag implements
      */
     public function getTitle(): ?string
     {
-        return Coercion::toStringOrNull($this->getAttribute('title'));
+        return Coercion::toStringOrNull(
+            $this->getAttribute('title')
+        );
     }
 }
