@@ -9,20 +9,22 @@ declare(strict_types=1);
 
 namespace DecodeLabs\Tagged;
 
+use ArrayAccess;
 use DecodeLabs\Collections\SequenceTrait;
 use DecodeLabs\Collections\SequenceInterface;
 use DecodeLabs\Elementary\Markup\ChildRendererTrait;
-
 use IteratorAggregate;
 
 /**
  * @implements IteratorAggregate<mixed>
  * @implements SequenceInterface<mixed>
+ * @implements ArrayAccess<int,mixed>
  */
 class ContentCollection implements
     Markup,
     IteratorAggregate,
-    SequenceInterface
+    SequenceInterface,
+    ArrayAccess
 {
     /**
      * @use SequenceTrait<mixed>

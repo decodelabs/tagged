@@ -186,7 +186,9 @@ class Youtube extends Video
             'height' => $json['height'],
             'duration' => $info['length_seconds'],
             'uploadDate' => isset($info['timestamp']) ?
-                new DateTime()->setTimestamp((int)$info['timestamp']) :
+                new DateTime()->setTimestamp(
+                    Coercion::toInt($info['timestamp'])
+                ) :
                 null,
             'description' => $json['description'],
             'authorName' => $json['author_name'],
