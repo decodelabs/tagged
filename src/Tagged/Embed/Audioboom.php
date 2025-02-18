@@ -208,7 +208,12 @@ class Audioboom extends Audio
             'width' => $json['width'],
             'height' => $json['height'],
             'duration' => $json['duration'],
-            'uploadDate' => isset($json['upload_date']) ? (new DateTime())->setTimestamp((int)$json['upload_date']) : null,
+            'uploadDate' =>
+                isset($json['upload_date']) ?
+                    new DateTime()->setTimestamp(
+                        Coercion::toInt($json['upload_date'])
+                    ) :
+                    null,
             'description' => $json['description'],
             'authorName' => $json['author_name'],
             'authorUrl' => $json['author_url'],
@@ -245,7 +250,7 @@ class Audioboom extends Audio
         $uploadTs = $uploadDate = $user = $profileUrl = null;
 
         foreach ($playlist->memberships as $item) {
-            $duration += $item->audio_clip['duration'];
+            $duration += Coercion::toInt($item->audio_clip['duration']);
             $currentDate = new DateTime(Coercion::toString($item->audio_clip['uploaded_at']));
             $ts = $currentDate->getTimestamp();
 

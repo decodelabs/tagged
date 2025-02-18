@@ -1,3 +1,6 @@
+## v0.16.1 (2025-02-18)
+* Re-added ArrayAccess to ContentCollection
+
 ## v0.16.0 (2025-02-17)
 * Upgraded PHPStan to v2
 * Sorted out attribute value types
