@@ -1,3 +1,6 @@
+## v0.16.2 (2025-02-19)
+* Accept Generators in list factories
+
 ## v0.16.1 (2025-02-18)
 * Re-added ArrayAccess to ContentCollection
 

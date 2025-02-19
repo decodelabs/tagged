@@ -16,7 +16,9 @@ use DecodeLabs\Tagged\Tag as Ref0;
 use DecodeLabs\Tagged\Element as Ref1;
 use DecodeLabs\Tagged\Buffer as Ref2;
 use DecodeLabs\Tagged\ContentCollection as Ref3;
-use Stringable as Ref4;
+use Traversable as Ref4;
+use Closure as Ref5;
+use Stringable as Ref6;
 
 class Tagged implements Proxy
 {
@@ -46,28 +48,28 @@ class Tagged implements Proxy
     public static function content(mixed ...$content): Ref3 {
         return static::$_veneerInstance->content(...func_get_args());
     }
-    public static function list(?iterable $list, string $container, ?string $name, ?callable $callback = NULL, ?array $attributes = NULL): Ref1 {
+    public static function list(Ref4|Ref5|array|null $list, string $container, ?string $name, ?callable $callback = NULL, ?array $attributes = NULL): Ref1 {
         return static::$_veneerInstance->list(...func_get_args());
     }
-    public static function elements(?iterable $list, ?string $name, ?callable $callback = NULL, ?array $attributes = NULL): Ref2 {
+    public static function elements(Ref4|Ref5|array|null $list, ?string $name, ?callable $callback = NULL, ?array $attributes = NULL): Ref2 {
         return static::$_veneerInstance->elements(...func_get_args());
     }
-    public static function loop(?iterable $list, ?callable $callback = NULL): Ref2 {
+    public static function loop(Ref4|Ref5|array|null $list, ?callable $callback = NULL): Ref2 {
         return static::$_veneerInstance->loop(...func_get_args());
     }
-    public static function uList(?iterable $list, ?callable $renderer = NULL, ?array $attributes = NULL): Ref1 {
+    public static function uList(Ref4|Ref5|array|null $list, ?callable $renderer = NULL, ?array $attributes = NULL): Ref1 {
         return static::$_veneerInstance->uList(...func_get_args());
     }
-    public static function oList(?iterable $list, ?callable $renderer = NULL, ?array $attributes = NULL): Ref1 {
+    public static function oList(Ref4|Ref5|array|null $list, ?callable $renderer = NULL, ?array $attributes = NULL): Ref1 {
         return static::$_veneerInstance->oList(...func_get_args());
     }
-    public static function dList(?iterable $list, ?callable $renderer = NULL, ?array $attributes = NULL): Ref1 {
+    public static function dList(Ref4|Ref5|array|null $list, ?callable $renderer = NULL, ?array $attributes = NULL): Ref1 {
         return static::$_veneerInstance->dList(...func_get_args());
     }
-    public static function iList(?iterable $list, ?callable $renderer = NULL, ?string $delimiter = NULL, ?string $finalDelimiter = NULL, ?int $limit = NULL): Ref1 {
+    public static function iList(Ref4|Ref5|array|null $list, ?callable $renderer = NULL, ?string $delimiter = NULL, ?string $finalDelimiter = NULL, ?int $limit = NULL): Ref1 {
         return static::$_veneerInstance->iList(...func_get_args());
     }
-    public static function image(Ref4|string|null $url, ?string $alt = NULL, string|int|null $width = NULL, string|int|null $height = NULL): Ref1 {
+    public static function image(Ref6|string|null $url, ?string $alt = NULL, string|int|null $width = NULL, string|int|null $height = NULL): Ref1 {
         return static::$_veneerInstance->image(...func_get_args());
     }
     public static function esc(mixed $value): ?string {
