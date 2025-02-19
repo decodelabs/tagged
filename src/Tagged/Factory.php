@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace DecodeLabs\Tagged;
 
+use Closure;
 use DecodeLabs\Coercion;
 use DecodeLabs\Glitch\Proxy as Glitch;
 use DecodeLabs\Tagged;
@@ -132,18 +133,22 @@ class Factory implements Markup
     /**
      * Generate nested list
      *
-     * @param iterable<mixed>|null $list
+     * @param iterable<mixed>|Closure():(iterable<mixed>)|null $list
      * @param array<string, mixed>|null $attributes
      */
     public function list(
-        ?iterable $list,
+        iterable|Closure|null $list,
         string $container,
         ?string $name,
         ?callable $callback = null,
         ?array $attributes = null
     ): Element {
         $output = Element::create($container, function () use ($list, $name, $callback) {
-            if (!$list) {
+            if($list instanceof Closure) {
+                $list = $list();
+            }
+
+            if (!is_iterable($list)) {
                 return;
             }
 
@@ -180,17 +185,21 @@ class Factory implements Markup
     /**
      * Generate naked list
      *
-     * @param iterable<mixed>|null $list
+     * @param iterable<mixed>|Closure():(iterable<mixed>)|null $list
      * @param array<string, mixed>|null $attributes
      */
     public function elements(
-        ?iterable $list,
+        iterable|Closure|null $list,
         ?string $name,
         ?callable $callback = null,
         ?array $attributes = null
     ): Buffer {
         return ContentCollection::normalize(function () use ($list, $name, $callback, $attributes) {
-            if (!$list) {
+            if($list instanceof Closure) {
+                $list = $list();
+            }
+
+            if (!is_iterable($list)) {
                 return;
             }
 
@@ -224,14 +233,18 @@ class Factory implements Markup
     /**
      * Generate unwrapped naked list
      *
-     * @param iterable<mixed>|null $list
+     * @param iterable<mixed>|Closure():(iterable<mixed>)|null $list
      */
     public function loop(
-        ?iterable $list,
+        iterable|Closure|null $list,
         ?callable $callback = null
     ): Buffer {
         return ContentCollection::normalize(function () use ($list, $callback) {
-            if (!$list) {
+            if($list instanceof Closure) {
+                $list = $list();
+            }
+
+            if (!is_iterable($list)) {
                 return;
             }
 
@@ -253,11 +266,11 @@ class Factory implements Markup
     /**
      * Create a standard ul > li structure
      *
-     * @param iterable<mixed>|null $list
+     * @param iterable<mixed>|Closure():(iterable<mixed>)|null $list
      * @param array<string, mixed>|null $attributes
      */
     public function uList(
-        ?iterable $list,
+        iterable|Closure|null $list,
         ?callable $renderer = null,
         ?array $attributes = null
     ): Element {
@@ -269,11 +282,11 @@ class Factory implements Markup
     /**
      * Create a standard ol > li structure
      *
-     * @param iterable<mixed>|null $list
+     * @param iterable<mixed>|Closure():(iterable<mixed>)|null $list
      * @param array<string, mixed>|null $attributes
      */
     public function oList(
-        ?iterable $list,
+        iterable|Closure|null $list,
         ?callable $renderer = null,
         ?array $attributes = null
     ): Element {
@@ -285,11 +298,11 @@ class Factory implements Markup
     /**
      * Create a standard dl > dt + dd structure
      *
-     * @param iterable<mixed>|null $list
-     * @param array<string, mixed>|null $attributes
+     * @param iterable<mixed>|Closure():(iterable<mixed>)|null $list
+     * @param array<string,mixed>|null $attributes
      */
     public function dList(
-        ?iterable $list,
+        iterable|Closure|null $list,
         ?callable $renderer = null,
         ?array $attributes = null
     ): Element {
@@ -298,7 +311,11 @@ class Factory implements Markup
         };
 
         $output = Element::create('dl', function () use ($list, $renderer) {
-            if (!$list) {
+            if($list instanceof Closure) {
+                $list = $list();
+            }
+
+            if (!is_iterable($list)) {
                 return;
             }
 
@@ -326,10 +343,10 @@ class Factory implements Markup
     /**
      * Create an inline comma separated list with optional item limit
      *
-     * @param iterable<mixed>|null $list
+     * @param iterable<mixed>|Closure():(iterable<mixed>)|null $list
      */
     public function iList(
-        ?iterable $list,
+        iterable|Closure|null $list,
         ?callable $renderer = null,
         ?string $delimiter = null,
         ?string $finalDelimiter = null,
@@ -344,7 +361,11 @@ class Factory implements Markup
         ) use ($list, $renderer, $delimiter, $finalDelimiter, $limit) {
             $el->setRenderEmpty(false);
 
-            if (!$list) {
+            if($list instanceof Closure) {
+                $list = $list();
+            }
+
+            if (!is_iterable($list)) {
                 return;
             }
 
