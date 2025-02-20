@@ -69,7 +69,7 @@ class Youtube extends Video
             }
         }
 
-        $this->youtubeId = Coercion::toString($id);
+        $this->youtubeId = Coercion::asString($id);
 
 
         foreach ((array)$query as $key => $value) {
@@ -187,7 +187,7 @@ class Youtube extends Video
             'duration' => $info['length_seconds'],
             'uploadDate' => isset($info['timestamp']) ?
                 new DateTime()->setTimestamp(
-                    Coercion::toInt($info['timestamp'])
+                    Coercion::asInt($info['timestamp'])
                 ) :
                 null,
             'description' => $json['description'],

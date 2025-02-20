@@ -147,7 +147,7 @@ class Tag implements
             !is_bool($value) &&
             !$value instanceof Buffer
         ) {
-            $value = Coercion::forceString($value);
+            $value = Coercion::toString($value);
         }
 
         $this->attributes[$key] = $value;
@@ -383,7 +383,7 @@ class Tag implements
      */
     public function getTitle(): ?string
     {
-        return Coercion::toStringOrNull(
+        return Coercion::tryString(
             $this->getAttribute('title')
         );
     }

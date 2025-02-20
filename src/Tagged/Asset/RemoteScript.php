@@ -51,7 +51,7 @@ class RemoteScript implements Script
      */
     public function getSrc(): string
     {
-        return Coercion::toString(
+        return Coercion::asString(
             $this->getAttribute('src')
         );
     }
@@ -104,7 +104,7 @@ class RemoteScript implements Script
      */
     public function getType(): string
     {
-        return Coercion::toString(
+        return Coercion::asString(
             $this->getAttribute('type') ?? 'text/javascript'
         );
     }

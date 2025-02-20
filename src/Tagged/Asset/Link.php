@@ -52,7 +52,7 @@ class Link implements Asset
      */
     public function getHref(): string
     {
-        return Coercion::toString(
+        return Coercion::asString(
             $this->getAttribute('href')
         );
     }
@@ -71,7 +71,7 @@ class Link implements Asset
      */
     public function getRel(): string
     {
-        return Coercion::toString(
+        return Coercion::asString(
             $this->getAttribute('rel') ?? 'stylesheet'
         );
     }
@@ -90,7 +90,7 @@ class Link implements Asset
      */
     public function getType(): ?string
     {
-        return Coercion::toStringOrNull(
+        return Coercion::tryString(
             $this->getAttribute('type')
         );
     }

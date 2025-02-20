@@ -81,7 +81,7 @@ trait MediaTrait
                             $width = 720 / 100 * (int)$width;
                         }
 
-                        $width = Coercion::toInt($width);
+                        $width = Coercion::asInt($width);
 
                         if (preg_match('/height\=\"([^\"]+)\"/i', $embed, $matches)) {
                             $height = $matches[1];
@@ -90,9 +90,9 @@ trait MediaTrait
                                 $height = 450 / 100 * (int)$height;
                             }
 
-                            $height = Coercion::toInt($height);
+                            $height = Coercion::asInt($height);
                         } else {
-                            $height = Coercion::toInt(
+                            $height = Coercion::asInt(
                                 round($width / $output->width * $output->height)
                             );
                         }

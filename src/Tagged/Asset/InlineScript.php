@@ -70,7 +70,7 @@ class InlineScript implements Script
      */
     public function getType(): string
     {
-        return Coercion::toString(
+        return Coercion::asString(
             $this->getAttribute('type') ?? 'text/javascript'
         );
     }
