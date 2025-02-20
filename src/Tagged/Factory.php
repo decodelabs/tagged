@@ -106,7 +106,7 @@ class Factory implements Markup
     public function raw(
         mixed $html
     ): Buffer {
-        return new Buffer(Coercion::forceString($html));
+        return new Buffer(Coercion::toString($html));
     }
 
     /**
@@ -473,10 +473,10 @@ class Factory implements Markup
         }
 
         try {
-            return htmlspecialchars(Coercion::forceString($value), ENT_QUOTES, 'UTF-8');
+            return htmlspecialchars(Coercion::toString($value), ENT_QUOTES, 'UTF-8');
         } catch (Throwable $e) {
             Glitch::logException($e);
-            return Coercion::forceString($value);
+            return Coercion::toString($value);
         }
     }
 

@@ -61,14 +61,14 @@ class Audioboom extends Audio
             $booId === 'playlist'
         ) {
             $this->type = 'playlist';
-            $this->audioboomId = Coercion::toString($query['data_for_content_type']);
+            $this->audioboomId = Coercion::asString($query['data_for_content_type']);
         } else {
             $this->type = 'embed';
             $this->audioboomId = (string)$booId;
 
             foreach ((array)$query as $key => $value) {
                 if (in_array(strtolower((string)$key), self::QueryVars)) {
-                    $this->options[(string)$key] = Coercion::forceString($value);
+                    $this->options[(string)$key] = Coercion::toString($value);
                 }
             }
         }
@@ -153,7 +153,7 @@ class Audioboom extends Audio
         }
 
         /** @var array<string, mixed> $json */
-        return Coercion::toStringOrNull($json['thumbnail_url'] ?? null);
+        return Coercion::tryString($json['thumbnail_url'] ?? null);
     }
 
     /**
@@ -211,7 +211,7 @@ class Audioboom extends Audio
             'uploadDate' =>
                 isset($json['upload_date']) ?
                     new DateTime()->setTimestamp(
-                        Coercion::toInt($json['upload_date'])
+                        Coercion::asInt($json['upload_date'])
                     ) :
                     null,
             'description' => $json['description'],
@@ -250,8 +250,8 @@ class Audioboom extends Audio
         $uploadTs = $uploadDate = $user = $profileUrl = null;
 
         foreach ($playlist->memberships as $item) {
-            $duration += Coercion::toInt($item->audio_clip['duration']);
-            $currentDate = new DateTime(Coercion::toString($item->audio_clip['uploaded_at']));
+            $duration += Coercion::asInt($item->audio_clip['duration']);
+            $currentDate = new DateTime(Coercion::asString($item->audio_clip['uploaded_at']));
             $ts = $currentDate->getTimestamp();
 
             if ($ts > $uploadTs) {

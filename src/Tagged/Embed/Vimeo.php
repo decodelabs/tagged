@@ -127,7 +127,7 @@ class Vimeo extends Video
     public function lookupThumbnail(
         ?array $options = null
     ): ?string {
-        return Coercion::toStringOrNull(
+        return Coercion::tryString(
             $this->lookupMeta($options)['thumbnailUrl'] ?? null
         );
     }
@@ -144,7 +144,7 @@ class Vimeo extends Video
 
         $url = 'https://vimeo.com/api/oembed.json?url=' . urlencode($this->url);
 
-        $referrer = Coercion::toString(
+        $referrer = Coercion::asString(
             $options['referrer'] ?? $options['referer'] ?? $_SERVER['SERVER_NAME']
         );
 
@@ -173,7 +173,7 @@ class Vimeo extends Video
             'duration' => $json['duration'] ?? $json['length_seconds'],
             'uploadDate' => isset($json['upload_date']) ?
                 new DateTime()->setTimestamp(
-                    Coercion::toInt($json['upload_date'])
+                    Coercion::asInt($json['upload_date'])
                 ) :
                 null,
             'description' => $json['description'],

@@ -1,3 +1,6 @@
+## v0.16.3 (2025-02-19)
+* Upgraded Coercion dependency
+
 ## v0.16.2 (2025-02-19)
 * Accept Generators in list factories
 
