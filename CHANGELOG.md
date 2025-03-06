@@ -1,3 +1,6 @@
+## v0.16.4 (2025-03-06)
+* Fixed Vimeo meta lookup
+
 ## v0.16.3 (2025-02-19)
 * Upgraded Coercion dependency
 

@@ -6,3 +6,7 @@ parameters:
         - src/
         - tests/
     level: max
+
+    ignoreErrors:
+        -
+            identifier: unset.possiblyHookedProperty

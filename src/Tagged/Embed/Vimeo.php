@@ -164,6 +164,7 @@ class Vimeo extends Video
             return null;
         }
 
+
         return [
             'title' => $json['title'],
             'url' => $this->url,
@@ -171,11 +172,7 @@ class Vimeo extends Video
             'width' => $json['width'],
             'height' => $json['height'],
             'duration' => $json['duration'] ?? $json['length_seconds'],
-            'uploadDate' => isset($json['upload_date']) ?
-                new DateTime()->setTimestamp(
-                    Coercion::asInt($json['upload_date'])
-                ) :
-                null,
+            'uploadDate' => Coercion::tryDateTime($json['upload_date']),
             'description' => $json['description'],
             'authorName' => $json['author_name'],
             'authorUrl' => $json['author_url'],
