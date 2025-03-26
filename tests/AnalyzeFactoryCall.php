@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace DecodeLabs\Tagged\Tests;
 
 use DecodeLabs\Tagged as Html;
-use DecodeLabs\Tagged\Component\Inline;
+use DecodeLabs\Tagged\Component\ContainedList;
 use DecodeLabs\Tagged\Component\Ul;
 use DecodeLabs\Tagged\Element;
 
@@ -36,12 +36,12 @@ class AnalyzeFactoryCall {
         return $output;
     }
 
-    public function getInlineList(): Inline {
-        return Html::{'@inline'}([
+    public function getInlineList(): ContainedList {
+        return Html::{'@list'}([
             'Item 1',
             'Item 2',
             'Item 3'
-        ]);
+        ], 'div.container', 'div.item');
     }
 
     public function getList(): Ul {

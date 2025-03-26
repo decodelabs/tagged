@@ -149,47 +149,30 @@ Html::$time->untilAbs('yesterday'); // -1 day
 Html::$time->between('yesterday', 'tomorrow'); // 1 day
 ```
 
-
-### Icons
-Create the markup needed for font or SVG icons:
-
-```php
-use DecodeLabs\Tagged as Html;
-
-Html::$icon->setFormat('font');
-echo Html::$icon->aubergine; // <i class="icon icon-aubergine"></i>
-
-Html::$icon->setFormat('svg');
-echo Html::$icon->aubergine; // <svg><use xlink:href="#aubergine" /></svg>
-
-Html::$icon->setSvgReference('path/to/my/file.svg');
-echo Html::$icon->aubergine; // <svg><use xlink:href="path/to/my/file.svg#aubergine" /></svg>
-```
-
-
 ### Media embeds
 Normalize embed codes shared from media sites:
 
 ```php
-use DecodeLabs\Tagged as Html;
+use DecodeLabs\Tagged\Embed\Video;
 
-echo Html::$embed->video('https://www.youtube.com/watch?v=RG9TMn1FJzc');
+echo Video::parse('https://www.youtube.com/watch?v=RG9TMn1FJzc');
 ```
 
+## Components
 
-## Deprecated functionality
+Tagged also supports a higher level component abstraction allowing for more complex markup generation via the same interface. Components are called with using an `@name` syntax:
 
-Looking for the functionality that was here before? It's likely been moved to a dedicated library:
+```php
+use DecodeLabs\Tagged as Html;
 
-### XML handling
+echo Html::{'@list'}($iterable, 'div.container', 'div.item', function($item) {
+    return Html::{'span'}($item);
+});
 
-The XML manipulation functionality of Tagged has been moved to its own project, [Exemplar](https://github.com/decodelabs/exemplar/).
+echo Html::{'@image'}('path/to/image.jpg', 'alt text');
+```
 
-
-### Content parsing (Tagged::$parse and ::$toText plugins)
-
-Content transformations are now handled by the [Metamorph](https://github.com/decodelabs/metamorph/) library.
-
+See the [components](./src/Tagged/Component) directory for a list of available components.
 
 ## Licensing
 Tagged is licensed under the MIT License. See [LICENSE](./LICENSE) for the full license text.
