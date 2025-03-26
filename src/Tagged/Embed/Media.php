@@ -15,11 +15,11 @@ use DecodeLabs\Tagged\Markup;
 interface Media extends Markup
 {
     /**
-     * @return static
+     * @return ?static
      */
     public static function parse(
-        string $embed
-    ): static;
+        ?string $embed
+    ): ?static;
 
     public static function extractProviderName(
         string $url

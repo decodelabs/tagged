@@ -11,21 +11,20 @@ namespace DecodeLabs\Tagged;
 
 use DecodeLabs\Elementary\Element as ElementInterface;
 use DecodeLabs\Elementary\ElementTrait as ElementTrait;
-use DecodeLabs\Glitch\Proxy as Glitch;
 use IteratorAggregate;
-use Throwable;
 
 /**
  * @phpstan-import-type TAttributeValue from Tag
  * @phpstan-import-type TAttributeInput from Tag
  * @implements IteratorAggregate<mixed>
- * @implements ElementInterface<TAttributeValue,TAttributeInput>
+ * @implements ElementInterface<TAttributeValue,TAttributeInput,Buffer>
  */
 class Element extends Tag implements
     IteratorAggregate,
     ElementInterface
 {
     use ElementTrait;
+    use RenderableTrait;
 
     /**
      * Apply nested by string name
@@ -49,28 +48,5 @@ class Element extends Tag implements
         }
 
         return new self($name, $content, $attributes);
-    }
-
-
-    /**
-     * Render to string
-     */
-    public function __toString(): string
-    {
-        try {
-            return (string)$this->renderWith($this->renderContent());
-        } catch (Throwable $e) {
-            Glitch::logException($e);
-            $message = '<strong>' . $e->getMessage() . '</strong>';
-
-            if (!Glitch::isProduction()) {
-                $message .= '<br /><samp>' . Glitch::normalizePath($e->getFile()) . '</samp> : <samp>' . $e->getLine() . '</samp>';
-                $title = $this->esc((string)$e);
-            } else {
-                $title = 'HTML Error';
-            }
-
-            return '<div class="error" style="color: red; background: white; padding: 0.5rem;" title="' . $title . '">' . $message . '</div>';
-        }
     }
 }

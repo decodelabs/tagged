@@ -42,9 +42,18 @@ trait MediaTrait
      * Parse embed string
      */
     public static function parse(
-        string $embed
-    ): static {
+        ?string $embed
+    ): ?static {
+        if($embed === null) {
+            return null;
+        }
+
         $embed = trim($embed);
+
+        if (empty($embed)) {
+            return null;
+        }
+
         $stripEmbed = strip_tags($embed, '<iframe><object><embed><script>');
         $parts = explode('<', $stripEmbed, 2);
 

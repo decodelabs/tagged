@@ -1,3 +1,9 @@
+## v0.17.0 (2025-03-25)
+* Built Component interface structure
+* Converted factory helpers to Components
+* Converted Embed helper to Components
+* Removed Icon helper
+
 ## v0.16.4 (2025-03-06)
 * Fixed Vimeo meta lookup
 

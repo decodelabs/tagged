@@ -8,17 +8,13 @@ namespace DecodeLabs;
 use DecodeLabs\Veneer\Proxy as Proxy;
 use DecodeLabs\Veneer\ProxyTrait as ProxyTrait;
 use DecodeLabs\Tagged\Factory as Inst;
-use DecodeLabs\Tagged\Plugins\Embed as EmbedPlugin;
-use DecodeLabs\Tagged\Plugins\Icon as IconPlugin;
 use DecodeLabs\Tagged\Plugins\Time as TimePlugin;
 use DecodeLabs\Tagged\Plugins\Number as NumberPlugin;
 use DecodeLabs\Tagged\Tag as Ref0;
 use DecodeLabs\Tagged\Element as Ref1;
-use DecodeLabs\Tagged\Buffer as Ref2;
-use DecodeLabs\Tagged\ContentCollection as Ref3;
-use Traversable as Ref4;
-use Closure as Ref5;
-use Stringable as Ref6;
+use DecodeLabs\Tagged\Component as Ref2;
+use DecodeLabs\Tagged\Buffer as Ref3;
+use DecodeLabs\Tagged\ContentCollection as Ref4;
 
 class Tagged implements Proxy
 {
@@ -28,8 +24,6 @@ class Tagged implements Proxy
     public const VeneerTarget = Inst::class;
 
     protected static Inst $_veneerInstance;
-    public static EmbedPlugin $embed;
-    public static IconPlugin $icon;
     public static TimePlugin $time;
     public static NumberPlugin $number;
 
@@ -39,38 +33,17 @@ class Tagged implements Proxy
     public static function el(string $name, mixed $content = NULL, ?array $attributes = NULL): Ref1 {
         return static::$_veneerInstance->el(...func_get_args());
     }
-    public static function raw(mixed $html): Ref2 {
+    public static function component(string $name, mixed ...$args): Ref2 {
+        return static::$_veneerInstance->component(...func_get_args());
+    }
+    public static function raw(mixed $html): Ref3 {
         return static::$_veneerInstance->raw(...func_get_args());
     }
-    public static function wrap(mixed ...$content): Ref2 {
+    public static function wrap(mixed ...$content): Ref3 {
         return static::$_veneerInstance->wrap(...func_get_args());
     }
-    public static function content(mixed ...$content): Ref3 {
+    public static function content(mixed ...$content): Ref4 {
         return static::$_veneerInstance->content(...func_get_args());
-    }
-    public static function list(Ref4|Ref5|array|null $list, string $container, ?string $name, ?callable $callback = NULL, ?array $attributes = NULL): Ref1 {
-        return static::$_veneerInstance->list(...func_get_args());
-    }
-    public static function elements(Ref4|Ref5|array|null $list, ?string $name, ?callable $callback = NULL, ?array $attributes = NULL): Ref2 {
-        return static::$_veneerInstance->elements(...func_get_args());
-    }
-    public static function loop(Ref4|Ref5|array|null $list, ?callable $callback = NULL): Ref2 {
-        return static::$_veneerInstance->loop(...func_get_args());
-    }
-    public static function uList(Ref4|Ref5|array|null $list, ?callable $renderer = NULL, ?array $attributes = NULL): Ref1 {
-        return static::$_veneerInstance->uList(...func_get_args());
-    }
-    public static function oList(Ref4|Ref5|array|null $list, ?callable $renderer = NULL, ?array $attributes = NULL): Ref1 {
-        return static::$_veneerInstance->oList(...func_get_args());
-    }
-    public static function dList(Ref4|Ref5|array|null $list, ?callable $renderer = NULL, ?array $attributes = NULL): Ref1 {
-        return static::$_veneerInstance->dList(...func_get_args());
-    }
-    public static function iList(Ref4|Ref5|array|null $list, ?callable $renderer = NULL, ?string $delimiter = NULL, ?string $finalDelimiter = NULL, ?int $limit = NULL): Ref1 {
-        return static::$_veneerInstance->iList(...func_get_args());
-    }
-    public static function image(Ref6|string|null $url, ?string $alt = NULL, string|int|null $width = NULL, string|int|null $height = NULL): Ref1 {
-        return static::$_veneerInstance->image(...func_get_args());
     }
     public static function esc(mixed $value): ?string {
         return static::$_veneerInstance->esc(...func_get_args());

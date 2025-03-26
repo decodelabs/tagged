@@ -26,7 +26,7 @@ use Generator;
 /**
  * @phpstan-type TAttributeValue = string|int|float|bool|iterable<mixed>|ClassList|StyleCollection|Buffer
  * @phpstan-type TAttributeInput = mixed
- * @implements TagInterface<TAttributeValue,TAttributeInput>
+ * @implements TagInterface<TAttributeValue,TAttributeInput,Buffer>
  */
 class Tag implements
     Markup,
