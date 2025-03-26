@@ -1,3 +1,6 @@
+## v0.18.1 (2025-03-26)
+* Fixed MarkupProxy
+
 ## v0.18.0 (2025-03-26)
 * Removed ViewAssetContainer
 * Removed Asset implementations
