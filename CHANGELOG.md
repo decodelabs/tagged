@@ -1,3 +1,7 @@
+## v0.17.2 (2025-03-26)
+* Renamed Image component to Img
+* Added Image alias to Img
+
 ## v0.17.1 (2025-03-26)
 * Fixed list deref in PHPStan extension
 

@@ -97,6 +97,11 @@ class TaggedReflectionExtension implements MethodsClassReflectionExtension
             $name = 'ContainedList';
         }
 
+        // DELETE next version
+        if($name === 'Image') {
+            $name = 'Img';
+        }
+
         return $name;
     }
 }

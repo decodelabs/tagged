@@ -120,6 +120,11 @@ class Factory implements Markup
             $name = 'ContainedList';
         }
 
+        // DELETE next version
+        if($name === 'Image') {
+            $name = 'Img';
+        }
+
         $class = Archetype::resolve(Component::class, ucfirst($name));
         $output = new $class(...$args);
 
