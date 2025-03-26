@@ -1,3 +1,10 @@
+## v0.18.0 (2025-03-26)
+* Removed ViewAssetContainer
+* Removed Asset implementations
+* Moved Mail Generator to Relay package
+* Moved Markup Proxy to root of package
+* Imported PriorityMarkup from Horizon
+
 ## v0.17.2 (2025-03-26)
 * Renamed Image component to Img
 * Added Image alias to Img
