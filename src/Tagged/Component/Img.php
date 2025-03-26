@@ -16,7 +16,7 @@ use DecodeLabs\Tagged\RenderableTrait;
 use DecodeLabs\Tagged\Tag;
 use Stringable;
 
-class Image extends Tag implements Component
+class Img extends Tag implements Component
 {
     use RenderableTrait;
 
