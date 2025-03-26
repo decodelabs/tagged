@@ -169,7 +169,7 @@ echo Html::{'@list'}($iterable, 'div.container', 'div.item', function($item) {
     return Html::{'span'}($item);
 });
 
-echo Html::{'@image'}('path/to/image.jpg', 'alt text');
+echo Html::{'@img'}('path/to/image.jpg', 'alt text');
 ```
 
 See the [components](./src/Tagged/Component) directory for a list of available components.

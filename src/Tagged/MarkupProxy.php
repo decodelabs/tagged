@@ -12,7 +12,7 @@ namespace DecodeLabs\Tagged\Markup;
 use DecodeLabs\Elementary\Markup\Proxy as RootProxy;
 use DecodeLabs\Tagged\Markup;
 
-interface Proxy extends RootProxy
+interface MarkupProxy extends RootProxy
 {
     public function toMarkup(): Markup;
 }
