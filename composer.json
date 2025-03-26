@@ -13,10 +13,11 @@
         "ext-intl": "*",
         "symfony/polyfill-mbstring": "^1.31",
 
+        "decodelabs/archetype": "^0.3.8",
         "decodelabs/coercion": "^0.3",
         "decodelabs/collections": "^0.10.4",
         "decodelabs/cosmos": "^0.2.1",
-        "decodelabs/elementary": "^0.4.4",
+        "decodelabs/elementary": "^0.4.9",
         "decodelabs/exceptional": "^0.5.3",
         "decodelabs/glitch-support": "^0.5.1",
         "decodelabs/veneer": "^0.12.3"
@@ -43,7 +44,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-develop": "0.16.x-dev"
+            "dev-develop": "0.17.x-dev"
         },
         "effigy": {
             "exports": [
