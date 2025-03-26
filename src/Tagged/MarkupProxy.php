@@ -7,10 +7,9 @@
 
 declare(strict_types=1);
 
-namespace DecodeLabs\Tagged\Markup;
+namespace DecodeLabs\Tagged;
 
 use DecodeLabs\Elementary\Markup\Proxy as RootProxy;
-use DecodeLabs\Tagged\Markup;
 
 interface MarkupProxy extends RootProxy
 {
