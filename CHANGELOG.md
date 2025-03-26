@@ -1,3 +1,6 @@
+## v0.17.1 (2025-03-26)
+* Fixed list deref in PHPStan extension
+
 ## v0.17.0 (2025-03-25)
 * Built Component interface structure
 * Converted factory helpers to Components

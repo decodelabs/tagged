@@ -93,6 +93,10 @@ class TaggedReflectionExtension implements MethodsClassReflectionExtension
         $name = ucwords($name);
         $name = str_replace(' ', '', $name);
 
+        if($name === 'List') {
+            $name = 'ContainedList';
+        }
+
         return $name;
     }
 }
