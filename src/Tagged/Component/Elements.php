@@ -31,23 +31,23 @@ class Elements extends Tag implements Component
     public ?Closure $renderer = null;
 
     /**
-     * @var array<string,mixed>|null
+     * @var array<string,mixed>
      */
-    public ?array $elementAttributes = null;
+    public array $elementAttributes = [];
 
     /**
      * Generate list of elements
      *
      * @param iterable<mixed>|Closure():(iterable<mixed>)|null $items
-     * @param array<string,mixed>|null $attributes
+     * @param array<string,mixed> $attributes
      */
     public function __construct(
         iterable|Closure|null $items,
         ?string $elementName,
         ?callable $renderer = null,
-        ?array $attributes = null
+        array $attributes = []
     ) {
-        parent::__construct('div', $attributes);
+        parent::__construct(null, $attributes);
         $this->items = $items;
         $this->renderer = $renderer ? Closure::fromCallable($renderer) : null;
         $this->elementName = $elementName;
@@ -82,7 +82,7 @@ class Elements extends Tag implements Component
                     }
                 } else {
                     // Wrapped
-                    yield Element::create($this->elementName, function ($el) use ($key, $item, $i) {
+                    yield Element::create($this->elementName, function (Element $el) use ($key, $item, $i) {
                         if ($this->renderer) {
                             return ($this->renderer)($item, $el, $key, $i);
                         } else {

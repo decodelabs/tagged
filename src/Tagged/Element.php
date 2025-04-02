@@ -32,13 +32,21 @@ class Element extends Tag implements
     /**
      * Apply nested by string name
      *
-     * @param array<string,mixed>|null $attributes
+     * @param iterable<string,TAttributeInput> $attributes
+     * @param TAttributeInput ...$attributeList
      */
     public static function create(
         string $name,
         mixed $content = null,
-        ?array $attributes = null
+        iterable $attributes = [],
+        mixed ...$attributeList
     ): self {
+        /** @var array<string,TAttributeInput> $attributes */
+        $attributes = array_merge(
+            iterator_to_array($attributes),
+            $attributeList
+        );
+
         if (false !== strpos($name, '>')) {
             $parts = explode('>', $name);
 

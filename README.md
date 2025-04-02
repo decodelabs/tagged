@@ -87,6 +87,38 @@ $markup = Html::wrap(
 );
 ```
 
+### Attributes
+
+Set attributes inline:
+
+```php
+use DecodeLabs\Tagged as Html;
+
+echo Html::{'div[data-attr=foo]'}('This is a div with an attribute');
+```
+
+Set attributes via an array:
+
+```php
+use DecodeLabs\Tagged as Html;
+
+echo Html::{'div'}('This is a div with an attribute', [
+    'data-attr' => 'foo'
+]);
+```
+
+Set attributes with named arguments:
+
+```php
+use DecodeLabs\Tagged as Html;
+
+echo Html::{'div'}(
+    'This is a div with an attribute',
+    dataAttr: 'foo',
+    class: 'my-class'
+);
+```
+
 
 ### Nesting
 
@@ -160,7 +192,7 @@ echo Video::parse('https://www.youtube.com/watch?v=RG9TMn1FJzc');
 
 ## Components
 
-Tagged also supports a higher level component abstraction allowing for more complex markup generation via the same interface. Components are called with using an `@name` syntax:
+Tagged also supports a higher level component abstraction allowing for more complex markup generation via the same interface. Components are called using an `@name` syntax:
 
 ```php
 use DecodeLabs\Tagged as Html;

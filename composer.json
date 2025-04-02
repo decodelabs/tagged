@@ -15,7 +15,7 @@
 
         "decodelabs/archetype": "^0.3.8",
         "decodelabs/coercion": "^0.3",
-        "decodelabs/collections": "^0.10.4",
+        "decodelabs/collections": "^0.11",
         "decodelabs/cosmos": "^0.2.1",
         "decodelabs/elementary": "^0.5",
         "decodelabs/exceptional": "^0.5.3",
@@ -44,7 +44,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-develop": "0.18.x-dev"
+            "dev-develop": "0.19.x-dev"
         },
         "effigy": {
             "exports": [

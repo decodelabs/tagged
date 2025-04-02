@@ -1,3 +1,9 @@
+## v0.19.1 (2025-04-02)
+* Upgraded Collections dependency
+* Support named arguments for attributes
+* Use null tagName for Each and Elements Components
+* Type hint $el instances in Components
+
 ## v0.19.0 (2025-04-02)
 * Upgraded Elementary dependency to v0.5
 * Renamed MarkupProxy to MarkupProvider

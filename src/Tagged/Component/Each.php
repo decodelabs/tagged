@@ -37,7 +37,7 @@ class Each extends Tag implements Component
         iterable|Closure|null $items,
         ?callable $renderer = null
     ) {
-        parent::__construct('div');
+        parent::__construct(null);
         $this->items = $items;
         $this->renderer = $renderer ? Closure::fromCallable($renderer) : null;
     }
