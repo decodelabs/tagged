@@ -23,6 +23,9 @@ class Element extends Tag implements
     IteratorAggregate,
     ElementInterface
 {
+    /**
+     * @use ElementTrait<Buffer>
+     */
     use ElementTrait;
     use RenderableTrait;
 

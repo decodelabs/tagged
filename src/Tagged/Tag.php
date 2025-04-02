@@ -36,19 +36,22 @@ class Tag implements
     Dumpable
 {
     /**
-     * @use TagTrait<TAttributeValue,TAttributeInput>
+     * @use TagTrait<TAttributeValue,TAttributeInput,Buffer>
      */
     use TagTrait;
     use ClassListContainerTrait;
     use StyleContainerTrait;
     use BufferProviderTrait;
 
+    /**
+     * Allow mutation of content
+     */
     protected const bool Mutable = true;
 
     /**
      * @var list<string>
      */
-    protected const array ClosedTags = [
+    protected const array SelfClosingTags = [
         'area', 'base', 'br', 'col', 'command', 'embed',
         'hr', 'img', 'input', 'keygen', 'link', 'meta',
         'param', 'source', 'wbr'
@@ -84,10 +87,10 @@ class Tag implements
     /**
      * Can tag be closed with full </tag>
      */
-    public static function isClosableTagName(
+    public static function isSelfClosingTagName(
         string $name
     ): bool {
-        return !in_array(strtolower($name), self::ClosedTags);
+        return in_array(strtolower($name), self::SelfClosingTags);
     }
 
     /**

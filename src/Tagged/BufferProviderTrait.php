@@ -9,8 +9,6 @@ declare(strict_types=1);
 
 namespace DecodeLabs\Tagged;
 
-use DecodeLabs\Elementary\Buffer as BufferInterface;
-
 trait BufferProviderTrait
 {
     /**
@@ -18,7 +16,7 @@ trait BufferProviderTrait
      */
     protected function newBuffer(
         ?string $content
-    ): BufferInterface {
+    ): Buffer {
         return new Buffer($content);
     }
 }

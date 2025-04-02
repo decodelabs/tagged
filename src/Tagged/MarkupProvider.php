@@ -9,9 +9,9 @@ declare(strict_types=1);
 
 namespace DecodeLabs\Tagged;
 
-use DecodeLabs\Elementary\Markup\Proxy as RootProxy;
+use DecodeLabs\Elementary\MarkupProvider as RootProvider;
 
-interface MarkupProxy extends RootProxy
+interface MarkupProvider extends RootProvider
 {
     public function toMarkup(): Markup;
 }
