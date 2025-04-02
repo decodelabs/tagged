@@ -114,18 +114,18 @@ class Tag implements
         string $key,
         mixed $value
     ): static {
-        $key = strtolower($key);
+        if ($value === null) {
+            $this->removeAttribute($key);
+            return $this;
+        }
+
+        $key = $this->normalizeAttributeKey($key);
 
         if ($key == 'class') {
             $this->setClasses($value);
             return $this;
         } elseif ($key == 'style') {
             $this->setStyles($value);
-            return $this;
-        }
-
-        if ($value === null) {
-            $this->removeAttribute($key);
             return $this;
         }
 
@@ -165,7 +165,7 @@ class Tag implements
     public function getAttribute(
         string $key
     ): mixed {
-        $key = strtolower($key);
+        $key = $this->normalizeAttributeKey($key);
 
         if ($key == 'class') {
             return $this->getClasses();
@@ -180,13 +180,15 @@ class Tag implements
     /**
      * Add data attributes with map
      *
-     * @param array<string,TAttributeInput> $attributes
+     * @param iterable<string,TAttributeInput> $attributes
+     * @param TAttributeInput ...$attributeList
      * @return $this
      */
     public function setDataAttributes(
-        array $attributes
+        iterable $attributes = [],
+        mixed ...$attributeList
     ): static {
-        foreach ($attributes as $key => $value) {
+        foreach ($attributes + $attributeList as $key => $value) {
             $this->setDataAttribute($key, $value);
         }
 
@@ -196,14 +198,16 @@ class Tag implements
     /**
      * Replace all data attributes with new map
      *
-     * @param array<string,TAttributeInput> $attributes
+     * @param iterable<string,TAttributeInput> $attributes
+     * @param TAttributeInput ...$attributeList
      * @return $this
      */
     public function replaceDataAttributes(
-        array $attributes
+        iterable $attributes = [],
+        mixed ...$attributeList
     ): static {
         $this->clearDataAttributes();
-        $this->setDataAttributes($attributes);
+        $this->setDataAttributes($attributes, ...$attributeList);
         return $this;
     }
 
@@ -322,6 +326,24 @@ class Tag implements
         }
 
         return $output;
+    }
+
+    /**
+     * Normalise attribute name
+     */
+    protected function normalizeAttributeKey(
+        string $key
+    ): string {
+        if(preg_match('/[A-Z]/', $key)) {
+            $key = (string)preg_replace('/([a-z])([A-Z])/', '$1-$2', $key);
+            $key = strtolower($key);
+            $key = (string)preg_replace('/\s+/', '-', $key);
+            $key = (string)preg_replace('/[^a-z0-9\-]/', '', $key);
+            $key = (string)preg_replace('/-+/', '-', $key);
+            $key = trim($key, '-');
+        }
+
+        return $key;
     }
 
 

@@ -31,21 +31,21 @@ class Elements extends Tag implements Component
     public ?Closure $renderer = null;
 
     /**
-     * @var array<string,mixed>|null
+     * @var array<string,mixed>
      */
-    public ?array $elementAttributes = null;
+    public array $elementAttributes = [];
 
     /**
      * Generate list of elements
      *
      * @param iterable<mixed>|Closure():(iterable<mixed>)|null $items
-     * @param array<string,mixed>|null $attributes
+     * @param array<string,mixed> $attributes
      */
     public function __construct(
         iterable|Closure|null $items,
         ?string $elementName,
         ?callable $renderer = null,
-        ?array $attributes = null
+        array $attributes = []
     ) {
         parent::__construct(null, $attributes);
         $this->items = $items;

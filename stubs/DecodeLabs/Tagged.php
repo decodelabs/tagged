@@ -27,13 +27,13 @@ class Tagged implements Proxy
     public static TimePlugin $time;
     public static NumberPlugin $number;
 
-    public static function tag(string $name, ?array $attributes = NULL): Ref0 {
+    public static function tag(string $tagName, iterable $attributes = [], mixed ...$attributeList): Ref0 {
         return static::$_veneerInstance->tag(...func_get_args());
     }
-    public static function el(string $name, mixed $content = NULL, ?array $attributes = NULL): Ref1 {
+    public static function el(string $tagName, mixed $content = NULL, iterable $attributes = [], mixed ...$attributeList): Ref1 {
         return static::$_veneerInstance->el(...func_get_args());
     }
-    public static function component(string $name, mixed ...$args): Ref2 {
+    public static function component(string $tagName, mixed ...$args): Ref2 {
         return static::$_veneerInstance->component(...func_get_args());
     }
     public static function raw(mixed $html): Ref3 {

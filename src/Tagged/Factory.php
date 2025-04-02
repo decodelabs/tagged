@@ -22,6 +22,10 @@ use DecodeLabs\Veneer\Plugin;
 use Stringable;
 use Throwable;
 
+/**
+ * @phpstan-import-type TAttributeValue from Tag
+ * @phpstan-import-type TAttributeInput from Tag
+ */
 class Factory implements Markup
 {
     #[Plugin(lazy: true)]
@@ -34,14 +38,16 @@ class Factory implements Markup
     /**
      * Instance shortcut to el
      *
-     * @param array<string,mixed>|null $attributes
+     * @param iterable<string,TAttributeInput> $attributes
+     * @param TAttributeInput ...$attributeList
      */
     public function __invoke(
-        string $name,
+        string $tagName,
         mixed $content,
-        ?array $attributes = null
+        iterable $attributes = [],
+        mixed ...$attributeList
     ): Element {
-        return Element::create($name, $content, $attributes);
+        return Element::create($tagName, $content, $attributes);
     }
 
     /**
@@ -50,14 +56,14 @@ class Factory implements Markup
      * @param array<mixed> $args
      */
     public function __call(
-        string $name,
+        string $tagName,
         array $args
     ): Element|Component {
-        if(str_starts_with($name, '@')) {
-            return $this->component(substr($name, 1), ...$args);
+        if(str_starts_with($tagName, '@')) {
+            return $this->component(substr($tagName, 1), ...$args);
         }
 
-        return Element::create($name, ...$args);
+        return Element::create($tagName, ...$args);
     }
 
     /**
@@ -74,38 +80,48 @@ class Factory implements Markup
     /**
      * Create a standalone tag
      *
-     * @param array<string,mixed>|null $attributes
+     * @param iterable<string,TAttributeInput> $attributes
+     * @param TAttributeInput ...$attributeList
      */
     public function tag(
-        string $name,
-        ?array $attributes = null
+        string $tagName,
+        iterable $attributes = [],
+        mixed ...$attributeList
     ): Tag {
-        return new Tag($name, $attributes);
+        /** @var array<string,TAttributeInput> $attributes */
+        $attributes = array_merge(
+            iterator_to_array($attributes),
+            $attributeList
+        );
+
+        return new Tag($tagName, $attributes);
     }
 
     /**
      * Create a standalone element
      *
-     * @param array<string, mixed>|null $attributes
+     * @param iterable<string,TAttributeInput> $attributes
+     * @param TAttributeInput ...$attributeList
      */
     public function el(
-        string $name,
+        string $tagName,
         mixed $content = null,
-        ?array $attributes = null
+        iterable $attributes = [],
+        mixed ...$attributeList
     ): Element {
-        return Element::create($name, $content, $attributes);
+        return Element::create($tagName, $content, $attributes, ...$attributeList);
     }
 
     /**
      * Create a standalone component
      */
     public function component(
-        string $name,
+        string $tagName,
         mixed ...$args
     ): Component {
-        if(!preg_match('/^([a-zA-Z0-9_-]+)([^a-zA-Z0-9_].*)?$/', $name, $matches)) {
+        if(!preg_match('/^([a-zA-Z0-9_-]+)([^a-zA-Z0-9_].*)?$/', $tagName, $matches)) {
             throw Exceptional::InvalidArgument(
-                message: 'Invalid component name: '.$name
+                message: 'Invalid component name: '.$tagName
             );
         }
 
