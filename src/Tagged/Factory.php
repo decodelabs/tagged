@@ -120,17 +120,13 @@ class Factory implements Markup
             $name = 'ContainedList';
         }
 
-        // DELETE next version
-        if($name === 'Image') {
-            $name = 'Img';
-        }
-
         $class = Archetype::resolve(Component::class, ucfirst($name));
         $output = new $class(...$args);
 
         if($def) {
-            $tagName = $output->getName().$def;
-            $output->setName($tagName);
+            // Re-add tag definition and parse
+            $tagName = $output->tagName.$def;
+            $output->tagName = $tagName;
         }
 
         return $output;

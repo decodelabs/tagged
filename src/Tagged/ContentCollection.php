@@ -12,7 +12,7 @@ namespace DecodeLabs\Tagged;
 use ArrayAccess;
 use DecodeLabs\Collections\SequenceTrait;
 use DecodeLabs\Collections\SequenceInterface;
-use DecodeLabs\Elementary\Markup\ChildRendererTrait;
+use DecodeLabs\Elementary\ChildRendererTrait;
 use IteratorAggregate;
 
 /**
@@ -30,6 +30,10 @@ class ContentCollection implements
      * @use SequenceTrait<mixed>
      */
     use SequenceTrait;
+
+    /**
+     * @use ChildRendererTrait<Buffer>
+     */
     use ChildRendererTrait;
     use BufferProviderTrait;
 
