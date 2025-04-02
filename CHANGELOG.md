@@ -1,4 +1,5 @@
 * Use null tagName for Each and Elements Components
+* Type hint $el instances in Components
 
 ## v0.19.0 (2025-04-02)
 * Upgraded Elementary dependency to v0.5

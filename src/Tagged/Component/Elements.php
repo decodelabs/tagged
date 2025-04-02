@@ -82,7 +82,7 @@ class Elements extends Tag implements Component
                     }
                 } else {
                     // Wrapped
-                    yield Element::create($this->elementName, function ($el) use ($key, $item, $i) {
+                    yield Element::create($this->elementName, function (Element $el) use ($key, $item, $i) {
                         if ($this->renderer) {
                             return ($this->renderer)($item, $el, $key, $i);
                         } else {

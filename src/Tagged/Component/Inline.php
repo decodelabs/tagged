@@ -83,7 +83,7 @@ class Inline extends Tag implements Component
 
                 $i++;
 
-                $cellTag = Element::create('?span', function ($el) use ($key, $item, &$i) {
+                $cellTag = Element::create('?span', function (Element $el) use ($key, $item, &$i) {
                     if ($this->renderer) {
                         return ($this->renderer)($item, $el, $key, $i);
                     } else {
