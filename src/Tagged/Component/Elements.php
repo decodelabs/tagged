@@ -47,7 +47,7 @@ class Elements extends Tag implements Component
         ?callable $renderer = null,
         ?array $attributes = null
     ) {
-        parent::__construct('div', $attributes);
+        parent::__construct(null, $attributes);
         $this->items = $items;
         $this->renderer = $renderer ? Closure::fromCallable($renderer) : null;
         $this->elementName = $elementName;
