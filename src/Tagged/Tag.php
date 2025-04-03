@@ -137,10 +137,7 @@ class Tag implements
             $value = iterator_to_array($value);
         }
 
-        if (
-            is_array($value) &&
-            substr($key, 0, 1) == ':'
-        ) {
+        if (is_array($value)) {
             if (!$value = json_encode($value)) {
                 throw Exceptional::UnexpectedValue(
                     message: 'Unable to encode attribute value to JSON'

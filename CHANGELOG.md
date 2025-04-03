@@ -1,3 +1,7 @@
+## v0.19.2 (2025-04-03)
+* Fixed tagName variable in Element::create()
+* Always json_encode array attributes
+
 ## v0.19.1 (2025-04-02)
 * Upgraded Collections dependency
 * Support named arguments for attributes
