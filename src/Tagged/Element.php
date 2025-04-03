@@ -36,7 +36,7 @@ class Element extends Tag implements
      * @param TAttributeInput ...$attributeList
      */
     public static function create(
-        string $name,
+        string $tagName,
         mixed $content = null,
         iterable $attributes = [],
         mixed ...$attributeList
@@ -47,17 +47,17 @@ class Element extends Tag implements
             $attributeList
         );
 
-        if (false !== strpos($name, '>')) {
-            $parts = explode('>', $name);
+        if (false !== strpos($tagName, '>')) {
+            $parts = explode('>', $tagName);
 
-            foreach (array_reverse($parts) as $name) {
-                $content = new self(trim($name), $content, $attributes);
+            foreach (array_reverse($parts) as $tagName) {
+                $content = new self(trim($tagName), $content, $attributes);
                 $attributes = null;
             }
 
             return $content;
         }
 
-        return new self($name, $content, $attributes);
+        return new self($tagName, $content, $attributes);
     }
 }
