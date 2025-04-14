@@ -11,8 +11,6 @@
 
 Tagged provides a simple, powerful and beautiful way to create HTML markup without the spaghetti.
 
-_Get news and updates on the [DecodeLabs blog](https://blog.decodelabs.com)._
-
 ---
 
 
