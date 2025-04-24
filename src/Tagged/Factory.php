@@ -167,6 +167,15 @@ class Factory implements Markup
     }
 
     /**
+     * Normalize arbitrary content
+     */
+    public function render(
+        mixed ...$content
+    ): string {
+        return (string)ContentCollection::normalize($content);
+    }
+
+    /**
      * Wrap arbitrary content as collection
      */
     public function content(

@@ -42,6 +42,9 @@ class Tagged implements Proxy
     public static function wrap(mixed ...$content): Ref3 {
         return static::$_veneerInstance->wrap(...func_get_args());
     }
+    public static function render(mixed ...$content): string {
+        return static::$_veneerInstance->render(...func_get_args());
+    }
     public static function content(mixed ...$content): Ref4 {
         return static::$_veneerInstance->content(...func_get_args());
     }
