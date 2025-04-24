@@ -1,3 +1,6 @@
+## v0.19.3 (2025-04-24)
+* Added render() helper
+
 ## v0.19.2 (2025-04-03)
 * Fixed tagName variable in Element::create()
 * Always json_encode array attributes
