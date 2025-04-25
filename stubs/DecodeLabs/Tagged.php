@@ -36,7 +36,7 @@ class Tagged implements Proxy
     public static function component(string $tagName, mixed ...$args): Ref2 {
         return static::$_veneerInstance->component(...func_get_args());
     }
-    public static function raw(mixed $html): Ref3 {
+    public static function raw(mixed $html, bool $escaped = false): Ref3 {
         return static::$_veneerInstance->raw(...func_get_args());
     }
     public static function wrap(mixed ...$content): Ref3 {

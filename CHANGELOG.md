@@ -1,3 +1,7 @@
+## v0.20.0 (2025-04-25)
+* Added escaped flag to raw() method
+* Upgraded Elementary dependency
+
 ## v0.19.3 (2025-04-24)
 * Added render() helper
 
