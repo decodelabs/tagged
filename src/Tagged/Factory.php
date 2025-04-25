@@ -152,9 +152,13 @@ class Factory implements Markup
      * Wrap raw html string
      */
     public function raw(
-        mixed $html
+        mixed $html,
+        bool $escaped = false
     ): Buffer {
-        return new Buffer(Coercion::toString($html));
+        return new Buffer(
+            Coercion::toString($html),
+            $escaped
+        );
     }
 
     /**
