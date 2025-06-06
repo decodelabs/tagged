@@ -13,7 +13,7 @@ use Closure;
 use DecodeLabs\Archetype;
 use DecodeLabs\Coercion;
 use DecodeLabs\Exceptional;
-use DecodeLabs\Glitch\Proxy as Glitch;
+use DecodeLabs\Monarch;
 use DecodeLabs\Tagged;
 use DecodeLabs\Tagged\Plugins\Number as NumberPlugin;
 use DecodeLabs\Tagged\Plugins\Time as TimePlugin;
@@ -203,7 +203,7 @@ class Factory implements Markup
         try {
             return htmlspecialchars(Coercion::toString($value), ENT_QUOTES, 'UTF-8');
         } catch (Throwable $e) {
-            Glitch::logException($e);
+            Monarch::logException($e);
             return Coercion::toString($value);
         }
     }

@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace DecodeLabs\Tagged;
 
-use DecodeLabs\Glitch\Proxy as Glitch;
+use DecodeLabs\Monarch;
 use Throwable;
 
 trait RenderableTrait
@@ -22,11 +22,11 @@ trait RenderableTrait
         try {
             return (string)$this->render(true);
         } catch (Throwable $e) {
-            Glitch::logException($e);
+            Monarch::logException($e);
             $message = '<strong>' . $e->getMessage() . '</strong>';
 
-            if (!Glitch::isProduction()) {
-                $message .= '<br /><samp>' . Glitch::normalizePath($e->getFile()) . '</samp> : <samp>' . $e->getLine() . '</samp>';
+            if (!Monarch::isProduction()) {
+                $message .= '<br /><samp>' . Monarch::$paths->prettify($e->getFile()) . '</samp> : <samp>' . $e->getLine() . '</samp>';
                 $title = $this->esc((string)$e);
             } else {
                 $title = 'HTML Error';

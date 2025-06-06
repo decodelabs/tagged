@@ -11,7 +11,7 @@ namespace DecodeLabs\Tagged;
 
 use DecodeLabs\Elementary\Buffer as BufferInterface;
 use DecodeLabs\Elementary\BufferTrait;
-use DecodeLabs\Glitch\Dumpable;
+use DecodeLabs\Nuance\Dumpable;
 
 class Buffer implements
     BufferInterface,

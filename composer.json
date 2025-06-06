@@ -11,16 +11,16 @@
     "require": {
         "php": "^8.4",
         "ext-intl": "*",
-        "symfony/polyfill-mbstring": "^1.31",
+        "symfony/polyfill-mbstring": "^1.32",
 
-        "decodelabs/archetype": "^0.3.8",
-        "decodelabs/coercion": "^0.3",
-        "decodelabs/collections": "^0.11",
-        "decodelabs/cosmos": "^0.2.1",
-        "decodelabs/elementary": "^0.6",
-        "decodelabs/exceptional": "^0.5.3",
-        "decodelabs/glitch-support": "^0.5.1",
-        "decodelabs/veneer": "^0.12.3"
+        "decodelabs/archetype": "^0.3.10",
+        "decodelabs/coercion": "^0.3.3",
+        "decodelabs/collections": "^0.11.3",
+        "decodelabs/cosmos": "^0.2.2",
+        "decodelabs/elementary": "^0.6.1",
+        "decodelabs/exceptional": "^0.6.1",
+        "decodelabs/monarch": "^0.1.4",
+        "decodelabs/veneer": "^0.12.8"
     },
     "require-dev": {
         "decodelabs/phpstan-decodelabs": "^0.7"
