@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace DecodeLabs\PHPStan;
 
 use DecodeLabs\Archetype;
-use DecodeLabs\PHPStan\MethodReflection;
 use DecodeLabs\Tagged\Component;
 use DecodeLabs\Tagged\Factory as HtmlFactory;
 use PHPStan\Reflection\ClassReflection;
@@ -34,15 +33,15 @@ class TaggedReflectionExtension implements MethodsClassReflectionExtension
         ClassReflection $classReflection,
         string $methodName
     ): bool {
-        if($classReflection->getName() !== HtmlFactory::class) {
+        if ($classReflection->getName() !== HtmlFactory::class) {
             return false;
         }
 
-        if(!str_starts_with($methodName, '@')) {
+        if (!str_starts_with($methodName, '@')) {
             return true;
         }
 
-        if(null === ($name = $this->normalizeName($methodName))) {
+        if (null === ($name = $this->normalizeName($methodName))) {
             return false;
         }
 
@@ -53,7 +52,7 @@ class TaggedReflectionExtension implements MethodsClassReflectionExtension
         ClassReflection $classReflection,
         string $methodName
     ): MethodReflectionInterface {
-        if(!str_starts_with($methodName, '@')) {
+        if (!str_starts_with($methodName, '@')) {
             // Element
             $method = $this->reflectionProvider->getClass(HtmlFactory::class)->getNativeMethod('el');
 
@@ -84,7 +83,7 @@ class TaggedReflectionExtension implements MethodsClassReflectionExtension
     protected function normalizeName(
         string $name
     ): ?string {
-        if(!preg_match('/^@([a-zA-Z0-9_-]+)([^a-zA-Z0-9_].*)?$/', $name, $matches)) {
+        if (!preg_match('/^@([a-zA-Z0-9_-]+)([^a-zA-Z0-9_].*)?$/', $name, $matches)) {
             return null;
         }
 
@@ -93,7 +92,7 @@ class TaggedReflectionExtension implements MethodsClassReflectionExtension
         $name = ucwords($name);
         $name = str_replace(' ', '', $name);
 
-        if($name === 'List') {
+        if ($name === 'List') {
             $name = 'ContainedList';
         }
 

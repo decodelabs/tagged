@@ -10,8 +10,8 @@ declare(strict_types=1);
 namespace DecodeLabs\Tagged;
 
 use ArrayAccess;
-use DecodeLabs\Collections\SequenceTrait;
 use DecodeLabs\Collections\SequenceInterface;
+use DecodeLabs\Collections\SequenceTrait;
 use DecodeLabs\Elementary\ChildRendererTrait;
 use IteratorAggregate;
 

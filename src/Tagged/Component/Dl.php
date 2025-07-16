@@ -48,10 +48,10 @@ class Dl extends Tag implements Component
     ): ?Buffer {
         $this->renderEmpty = false;
 
-        return $this->renderWith(function () use($pretty) {
+        return $this->renderWith(function () use ($pretty) {
             $items = $this->items;
 
-            if($items instanceof Closure) {
+            if ($items instanceof Closure) {
                 $items = $items();
             }
 
@@ -59,7 +59,7 @@ class Dl extends Tag implements Component
                 return;
             }
 
-            $renderer = $this->renderer ?? fn($item) => $item;
+            $renderer = $this->renderer ?? fn ($item) => $item;
 
             foreach ($items as $key => $item) {
                 $dt = Element::create('dt', null);

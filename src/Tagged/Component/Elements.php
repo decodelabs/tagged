@@ -11,8 +11,8 @@ namespace DecodeLabs\Tagged\Component;
 
 use Closure;
 use DecodeLabs\Tagged\Buffer;
-use DecodeLabs\Tagged\ContentCollection;
 use DecodeLabs\Tagged\Component;
+use DecodeLabs\Tagged\ContentCollection;
 use DecodeLabs\Tagged\Element;
 use DecodeLabs\Tagged\RenderableTrait;
 use DecodeLabs\Tagged\Tag;
@@ -60,7 +60,7 @@ class Elements extends Tag implements Component
         return ContentCollection::normalize(function () {
             $items = $this->items;
 
-            if($items instanceof Closure) {
+            if ($items instanceof Closure) {
                 $items = $items();
             }
 

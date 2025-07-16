@@ -60,7 +60,7 @@ class Inline extends Tag implements Component
         return $this->renderWith(function () {
             $items = $this->items;
 
-            if($items instanceof Closure) {
+            if ($items instanceof Closure) {
                 $items = $items();
             }
 

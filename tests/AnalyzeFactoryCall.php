@@ -14,10 +14,10 @@ use DecodeLabs\Tagged\Component\ContainedList;
 use DecodeLabs\Tagged\Component\Ul;
 use DecodeLabs\Tagged\Element;
 
-class AnalyzeFactoryCall {
-
-
-    public function getElement(): Element {
+class AnalyzeFactoryCall
+{
+    public function getElement(): Element
+    {
         $output = Html::div('Hello World', [
             'class' => 'test',
             ':array' => [
@@ -26,7 +26,7 @@ class AnalyzeFactoryCall {
             'style' => [
                 'color' => 'red'
             ],
-            'closure' => function() {
+            'closure' => function () {
                 yield 'nice';
                 return 'inner';
             }
@@ -36,7 +36,8 @@ class AnalyzeFactoryCall {
         return $output;
     }
 
-    public function getInlineList(): ContainedList {
+    public function getInlineList(): ContainedList
+    {
         return Html::{'@list'}([
             'Item 1',
             'Item 2',
@@ -44,7 +45,8 @@ class AnalyzeFactoryCall {
         ], 'div.container', 'div.item');
     }
 
-    public function getList(): Ul {
+    public function getList(): Ul
+    {
         return Html::{'@ul'}([
             'Item 1',
             'Item 2',

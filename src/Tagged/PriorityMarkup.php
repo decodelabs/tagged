@@ -9,8 +9,6 @@ declare(strict_types=1);
 
 namespace DecodeLabs\Tagged;
 
-use DecodeLabs\Tagged\Markup;
-
 /**
  * @template T of Markup
  */

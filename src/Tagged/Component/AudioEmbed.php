@@ -9,19 +9,17 @@ declare(strict_types=1);
 
 namespace DecodeLabs\Tagged\Component;
 
-use Closure;
 use DecodeLabs\Tagged\Buffer;
 use DecodeLabs\Tagged\Component;
 use DecodeLabs\Tagged\Embed\Audio;
 use DecodeLabs\Tagged\RenderableTrait;
 use DecodeLabs\Tagged\Tag;
-use Stringable;
 
 class AudioEmbed extends Tag implements Component
 {
     use RenderableTrait;
 
-    protected(set) ?Audio $embed;
+    public protected(set) ?Audio $embed;
 
     /**
      * Generate image
@@ -45,17 +43,17 @@ class AudioEmbed extends Tag implements Component
     ): ?Buffer {
         $this->renderEmpty = false;
 
-        if($this->embed === null) {
+        if ($this->embed === null) {
             return null;
         }
 
         $el = $this->embed->render();
 
-        foreach($this->attributes as $key => $value) {
-            if($key === 'class') {
+        foreach ($this->attributes as $key => $value) {
+            if ($key === 'class') {
                 $el->addClasses($value);
                 continue;
-            } else if($key === 'style') {
+            } elseif ($key === 'style') {
                 $el->addStyles($value);
                 continue;
             }

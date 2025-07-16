@@ -44,7 +44,7 @@ trait MediaTrait
     public static function parse(
         ?string $embed
     ): ?static {
-        if($embed === null) {
+        if ($embed === null) {
             return null;
         }
 

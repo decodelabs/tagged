@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace DecodeLabs\Tagged;
 
-use Closure;
 use DecodeLabs\Archetype;
 use DecodeLabs\Coercion;
 use DecodeLabs\Exceptional;
@@ -19,7 +18,6 @@ use DecodeLabs\Tagged\Plugins\Number as NumberPlugin;
 use DecodeLabs\Tagged\Plugins\Time as TimePlugin;
 use DecodeLabs\Veneer;
 use DecodeLabs\Veneer\Plugin;
-use Stringable;
 use Throwable;
 
 /**
@@ -59,7 +57,7 @@ class Factory implements Markup
         string $tagName,
         array $args
     ): Element|Component {
-        if(str_starts_with($tagName, '@')) {
+        if (str_starts_with($tagName, '@')) {
             return $this->component(substr($tagName, 1), ...$args);
         }
 
@@ -119,9 +117,9 @@ class Factory implements Markup
         string $tagName,
         mixed ...$args
     ): Component {
-        if(!preg_match('/^([a-zA-Z0-9_-]+)([^a-zA-Z0-9_].*)?$/', $tagName, $matches)) {
+        if (!preg_match('/^([a-zA-Z0-9_-]+)([^a-zA-Z0-9_].*)?$/', $tagName, $matches)) {
             throw Exceptional::InvalidArgument(
-                message: 'Invalid component name: '.$tagName
+                message: 'Invalid component name: ' . $tagName
             );
         }
 
@@ -132,16 +130,16 @@ class Factory implements Markup
         $name = ucwords($name);
         $name = str_replace(' ', '', $name);
 
-        if($name === 'List') {
+        if ($name === 'List') {
             $name = 'ContainedList';
         }
 
         $class = Archetype::resolve(Component::class, ucfirst($name));
         $output = new $class(...$args);
 
-        if($def) {
+        if ($def) {
             // Re-add tag definition and parse
-            $tagName = $output->tagName.$def;
+            $tagName = $output->tagName . $def;
             $output->tagName = $tagName;
         }
 

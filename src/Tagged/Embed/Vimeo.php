@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace DecodeLabs\Tagged\Embed;
 
-use DateTime;
 use DecodeLabs\Coercion;
 use DecodeLabs\Collections\Tree;
 use DecodeLabs\Exceptional;

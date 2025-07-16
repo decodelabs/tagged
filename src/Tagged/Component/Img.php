@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace DecodeLabs\Tagged\Component;
 
-use Closure;
 use DecodeLabs\Tagged\Buffer;
 use DecodeLabs\Tagged\Component;
 use DecodeLabs\Tagged\RenderableTrait;

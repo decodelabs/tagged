@@ -331,7 +331,7 @@ class Tag implements
     protected function normalizeAttributeKey(
         string $key
     ): string {
-        if(preg_match('/[A-Z]/', $key)) {
+        if (preg_match('/[A-Z]/', $key)) {
             $key = (string)preg_replace('/([a-z])([A-Z])/', '$1-$2', $key);
             $key = strtolower($key);
             $key = (string)preg_replace('/\s+/', '-', $key);

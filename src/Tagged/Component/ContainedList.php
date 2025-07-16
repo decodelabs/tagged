@@ -46,7 +46,7 @@ class ContainedList extends Tag implements Component
         $parts = explode('>', $containerName, 2);
         $containerName = trim(array_shift($parts));
 
-        if(!empty($parts)) {
+        if (!empty($parts)) {
             $this->nestedContainerName = trim(array_shift($parts));
         }
 
@@ -64,7 +64,7 @@ class ContainedList extends Tag implements Component
         $renderer = function () {
             $items = $this->items;
 
-            if($items instanceof Closure) {
+            if ($items instanceof Closure) {
                 $items = $items();
             }
 
@@ -97,10 +97,10 @@ class ContainedList extends Tag implements Component
             }
         };
 
-        if($this->nestedContainerName) {
+        if ($this->nestedContainerName) {
             $nestedContainerName = $this->nestedContainerName;
 
-            $renderer = function() use($renderer, $nestedContainerName) {
+            $renderer = function () use ($renderer, $nestedContainerName) {
                 yield Element::create($nestedContainerName, $renderer);
             };
         }
