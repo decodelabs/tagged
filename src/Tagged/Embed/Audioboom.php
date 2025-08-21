@@ -30,9 +30,6 @@ class Audioboom extends Audio
      */
     protected array $options = [];
 
-    /**
-     * Extract parts from URL
-     */
     protected function setUrl(
         ?string $url
     ): static {
@@ -76,9 +73,6 @@ class Audioboom extends Audio
         return $this;
     }
 
-    /**
-     * Get finalized URL from renderer tag
-     */
     public function getPreparedUrl(): ?string
     {
         if ($this->type === 'playlist') {
@@ -99,25 +93,16 @@ class Audioboom extends Audio
         return $url;
     }
 
-    /**
-     * Get Audioboom id
-     */
     public function getAudioboomId(): string
     {
         return $this->audioboomId;
     }
 
-    /**
-     * Get audiobom type
-     */
     public function getAudioboomType(): string
     {
         return $this->type;
     }
 
-    /**
-     * Render URL embed
-     */
     public function render(): Element
     {
         return $this->prepareIframeElement((string)$this->getPreparedUrl());
@@ -125,8 +110,6 @@ class Audioboom extends Audio
 
 
     /**
-     * Lookup thumbnail URL
-     *
      * @param array<string, mixed> $options
      */
     public function lookupThumbnail(
@@ -157,8 +140,6 @@ class Audioboom extends Audio
     }
 
     /**
-     * Lookup media meta information
-     *
      * @param array<string, mixed> $options
      * @return array<string, mixed>
      */
@@ -180,8 +161,6 @@ class Audioboom extends Audio
     }
 
     /**
-     * Lookup meta for embed
-     *
      * @param array<string, mixed> $options
      * @return array<string, mixed>
      */
@@ -224,8 +203,6 @@ class Audioboom extends Audio
     }
 
     /**
-     * Lookup meta for embed
-     *
      * @param array<string, mixed> $options
      * @return array<string, mixed>
      */

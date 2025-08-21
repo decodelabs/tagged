@@ -11,7 +11,6 @@ namespace DecodeLabs\Tagged\Embed;
 
 use DecodeLabs\Tagged\Buffer;
 use DecodeLabs\Tagged\Element;
-use DecodeLabs\Tagged\Markup;
 
 class Video implements Media
 {
@@ -24,24 +23,15 @@ class Video implements Media
         'vimeo' => 'vimeo'
     ];
 
-    /**
-     * @var bool
-     */
-    protected $useApi = false;
+    protected bool $useApi = false;
 
 
-    /**
-     * Convert an anonymous id to a URL
-     */
     public static function defaultUrlFromId(
         string $id
     ): string {
         return '//www.youtube.com/embed/' . $id;
     }
 
-    /**
-     * Set to use API (youtube)
-     */
     public function setUseApi(
         bool $flag
     ): static {
@@ -49,19 +39,12 @@ class Video implements Media
         return $this;
     }
 
-    /**
-     * Should use API?
-     */
     public function shouldUseApi(): bool
     {
         return $this->useApi;
     }
 
 
-
-    /**
-     * Render embed to markup
-     */
     public function render(): Element
     {
         if (
@@ -77,9 +60,6 @@ class Video implements Media
         return $this->prepareIframeElement($this->url);
     }
 
-    /**
-     * Prepare iframe element
-     */
     protected function prepareIframeElement(
         ?string $url
     ): Element {

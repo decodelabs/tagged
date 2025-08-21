@@ -31,8 +31,6 @@ class ContainedList extends Tag implements Component
     protected ?string $nestedContainerName = null;
 
     /**
-     * Generate list with container
-     *
      * @param iterable<mixed>|Closure():(iterable<mixed>)|null $items
      * @param array<string,mixed>|null $attributes
      */

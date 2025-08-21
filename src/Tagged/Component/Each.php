@@ -28,8 +28,6 @@ class Each extends Tag implements Component
     public ?Closure $renderer = null;
 
     /**
-     * Loop through list
-     *
      * @param iterable<mixed>|Closure():(iterable<mixed>)|null $items
      */
     public function __construct(

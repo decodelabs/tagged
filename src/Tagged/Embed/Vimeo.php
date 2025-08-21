@@ -24,9 +24,6 @@ class Vimeo extends Video
      */
     protected array $options = [];
 
-    /**
-     * Extract parts from URL
-     */
     protected function setUrl(
         ?string $url
     ): static {
@@ -70,9 +67,6 @@ class Vimeo extends Video
         return $this;
     }
 
-    /**
-     * Get finalized URL from renderer tag
-     */
     public function getPreparedUrl(): ?string
     {
         $url = 'https://player.vimeo.com/video/' . $this->vimeoId;
@@ -103,26 +97,17 @@ class Vimeo extends Video
         return $url;
     }
 
-    /**
-     * Get Vimeo id
-     */
     public function getVimeoId(): string
     {
         return $this->vimeoId;
     }
 
-    /**
-     * Render URL embed
-     */
     public function render(): Element
     {
         return $this->prepareIframeElement((string)$this->getPreparedUrl());
     }
 
 
-    /**
-     * Lookup thumbnail URL
-     */
     public function lookupThumbnail(
         ?array $options = null
     ): ?string {
@@ -131,9 +116,6 @@ class Vimeo extends Video
         );
     }
 
-    /**
-     * Lookup media meta information
-     */
     public function lookupMeta(
         ?array $options = null
     ): ?array {

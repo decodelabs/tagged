@@ -22,10 +22,6 @@ composer require decodelabs/tagged
 
 ## Usage
 
-Tagged uses [Veneer](https://github.com/decodelabs/veneer) to provide a unified frontage under <code>DecodeLabs\Tagged</code>.
-You can access all the primary HTML functionality via this static frontage without compromising testing and dependency injection.
-
-
 ## HTML markup
 
 Generate markup using a simple, flexible interface.
@@ -155,28 +151,28 @@ echo Html::div(function($el) {
 Format and wrap dates and intervals
 
 ```php
-use DecodeLabs\Tagged as Html;
+use DecodeLabs\Tagged\Time;
 
 // Custom format
-Html::$time->format('now', 'd/m/Y', 'Europe/London');
+Time::format('now', 'd/m/Y', 'Europe/London');
 
 // Locale format
-// When timezone is true it is fetched from Cosmos::$timezone
-Html::$time->locale('now', 'long', 'long', true);
+// When timezone is true it is fetched from Cosmos
+Time::locale('now', 'long', 'long', true);
 
 // Locale shortcuts
-Html::$time->dateTime('tomorrow'); // medium
-Html::$time->longTime('yesterday');
-Html::$time->shortDate('yesterday');
+Time::dateTime('tomorrow'); // medium
+Time::longTime('yesterday');
+Time::shortDate('yesterday');
 // ...etc
 
 
 // Intervals
-Html::$time->since('yesterday'); // 1 day ago
-Html::$time->until('tomorrow'); // 1 day from now
-Html::$time->sinceAbs('yesterday'); // 1 day
-Html::$time->untilAbs('yesterday'); // -1 day
-Html::$time->between('yesterday', 'tomorrow'); // 1 day
+Time::since('yesterday'); // 1 day ago
+Time::until('tomorrow'); // 1 day from now
+Time::sinceAbs('yesterday'); // 1 day
+Time::untilAbs('yesterday'); // -1 day
+Time::between('yesterday', 'tomorrow'); // 1 day
 ```
 
 ### Media embeds

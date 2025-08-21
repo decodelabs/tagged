@@ -28,8 +28,6 @@ class Dl extends Tag implements Component
     public ?Closure $renderer = null;
 
     /**
-     * Generate nested list
-     *
      * @param iterable<mixed>|Closure():(iterable<mixed>)|null $items
      * @param array<string,mixed>|null $attributes
      */

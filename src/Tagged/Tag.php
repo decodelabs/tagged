@@ -43,9 +43,6 @@ class Tag implements
     use StyleContainerTrait;
     use BufferProviderTrait;
 
-    /**
-     * Allow mutation of content
-     */
     protected const bool Mutable = true;
 
     /**
@@ -84,18 +81,12 @@ class Tag implements
     protected array $attributes = [];
 
 
-    /**
-     * Can tag be closed with full </tag>
-     */
     public static function isSelfClosingTagName(
         string $name
     ): bool {
         return in_array(strtolower($name), self::SelfClosingTags);
     }
 
-    /**
-     * Should tag be single inline entity
-     */
     public static function isInlineTagName(
         string $name
     ): bool {
@@ -106,8 +97,6 @@ class Tag implements
 
 
     /**
-     * Set attribute value
-     *
      * @return $this
      */
     public function setAttribute(
@@ -155,8 +144,6 @@ class Tag implements
     }
 
     /**
-     * Get attribute value
-     *
      * @return TAttributeValue|null
      */
     public function getAttribute(
@@ -175,8 +162,6 @@ class Tag implements
 
 
     /**
-     * Add data attributes with map
-     *
      * @param iterable<string,TAttributeInput> $attributes
      * @param TAttributeInput ...$attributeList
      * @return $this
@@ -193,8 +178,6 @@ class Tag implements
     }
 
     /**
-     * Replace all data attributes with new map
-     *
      * @param iterable<string,TAttributeInput> $attributes
      * @param TAttributeInput ...$attributeList
      * @return $this
@@ -209,8 +192,6 @@ class Tag implements
     }
 
     /**
-     * Get map of current data attributes
-     *
      * @return array<string,TAttributeValue>
      */
     public function getDataAttributes(): array
@@ -227,8 +208,6 @@ class Tag implements
     }
 
     /**
-     * Replace single data value
-     *
      * @param TAttributeInput $value
      * @return $this
      */
@@ -241,8 +220,6 @@ class Tag implements
     }
 
     /**
-     * Retrieve data attribute value if set
-     *
      * @return TAttributeValue|null
      */
     public function getDataAttribute(
@@ -252,7 +229,6 @@ class Tag implements
     }
 
     /**
-     * Remove single data attribute
      * @return $this
      */
     public function removeDataAttribute(
@@ -266,9 +242,6 @@ class Tag implements
         return $this;
     }
 
-    /**
-     *  Have any of these data attributes been set?
-     */
     public function hasDataAttribute(
         string ...$keys
     ): bool {
@@ -279,9 +252,6 @@ class Tag implements
         return $this->hasAttribute(...$keys);
     }
 
-    /**
-     *  Have all of these data attributes been set?
-     */
     public function hasDataAttributes(
         string ...$keys
     ): bool {
@@ -293,7 +263,6 @@ class Tag implements
     }
 
     /**
-     * Remove all data attributes
      * @return $this
      */
     public function clearDataAttributes(): static
@@ -308,8 +277,6 @@ class Tag implements
     }
 
     /**
-     * How many data attributes have been set?
-     *
      * @return int<0,max>
      */
     public function countDataAttributes(): int
@@ -325,9 +292,6 @@ class Tag implements
         return $output;
     }
 
-    /**
-     * Normalise attribute name
-     */
     protected function normalizeAttributeKey(
         string $key
     ): string {
@@ -346,8 +310,6 @@ class Tag implements
 
 
     /**
-     * Toggle hidden attribute on/off
-     *
      * @return $this
      */
     public function setHidden(
@@ -357,17 +319,12 @@ class Tag implements
         return $this;
     }
 
-    /**
-     * Does this tag have hidden attr?
-     */
     public function isHidden(): bool
     {
         return $this->hasAttribute('hidden');
     }
 
     /**
-     * Set hidden attribute
-     *
      * @return $this
      */
     public function hide(): Tag
@@ -377,8 +334,6 @@ class Tag implements
     }
 
     /**
-     * Remove hidden attribute
-     *
      * @return $this
      */
     public function show(): Tag
@@ -389,8 +344,6 @@ class Tag implements
 
 
     /**
-     * Set title attribute
-     *
      * @return $this
      */
     public function setTitle(
@@ -400,9 +353,6 @@ class Tag implements
         return $this;
     }
 
-    /**
-     * Get title attribute
-     */
     public function getTitle(): ?string
     {
         return Coercion::tryString(

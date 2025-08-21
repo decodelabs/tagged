@@ -11,7 +11,6 @@ namespace DecodeLabs\Tagged\Embed;
 
 use DecodeLabs\Tagged\Buffer;
 use DecodeLabs\Tagged\Element;
-use DecodeLabs\Tagged\Markup;
 
 class Audio implements Media
 {
@@ -27,9 +26,6 @@ class Audio implements Media
 
 
 
-    /**
-     * Convert an anonymous id to a URL
-     */
     public static function defaultUrlFromId(
         string $id
     ): string {
@@ -38,9 +34,7 @@ class Audio implements Media
 
 
 
-    /**
-     * Render embed to markup
-     */
+
     public function render(): Element
     {
         if (
@@ -56,9 +50,7 @@ class Audio implements Media
         return $this->prepareIframeElement($this->url);
     }
 
-    /**
-     * Prepare iframe element
-     */
+
     protected function prepareIframeElement(
         ?string $url
     ): Element {

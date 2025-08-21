@@ -11,9 +11,6 @@ namespace DecodeLabs\Tagged;
 
 trait BufferProviderTrait
 {
-    /**
-     * Create new buffer
-     */
     protected function newBuffer(
         ?string $content
     ): Buffer {

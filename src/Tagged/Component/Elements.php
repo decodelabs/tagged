@@ -36,8 +36,6 @@ class Elements extends Tag implements Component
     public array $elementAttributes = [];
 
     /**
-     * Generate list of elements
-     *
      * @param iterable<mixed>|Closure():(iterable<mixed>)|null $items
      * @param array<string,mixed> $attributes
      */

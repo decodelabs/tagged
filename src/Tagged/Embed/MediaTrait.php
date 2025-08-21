@@ -38,9 +38,6 @@ trait MediaTrait
     protected bool $consent = false;
 
 
-    /**
-     * Parse embed string
-     */
     public static function parse(
         ?string $embed
     ): ?static {
@@ -148,9 +145,6 @@ trait MediaTrait
     }
 
 
-    /**
-     * Extract provider name from URL
-     */
     public static function extractProviderName(
         string $url
     ): ?string {
@@ -163,9 +157,6 @@ trait MediaTrait
         return null;
     }
 
-    /**
-     * Get instance class for entry URL
-     */
     public static function getClassForUrl(
         string $url
     ): string {
@@ -182,9 +173,6 @@ trait MediaTrait
         return $class;
     }
 
-    /**
-     * Init with main iframe details
-     */
     public function __construct(
         ?string $url,
         ?int $width = null,
@@ -206,8 +194,6 @@ trait MediaTrait
     }
 
     /**
-     * Set media source URL
-     *
      * @return $this
      */
     protected function setUrl(
@@ -231,26 +217,17 @@ trait MediaTrait
         return $this;
     }
 
-    /**
-     * Get media source URL
-     */
     public function getUrl(): ?string
     {
         return $this->url;
     }
 
-    /**
-     * Get finalized URL from renderer tag
-     */
     public function getPreparedUrl(): ?string
     {
         return $this->url;
     }
 
 
-    /**
-     * Get media provider
-     */
     public function getProvider(): ?string
     {
         return $this->provider;
@@ -258,8 +235,6 @@ trait MediaTrait
 
 
     /**
-     * Set Media element id
-     *
      * @return $this
      */
     public function setId(
@@ -269,17 +244,12 @@ trait MediaTrait
         return $this;
     }
 
-    /**
-     * Get Media element id
-     */
     public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * Set media origin
-     *
      * @return $this
      */
     public function setOrigin(
@@ -289,9 +259,6 @@ trait MediaTrait
         return $this;
     }
 
-    /**
-     * Get media origin
-     */
     public function getOrigin(): ?string
     {
         return $this->origin;
@@ -299,8 +266,6 @@ trait MediaTrait
 
 
     /**
-     * Set Media element width
-     *
      * @return $this
      */
     public function setWidth(
@@ -311,8 +276,6 @@ trait MediaTrait
     }
 
     /**
-     * Scale dimensions from original width
-     *
      * @return $this
      */
     public function scaleWidth(
@@ -324,17 +287,12 @@ trait MediaTrait
         return $this;
     }
 
-    /**
-     * Get Media element width
-     */
     public function getWidth(): ?int
     {
         return $this->width;
     }
 
     /**
-     * Set Media element height
-     *
      * @return $this
      */
     public function setHeight(
@@ -344,17 +302,12 @@ trait MediaTrait
         return $this;
     }
 
-    /**
-     * Get Media element height
-     */
     public function getHeight(): ?int
     {
         return $this->height;
     }
 
     /**
-     * Set width and height and scale accordingly
-     *
      * @return $this
      */
     public function setDimensions(
@@ -384,8 +337,6 @@ trait MediaTrait
 
 
     /**
-     * Set whether Media element can go full screen
-     *
      * @return $this
      */
     public function setAllowFullScreen(
@@ -405,8 +356,6 @@ trait MediaTrait
 
 
     /**
-     * Set whether media can autoplay
-     *
      * @return $this
      */
     public function setAutoPlay(
@@ -416,9 +365,6 @@ trait MediaTrait
         return $this;
     }
 
-    /**
-     * Get whether media can autoplay
-     */
     public function shouldAutoPlay(): bool
     {
         return $this->autoPlay;
@@ -426,8 +372,6 @@ trait MediaTrait
 
 
     /**
-     * Set start time of media
-     *
      * @return $this
      */
     public function setStartTime(
@@ -437,17 +381,12 @@ trait MediaTrait
         return $this;
     }
 
-    /**
-     * Get start time of media
-     */
     public function getStartTime(): ?int
     {
         return $this->startTime;
     }
 
     /**
-     * Set end time of media
-     *
      * @return $this
      */
     public function setEndTime(
@@ -462,17 +401,12 @@ trait MediaTrait
         return $this;
     }
 
-    /**
-     * Get end time of media
-     */
     public function getEndTime(): ?int
     {
         return $this->endTime;
     }
 
     /**
-     * Set media duration
-     *
      * @return $this
      */
     public function setDuration(
@@ -487,9 +421,6 @@ trait MediaTrait
         return $this;
     }
 
-    /**
-     * Get media duration
-     */
     public function getDuration(): ?int
     {
         return $this->duration;
@@ -497,8 +428,6 @@ trait MediaTrait
 
 
     /**
-     * Set consent status
-     *
      * @return $this
      */
     public function setConsent(
@@ -508,44 +437,32 @@ trait MediaTrait
         return $this;
     }
 
-    /**
-     * Has consent
-     */
     public function hasConsent(): bool
     {
         return $this->consent;
     }
 
 
-    /**
-     * Lookup thumbnail URL
-     */
     public function lookupThumbnail(
         ?array $options = null
     ): ?string {
         return null;
     }
 
-    /**
-     * Lookup media meta information
-     */
+
     public function lookupMeta(
         ?array $options = null
     ): ?array {
         return null;
     }
 
-    /**
-     * Render to string
-     */
+
     public function __toString(): string
     {
         return (string)$this->render();
     }
 
-    /**
-     * Serialize to json
-     */
+
     public function jsonSerialize(): mixed
     {
         return (string)$this;

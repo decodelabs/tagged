@@ -30,8 +30,6 @@ class Element extends Tag implements
     use RenderableTrait;
 
     /**
-     * Apply nested by string name
-     *
      * @param iterable<string,TAttributeInput> $attributes
      * @param TAttributeInput ...$attributeList
      */

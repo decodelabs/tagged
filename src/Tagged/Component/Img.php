@@ -20,8 +20,6 @@ class Img extends Tag implements Component
     use RenderableTrait;
 
     /**
-     * Generate image
-     *
      * @param array<string,mixed>|null $attributes
      */
     public function __construct(

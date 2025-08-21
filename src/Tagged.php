@@ -7,35 +7,26 @@
 
 declare(strict_types=1);
 
-namespace DecodeLabs\Tagged;
+namespace DecodeLabs;
 
-use DecodeLabs\Archetype;
-use DecodeLabs\Coercion;
-use DecodeLabs\Exceptional;
-use DecodeLabs\Monarch;
-use DecodeLabs\Tagged;
-use DecodeLabs\Tagged\Plugins\Number as NumberPlugin;
-use DecodeLabs\Tagged\Plugins\Time as TimePlugin;
-use DecodeLabs\Veneer;
-use DecodeLabs\Veneer\Plugin;
+use DecodeLabs\Kingdom\Service;
+use DecodeLabs\Kingdom\ServiceTrait;
+use DecodeLabs\Tagged\Buffer;
+use DecodeLabs\Tagged\Component;
+use DecodeLabs\Tagged\ContentCollection;
+use DecodeLabs\Tagged\Element;
+use DecodeLabs\Tagged\Tag;
 use Throwable;
 
 /**
  * @phpstan-import-type TAttributeValue from Tag
  * @phpstan-import-type TAttributeInput from Tag
  */
-class Factory implements Markup
+class Tagged implements Service
 {
-    #[Plugin(lazy: true)]
-    public TimePlugin $time;
-
-    #[Plugin(lazy: true)]
-    public NumberPlugin $number;
-
+    use ServiceTrait;
 
     /**
-     * Instance shortcut to el
-     *
      * @param iterable<string,TAttributeInput> $attributes
      * @param TAttributeInput ...$attributeList
      */
@@ -45,43 +36,31 @@ class Factory implements Markup
         iterable $attributes = [],
         mixed ...$attributeList
     ): Element {
-        return Element::create($tagName, $content, $attributes);
+        return Element::create($tagName, $content, $attributes, ...$attributeList);
     }
 
     /**
-     * Call named widget from instance
-     *
      * @param array<mixed> $args
      */
-    public function __call(
+    public static function __callStatic(
         string $tagName,
         array $args
     ): Element|Component {
         if (str_starts_with($tagName, '@')) {
-            return $this->component(substr($tagName, 1), ...$args);
+            return static::component(substr($tagName, 1), ...$args);
         }
 
         return Element::create($tagName, ...$args);
     }
 
-    /**
-     * Dummy string generator to satisfy Markup dep
-     */
-    public function __toString(): string
-    {
-        return '';
-    }
-
 
 
 
     /**
-     * Create a standalone tag
-     *
      * @param iterable<string,TAttributeInput> $attributes
      * @param TAttributeInput ...$attributeList
      */
-    public function tag(
+    public static function tag(
         string $tagName,
         iterable $attributes = [],
         mixed ...$attributeList
@@ -96,12 +75,10 @@ class Factory implements Markup
     }
 
     /**
-     * Create a standalone element
-     *
      * @param iterable<string,TAttributeInput> $attributes
      * @param TAttributeInput ...$attributeList
      */
-    public function el(
+    public static function el(
         string $tagName,
         mixed $content = null,
         iterable $attributes = [],
@@ -110,10 +87,7 @@ class Factory implements Markup
         return Element::create($tagName, $content, $attributes, ...$attributeList);
     }
 
-    /**
-     * Create a standalone component
-     */
-    public function component(
+    public static function component(
         string $tagName,
         mixed ...$args
     ): Component {
@@ -134,8 +108,8 @@ class Factory implements Markup
             $name = 'ContainedList';
         }
 
-        $class = Archetype::resolve(Component::class, ucfirst($name));
-        $output = new $class(...$args);
+        /** @var array<string,mixed> $args */
+        $output = new Slingshot()->resolveNamedInstance(Component::class, ucfirst($name), $args);
 
         if ($def) {
             // Re-add tag definition and parse
@@ -146,10 +120,7 @@ class Factory implements Markup
         return $output;
     }
 
-    /**
-     * Wrap raw html string
-     */
-    public function raw(
+    public static function raw(
         mixed $html,
         bool $escaped = false
     ): Buffer {
@@ -159,28 +130,19 @@ class Factory implements Markup
         );
     }
 
-    /**
-     * Normalize arbitrary content
-     */
-    public function wrap(
+    public static function wrap(
         mixed ...$content
     ): Buffer {
         return ContentCollection::normalize($content);
     }
 
-    /**
-     * Normalize arbitrary content
-     */
-    public function render(
+    public static function render(
         mixed ...$content
     ): string {
         return (string)ContentCollection::normalize($content);
     }
 
-    /**
-     * Wrap arbitrary content as collection
-     */
-    public function content(
+    public static function content(
         mixed ...$content
     ): ContentCollection {
         return new ContentCollection($content);
@@ -188,10 +150,7 @@ class Factory implements Markup
 
 
 
-    /**
-     * Escape HTML
-     */
-    public function esc(
+    public static function esc(
         mixed $value
     ): ?string {
         if ($value === null) {
@@ -205,19 +164,4 @@ class Factory implements Markup
             return Coercion::toString($value);
         }
     }
-
-    /**
-     * Serialize to json
-     */
-    public function jsonSerialize(): mixed
-    {
-        return (string)$this;
-    }
 }
-
-
-// Register the Veneer proxy
-Veneer\Manager::getGlobalManager()->register(
-    Factory::class,
-    Tagged::class
-);

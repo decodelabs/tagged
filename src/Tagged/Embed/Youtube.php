@@ -32,9 +32,6 @@ class Youtube extends Video
      */
     protected array $options = [];
 
-    /**
-     * Extract parts from URL
-     */
     protected function setUrl(
         ?string $url
     ): static {
@@ -81,9 +78,6 @@ class Youtube extends Video
         return $this;
     }
 
-    /**
-     * Get finalized URL from renderer tag
-     */
     public function getPreparedUrl(): ?string
     {
         $url = 'https://www.youtube';
@@ -126,35 +120,23 @@ class Youtube extends Video
         return $url;
     }
 
-    /**
-     * Get Youtube id
-     */
     public function getYoutubeId(): string
     {
         return $this->youtubeId;
     }
 
-    /**
-     * Render URL embed
-     */
     public function render(): Element
     {
         return $this->prepareIframeElement((string)$this->getPreparedUrl());
     }
 
 
-    /**
-     * Lookup thumbnail URL
-     */
     public function lookupThumbnail(
         ?array $options = null
     ): ?string {
         return 'https://img.youtube.com/vi/' . $this->youtubeId . '/hqdefault.jpg';
     }
 
-    /**
-     * Lookup media meta information
-     */
     public function lookupMeta(
         ?array $options = null
     ): ?array {

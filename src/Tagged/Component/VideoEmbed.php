@@ -22,8 +22,6 @@ class VideoEmbed extends Tag implements Component
     public protected(set) ?Video $embed;
 
     /**
-     * Generate image
-     *
      * @param array<string,mixed>|null $attributes
      */
     public function __construct(

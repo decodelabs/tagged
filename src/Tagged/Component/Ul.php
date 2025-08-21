@@ -14,8 +14,6 @@ use Closure;
 class Ul extends ContainedList
 {
     /**
-     * Generate unordered list
-     *
      * @param iterable<mixed>|Closure():(iterable<mixed>)|null $items
      * @param array<string,mixed>|null $attributes
      */

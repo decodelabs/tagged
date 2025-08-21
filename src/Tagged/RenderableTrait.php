@@ -14,9 +14,6 @@ use Throwable;
 
 trait RenderableTrait
 {
-    /**
-     * Render to string
-     */
     public function __toString(): string
     {
         try {
@@ -26,7 +23,7 @@ trait RenderableTrait
             $message = '<strong>' . $e->getMessage() . '</strong>';
 
             if (!Monarch::isProduction()) {
-                $message .= '<br /><samp>' . Monarch::$paths->prettify($e->getFile()) . '</samp> : <samp>' . $e->getLine() . '</samp>';
+                $message .= '<br /><samp>' . Monarch::getPaths()->prettify($e->getFile()) . '</samp> : <samp>' . $e->getLine() . '</samp>';
                 $title = $this->esc((string)$e);
             } else {
                 $title = 'HTML Error';

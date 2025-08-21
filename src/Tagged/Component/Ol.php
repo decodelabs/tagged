@@ -14,8 +14,6 @@ use Closure;
 class Ol extends ContainedList
 {
     /**
-     * Generate ordered list
-     *
      * @param iterable<mixed>|Closure():(iterable<mixed>)|null $items
      * @param array<string,mixed>|null $attributes
      */

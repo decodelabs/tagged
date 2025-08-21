@@ -39,9 +39,6 @@ class ContentCollection implements
 
     protected const bool Mutable = true;
 
-    /**
-     * Normalize abitrary content
-     */
     public static function normalize(
         mixed $content,
         bool $pretty = false
@@ -53,17 +50,11 @@ class ContentCollection implements
         return (new self($content))->render($pretty);
     }
 
-    /**
-     * Flatten to string
-     */
     public function __toString(): string
     {
         return (string)$this->render();
     }
 
-    /**
-     * Render contents
-     */
     public function render(
         bool $pretty = false
     ): Buffer {

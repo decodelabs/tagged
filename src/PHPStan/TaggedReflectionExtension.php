@@ -10,8 +10,9 @@ declare(strict_types=1);
 namespace DecodeLabs\PHPStan;
 
 use DecodeLabs\Archetype;
+use DecodeLabs\Monarch;
+use DecodeLabs\Tagged;
 use DecodeLabs\Tagged\Component;
-use DecodeLabs\Tagged\Factory as HtmlFactory;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\FunctionVariant;
 use PHPStan\Reflection\MethodReflection as MethodReflectionInterface;
@@ -22,18 +23,20 @@ use PHPStan\Type\ObjectType;
 class TaggedReflectionExtension implements MethodsClassReflectionExtension
 {
     protected ReflectionProvider $reflectionProvider;
+    protected Archetype $archetype;
 
     public function __construct(
         ReflectionProvider $reflectionProvider
     ) {
         $this->reflectionProvider = $reflectionProvider;
+        $this->archetype = Monarch::getService(Archetype::class);
     }
 
     public function hasMethod(
         ClassReflection $classReflection,
         string $methodName
     ): bool {
-        if ($classReflection->getName() !== HtmlFactory::class) {
+        if ($classReflection->getName() !== Tagged::class) {
             return false;
         }
 
@@ -45,7 +48,7 @@ class TaggedReflectionExtension implements MethodsClassReflectionExtension
             return false;
         }
 
-        return (bool)Archetype::tryResolve(Component::class, $name);
+        return (bool)$this->archetype->tryResolve(Component::class, $name);
     }
 
     public function getMethod(
@@ -54,19 +57,22 @@ class TaggedReflectionExtension implements MethodsClassReflectionExtension
     ): MethodReflectionInterface {
         if (!str_starts_with($methodName, '@')) {
             // Element
-            $method = $this->reflectionProvider->getClass(HtmlFactory::class)->getNativeMethod('el');
+            $method = $this->reflectionProvider->getClass(Tagged::class)->getNativeMethod('el');
 
             /** @var FunctionVariant $variant */
             $variant = clone $method->getVariants()[0];
             $params = array_slice($variant->getParameters(), 1);
 
             $newVariant = MethodReflection::alterVariant($variant, $params);
-            return new MethodReflection($classReflection, $methodName, [$newVariant]);
+            $output = new MethodReflection($classReflection, $methodName, [$newVariant]);
+            $output->setStatic(true);
+            return $output;
         }
 
         // Component
         $name = $this->normalizeName($methodName);
-        $class = Archetype::resolve(Component::class, $name);
+        $class = $this->archetype->resolve(Component::class, $name);
+
         $method = $this->reflectionProvider->getClass($class)->getNativeMethod('__construct');
         /** @var FunctionVariant $variant */
         $variant = $method->getVariants()[0];
@@ -77,7 +83,9 @@ class TaggedReflectionExtension implements MethodsClassReflectionExtension
             new ObjectType($class)
         );
 
-        return new MethodReflection($classReflection, $methodName, [$newVariant]);
+        $output = new MethodReflection($classReflection, $methodName, [$newVariant]);
+        $output->setStatic(true);
+        return $output;
     }
 
     protected function normalizeName(

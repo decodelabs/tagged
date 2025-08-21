@@ -7,112 +7,87 @@
 
 declare(strict_types=1);
 
-namespace DecodeLabs\Tagged\Plugins;
+namespace DecodeLabs\Tagged;
 
 use DateInterval;
 use DateTimeInterface;
 use DateTimeZone;
-use DecodeLabs\Cosmos\Extension\Time as TimePlugin;
-use DecodeLabs\Cosmos\Extension\TimeTrait as TimePluginTrait;
+use DecodeLabs\Cosmos\Extension\Time as TimeExtension;
+use DecodeLabs\Cosmos\Extension\TimeTrait as TimeExtensionTrait;
 use DecodeLabs\Cosmos\Locale;
-use DecodeLabs\Tagged\Element;
-use DecodeLabs\Tagged\Factory;
 use Stringable;
 
 /**
- * @implements TimePlugin<Element>
+ * @implements TimeExtension<Element>
  */
-class Time implements TimePlugin
+class Time implements TimeExtension
 {
     /**
-     * @use TimePluginTrait<Element>
+     * @use TimeExtensionTrait<Element>
      */
-    use TimePluginTrait;
+    use TimeExtensionTrait;
 
-    protected Factory $html;
-
-    /**
-     * Init with parent factory
-     */
-    public function __construct(
-        Factory $html
-    ) {
-        $this->html = $html;
-    }
-
-    /**
-     * Custom format a date and wrap it
-     */
-    public function format(
+    public static function format(
         DateTimeInterface|DateInterval|string|Stringable|int|null $date,
         string $format,
         DateTimeZone|string|Stringable|bool|null $timezone = true
     ): ?Element {
-        if (!$date = $this->prepare($date, $timezone, true)) {
+        if (!$date = static::prepare($date, $timezone, true)) {
             return null;
         }
 
-        return $this->wrap(
+        return static::wrap(
             $date->format($timezone === false ? 'Y-m-d' : DateTimeInterface::W3C),
             $date->format($format)
         );
     }
 
-    /**
-     * Custom format a date and wrap it
-     */
-    public function formatDate(
+    public static function formatDate(
         DateTimeInterface|DateInterval|string|Stringable|int|null $date,
         string $format
     ): ?Element {
-        if (!$date = $this->prepare($date, false, true)) {
+        if (!$date = static::prepare($date, false, true)) {
             return null;
         }
 
-        return $this->wrap(
+        return static::wrap(
             $date->format('Y-m-d'),
             $date->format($format)
         );
     }
 
-    /**
-     * Custom locale format a date with ICU and wrap it
-     */
-    public function pattern(
+    public static function pattern(
         DateTimeInterface|DateInterval|string|Stringable|int|null $date,
         string $pattern,
         DateTimeZone|string|Stringable|bool|null $timezone = true,
         string|Locale|null $locale = null
     ): ?Element {
-        $output = $this->formatRawIcuDate($date, $pattern, $timezone, $locale);
+        $output = static::formatRawIcuDate($date, $pattern, $timezone, $locale);
 
         if ($output === null) {
             return null;
         }
 
-        return $this->wrap(
+        return static::wrap(
             (string)$date?->format($timezone === false ? 'Y-m-d' : DateTimeInterface::W3C),
             $output
         );
     }
 
-    /**
-     * Format date according to locale
-     */
-    public function locale(
+    public static function locale(
         DateTimeInterface|DateInterval|string|Stringable|int|null $date,
         string|int|bool|null $dateSize = true,
         string|int|bool|null $timeSize = true,
         DateTimeZone|string|Stringable|bool|null $timezone = true,
         string|Locale|null $locale = null
     ): ?Element {
-        $output = $this->formatRawLocaleDate($date, $dateSize, $timeSize, $timezone, $locale, $wrapFormat);
+        $output = static::formatRawLocaleDate($date, $dateSize, $timeSize, $timezone, $locale, $wrapFormat);
 
         if ($output === null) {
             return null;
         }
 
-        return $this->wrap(
+        return static::wrap(
             (string)$date?->format((string)$wrapFormat),
             $output
         );
@@ -120,10 +95,7 @@ class Time implements TimePlugin
 
 
 
-    /**
-     * Format interval
-     */
-    protected function formatNowInterval(
+    protected static function formatNowInterval(
         DateTimeInterface|DateInterval|string|Stringable|int|null $date,
         bool $invert,
         ?int $parts,
@@ -132,16 +104,16 @@ class Time implements TimePlugin
         ?bool $positive = false,
         string|Locale|null $locale = null
     ): ?Element {
-        $output = $this->formatRawNowInterval($date, $interval, $invert, $parts, $short, $absolute, $positive, $locale);
+        $output = static::formatRawNowInterval($date, $interval, $invert, $parts, $short, $absolute, $positive, $locale);
 
         if ($output === null) {
             return null;
         }
 
-        $output = $this->wrap(
+        $output = static::wrap(
             (string)$date?->format(DateTimeInterface::W3C),
             $output,
-            $this->formatRawLocaleDate($date, true, true, true, $locale)
+            static::formatRawLocaleDate($date, true, true, true, $locale)
         );
 
         if ($interval?->invert) {
@@ -165,23 +137,20 @@ class Time implements TimePlugin
     }
 
 
-    /**
-     * Format interval until date
-     */
-    protected function formatBetweenInterval(
+    protected static function formatBetweenInterval(
         DateTimeInterface|DateInterval|string|Stringable|int|null $date1,
         DateTimeInterface|DateInterval|string|Stringable|int|null $date2,
         ?int $parts = 1,
         bool $short = false,
         string|Locale|null $locale = null
     ): ?Element {
-        $output = $this->formatRawBetweenInterval($date1, $date2, $interval, $parts, $short, $locale);
+        $output = static::formatRawBetweenInterval($date1, $date2, $interval, $parts, $short, $locale);
 
         if ($output === null) {
             return null;
         }
 
-        $output = $this->html->el(
+        $output = new Element(
             'span.interval',
             $output
         );
@@ -199,15 +168,12 @@ class Time implements TimePlugin
 
 
 
-    /**
-     * Wrap date / time in Markup
-     */
-    protected function wrap(
+    protected static function wrap(
         string $w3c,
         string $formatted,
         ?string $title = null
     ): Element {
-        $output = $this->html->el('time', $formatted, [
+        $output = new Element('time', $formatted, [
             'datetime' => $w3c
         ]);
 

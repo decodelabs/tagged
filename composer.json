@@ -11,16 +11,17 @@
     "require": {
         "php": "^8.4",
         "ext-intl": "*",
-        "symfony/polyfill-mbstring": "^1.32",
+        "symfony/polyfill-mbstring": "^1.33",
 
-        "decodelabs/archetype": "^0.3.10",
-        "decodelabs/coercion": "^0.3.3",
-        "decodelabs/collections": "^0.11.3",
-        "decodelabs/cosmos": "^0.2.2",
-        "decodelabs/elementary": "^0.6.1",
-        "decodelabs/exceptional": "^0.6.1",
-        "decodelabs/monarch": "^0.1.4",
-        "decodelabs/veneer": "^0.12.8"
+        "decodelabs/archetype": "^0.4",
+        "decodelabs/coercion": "^0.3.5",
+        "decodelabs/collections": "^0.12",
+        "decodelabs/cosmos": "^0.3",
+        "decodelabs/elementary": "^0.6.3",
+        "decodelabs/exceptional": "^0.6.3",
+        "decodelabs/kingdom": "^0.1",
+        "decodelabs/monarch": "^0.2.1",
+        "decodelabs/slingshot": "^0.3"
     },
     "require-dev": {
         "decodelabs/phpstan-decodelabs": "^0.7"
@@ -33,8 +34,8 @@
             "DecodeLabs\\Tagged\\": "src/Tagged",
             "DecodeLabs\\PHPStan\\": "src/PHPStan"
         },
-        "files": [
-            "src/Tagged/Factory.php"
+        "classmap": [
+            "src/Tagged.php"
         ]
     },
     "autoload-dev": {

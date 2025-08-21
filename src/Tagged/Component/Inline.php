@@ -31,8 +31,6 @@ class Inline extends Tag implements Component
     public ?int $limit = null;
 
     /**
-     * Generate inline list
-     *
      * @param iterable<mixed>|Closure():(iterable<mixed>)|null $items
      * @param array<string,mixed>|null $attributes
      */
