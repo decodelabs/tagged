@@ -29,9 +29,10 @@ Generate markup using a simple, flexible interface.
 ```php
 use DecodeLabs\Tagged as Html;
 
-echo Html::{'div.my-class#my-id'}('This is element content', [
-    'title' => 'This is a title'
-]);
+echo Html::{'div.my-class#my-id'}(
+    content: 'This is element content',
+    title: 'This is a title'
+);
 ```
 
 ...creates:
@@ -63,9 +64,10 @@ $buffer = Html::raw('<span class="test">My span</span>');
 Dump script data to Html:
 
 ```php
-yield Html::script(Html::raw(json_encode( $some_data )), [
-    'type' => 'application/json'
-]);
+yield Html::script(
+    Html::raw(json_encode( $some_data )),
+    type: 'application/json'
+);
 ```
 
 Prepare arbitrary input for Markup output:
@@ -96,23 +98,11 @@ Set attributes via an array:
 ```php
 use DecodeLabs\Tagged as Html;
 
-echo Html::{'div'}('This is a div with an attribute', [
-    'data-attr' => 'foo'
-]);
-```
-
-Set attributes with named arguments:
-
-```php
-use DecodeLabs\Tagged as Html;
-
 echo Html::{'div'}(
-    'This is a div with an attribute',
-    dataAttr: 'foo',
-    class: 'my-class'
+    content: 'This is a div with an attribute',
+    dataAttr: 'foo'
 );
 ```
-
 
 ### Nesting
 
