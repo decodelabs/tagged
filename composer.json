@@ -19,7 +19,7 @@
         "decodelabs/cosmos": "^0.3",
         "decodelabs/elementary": "^0.6.3",
         "decodelabs/exceptional": "^0.6.3",
-        "decodelabs/kingdom": "^0.1",
+        "decodelabs/kingdom": "^0.2",
         "decodelabs/monarch": "^0.2.1",
         "decodelabs/slingshot": "^0.3"
     },
