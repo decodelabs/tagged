@@ -24,7 +24,11 @@
         "decodelabs/slingshot": "^0.3"
     },
     "require-dev": {
+        "decodelabs/lucid": "^0.7",
         "decodelabs/phpstan-decodelabs": "^0.7"
+    },
+    "conflict": {
+        "decodelabs/lucid": "<0.6"
     },
     "suggest": {
         "nesbot/carbon": "Support for time interval formatting"
@@ -35,7 +39,8 @@
             "DecodeLabs\\PHPStan\\": "src/PHPStan"
         },
         "classmap": [
-            "src/Tagged.php"
+            "src/Tagged.php",
+            "src/Lucid/"
         ]
     },
     "autoload-dev": {
