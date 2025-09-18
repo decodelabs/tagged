@@ -5,8 +5,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Unreleased
+--
+
+---
+
+### [v0.21.2](https://github.com/decodelabs/tagged/commits/v0.21.2) - 18th September 2025
+
 - Added Audio and Video embed Lucid processors
 - Simplified CI workflow
+
+[Full list of changes](https://github.com/decodelabs/tagged/compare/v0.21.1...v0.21.2)
 
 ---
 
