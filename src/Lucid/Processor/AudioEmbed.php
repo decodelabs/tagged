@@ -13,7 +13,6 @@ use DecodeLabs\Coercion;
 use DecodeLabs\Exceptional;
 use DecodeLabs\Lucid\Processor;
 use DecodeLabs\Lucid\ProcessorTrait;
-use DecodeLabs\Lucid\Sanitizer;
 use DecodeLabs\Tagged\Embed\Audio;
 use Throwable;
 
@@ -28,11 +27,6 @@ class AudioEmbed implements Processor
     use ProcessorTrait;
 
     public const array OutputTypes = ['Tagged:Audio', Audio::class];
-
-    public function __construct(
-        protected Sanitizer $sanitizer,
-    ) {
-    }
 
     public function coerce(
         mixed $value

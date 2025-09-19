@@ -13,7 +13,6 @@ use DecodeLabs\Coercion;
 use DecodeLabs\Exceptional;
 use DecodeLabs\Lucid\Processor;
 use DecodeLabs\Lucid\ProcessorTrait;
-use DecodeLabs\Lucid\Sanitizer;
 use DecodeLabs\Tagged\Embed\Video;
 use Throwable;
 
@@ -28,11 +27,6 @@ class VideoEmbed implements Processor
     use ProcessorTrait;
 
     public const array OutputTypes = ['Tagged:Video', Video::class];
-
-    public function __construct(
-        protected Sanitizer $sanitizer,
-    ) {
-    }
 
     public function coerce(
         mixed $value
