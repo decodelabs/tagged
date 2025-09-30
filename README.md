@@ -16,6 +16,10 @@ Tagged provides a simple, powerful and beautiful way to create HTML markup witho
 
 ## Installation
 
+This package requires PHP 8.4 or higher.
+
+Install via Composer:
+
 ```bash
 composer require decodelabs/tagged
 ```
