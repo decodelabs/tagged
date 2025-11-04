@@ -1,8 +1,8 @@
 <?php
 
 /**
- * @package Tagged
- * @license http://opensource.org/licenses/MIT
+ * Tagged
+ * @license https://opensource.org/licenses/MIT
  */
 
 declare(strict_types=1);
