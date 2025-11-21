@@ -2,12 +2,18 @@
     "name": "decodelabs/tagged",
     "description": "PHP markup generation without the fuss",
     "type": "library",
-    "keywords": [ "markup", "html", "generator" ],
+    "keywords": [
+        "markup",
+        "html",
+        "generator"
+    ],
     "license": "MIT",
-    "authors": [ {
+    "authors": [
+        {
             "name": "Tom Wright",
             "email": "tom@inflatablecookie.com"
-        } ],
+        }
+    ],
     "require": {
         "php": "^8.4",
         "ext-intl": "*",
@@ -24,6 +30,7 @@
         "decodelabs/slingshot": "^0.3"
     },
     "require-dev": {
+        "decodelabs/chorus": "^0.1",
         "decodelabs/lucid": "^0.8",
         "decodelabs/phpstan-decodelabs": "^0.7"
     },
@@ -62,8 +69,6 @@
                 "phpstan-extension.neon"
             ]
         }
-    },
-    "repositories": {
     },
     "config": {
         "allow-plugins": {
