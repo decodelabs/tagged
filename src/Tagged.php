@@ -27,7 +27,7 @@ class Tagged implements Service
     use ServiceTrait;
 
     /**
-     * @param iterable<string,TAttributeInput> $attributes
+     * @param iterable<string|null,TAttributeInput> $attributes
      * @param TAttributeInput ...$attributeList
      */
     public function __invoke(
@@ -57,7 +57,7 @@ class Tagged implements Service
 
 
     /**
-     * @param iterable<string,TAttributeInput> $attributes
+     * @param iterable<string|null,TAttributeInput> $attributes
      * @param TAttributeInput ...$attributeList
      */
     public static function tag(
@@ -65,9 +65,15 @@ class Tagged implements Service
         iterable $attributes = [],
         mixed ...$attributeList
     ): Tag {
+        $attributeMap = [];
+
+        foreach ($attributes as $key => $value) {
+            $attributeMap[$key ?? ''] = $value;
+        }
+
         /** @var array<string,TAttributeInput> $attributes */
         $attributes = array_merge(
-            iterator_to_array($attributes),
+            $attributeMap,
             $attributeList
         );
 
@@ -75,7 +81,7 @@ class Tagged implements Service
     }
 
     /**
-     * @param iterable<string,TAttributeInput> $attributes
+     * @param iterable<string|null,TAttributeInput> $attributes
      * @param TAttributeInput ...$attributeList
      */
     public static function el(

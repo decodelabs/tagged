@@ -123,7 +123,17 @@ class Tag implements
         }
 
         if ($value instanceof Generator) {
-            $value = iterator_to_array($value);
+            $value = iterator_to_array((
+                /**
+                 * @param iterable<mixed,mixed> $input
+                 * @return \Generator<mixed,mixed>
+                 */
+                static function (iterable $input): \Generator {
+                    foreach ($input as $key => $item) {
+                        yield $key ?? '' => $item;
+                    }
+                }
+            )($value));
         }
 
         if (is_array($value)) {
@@ -162,7 +172,7 @@ class Tag implements
 
 
     /**
-     * @param iterable<string,TAttributeInput> $attributes
+     * @param iterable<string|null,TAttributeInput> $attributes
      * @param TAttributeInput ...$attributeList
      * @return $this
      */
@@ -171,7 +181,13 @@ class Tag implements
         mixed ...$attributeList
     ): static {
         if (!is_array($attributes)) {
-            $attributes = iterator_to_array($attributes);
+            $attributeMap = [];
+
+            foreach ($attributes as $key => $value) {
+                $attributeMap[$key ?? ''] = $value;
+            }
+
+            $attributes = $attributeMap;
         }
 
         foreach ($attributes + $attributeList as $key => $value) {
@@ -182,7 +198,7 @@ class Tag implements
     }
 
     /**
-     * @param iterable<string,TAttributeInput> $attributes
+     * @param iterable<string|null,TAttributeInput> $attributes
      * @param TAttributeInput ...$attributeList
      * @return $this
      */

@@ -30,7 +30,7 @@ class Element extends Tag implements
     use RenderableTrait;
 
     /**
-     * @param iterable<string,TAttributeInput> $attributes
+     * @param iterable<string|null,TAttributeInput> $attributes
      * @param TAttributeInput ...$attributeList
      */
     public static function create(
@@ -39,9 +39,15 @@ class Element extends Tag implements
         iterable $attributes = [],
         mixed ...$attributeList
     ): self {
+        $attributeMap = [];
+
+        foreach ($attributes as $key => $value) {
+            $attributeMap[$key ?? ''] = $value;
+        }
+
         /** @var array<string,TAttributeInput> $attributes */
         $attributes = array_merge(
-            iterator_to_array($attributes),
+            $attributeMap,
             $attributeList
         );
 
