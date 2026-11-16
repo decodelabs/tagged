@@ -170,8 +170,12 @@ class Tag implements
         iterable $attributes = [],
         mixed ...$attributeList
     ): static {
+        if (!is_array($attributes)) {
+            $attributes = iterator_to_array($attributes);
+        }
+
         foreach ($attributes + $attributeList as $key => $value) {
-            $this->setDataAttribute($key, $value);
+            $this->setDataAttribute((string)$key, $value);
         }
 
         return $this;
